@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- 无边框Dialog -->
+    <style name="easyDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>
