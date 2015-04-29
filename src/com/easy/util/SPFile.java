@@ -68,6 +68,12 @@ public class SPFile {
 		ed.commit();
 	}
 
+	public void clear() {
+		Editor ed = sp.edit();
+		ed.clear();
+		ed.commit();
+	}
+
 	/** android api 11 */
 	@SuppressLint("NewApi")
 	public Set<String> getStringSet(String key) {
