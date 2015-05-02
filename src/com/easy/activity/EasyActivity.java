@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.easy.R;
 import com.easy.manager.EasyActivityManager;
 import com.easy.util.LogUtil;
 import com.easy.util.ToastUtil;
@@ -27,7 +26,7 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 	// 双击退出应用的有效间隔时间
 	private static final int BACK_PRESSED_TIME = 2000;
 	// 退出程序提示
-	private static int exitTipsId = R.string.exit_tips;
+	private static int exitTipsId = 0;
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向activity自己，当内部类调用activity时，不用写“类名.this”，供懒人使用
@@ -156,7 +155,11 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastBackPressedTime > BACK_PRESSED_TIME) {
 				lastBackPressedTime = currentTime;
-				ToastUtil.show(this, exitTipsId);
+				if (exitTipsId == 0) {
+					ToastUtil.show(this, "再按一次退出");
+				} else {
+					ToastUtil.show(this, exitTipsId);
+				}
 				return;
 			}
 			EasyActivityManager.getInstance().finishAll();
