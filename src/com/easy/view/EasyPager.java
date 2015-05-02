@@ -202,6 +202,28 @@ public class EasyPager extends ViewPager {
 	}
 
 	/**
+	 * 获取对应下标的Fragment
+	 */
+	public Fragment getFragmentAt(int index) {
+		try {
+			return fs.get(index);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 获取对应下标的View
+	 */
+	public View getViewAt(int index) {
+		try {
+			return vs.get(index);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
 	 * 获取当前选中的按钮Id
 	 */
 	public int getCheckedId() {
