@@ -48,7 +48,7 @@ public class BitmapUtil {
 		return options;
 	}
 
-	/** 新建指定颜色方案的配置 */
+	/** 新建指定颜色的配置 */
 	@SuppressWarnings("deprecation")
 	public static BitmapFactory.Options createOptions(Bitmap.Config colorConfig) {
 		// 设置编码、可回收、深拷贝、非增强色
@@ -60,23 +60,30 @@ public class BitmapUtil {
 		return options;
 	}
 
-	/** 计算合适的样本大小 */
-	public static int measureSample(Bitmap src, int maxSize) {
-		float sample = 1;
-		int w = src.getWidth();
-		int h = src.getHeight();
-		if (w > maxSize || h > maxSize) {
-			if (w > h) {
-				sample = 1f * w / maxSize;
-			} else {
-				sample = 1f * h / maxSize;
-			}
+	/** 计算合适的缩放大小 */
+	public static float measureScale(int width, int height, int maxSize) {
+		int longSize = width > height ? width : height;
+		if (longSize <= maxSize) {
+			return 1;
 		}
-		if (sample - (int) sample > 0) {
-			sample += 1;
-		}
+		return (float) longSize / maxSize;
+	}
 
-		return (int) sample * (int) sample;
+	/** 计算合适的样本大小 */
+	public static int measureSample(int width, int height, int maxSize) {
+		float scale = measureScale(width, height, maxSize);
+		if (scale % 1f > 0) {
+			scale++;
+		}
+		return (int) scale;
+	}
+
+	/** 获取图片尺寸信息 */
+	public static BitmapFactory.Options getBounds(String path) {
+		BitmapFactory.Options opts = createOptions();
+		opts.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(path, opts);
+		return opts;
 	}
 
 	/** 获取绝对路径的图片 */
@@ -239,31 +246,30 @@ public class BitmapUtil {
 	/**
 	 * 裁剪并缩放成固定尺寸大小的图片
 	 */
-	public static Bitmap fixSize(String path, int dstWidth, int dstHeight) {
-		if (path == null || path.length() < 1)
+	public static Bitmap cropSize(String path, int dstWidth, int dstHeight) {
+		if (path == null || path.length() == 0)
 			return null;
-		BitmapFactory.Options opts = createOptions();
+
+		BitmapFactory.Options opts = getBounds(path);
 
 		// 找出最接近目标尺寸的sampleSize，但不能小于目标尺寸
-		opts.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(path, opts);
-		int sampleSize = 0;
+		int sample = 0;
 		int nextSample = 1;
 		do {
-			sampleSize = nextSample;
+			sample = nextSample;
 			nextSample++;
 		} while (opts.outWidth / nextSample >= dstWidth
 				&& opts.outHeight / nextSample >= dstHeight);
-		opts.inSampleSize = sampleSize;
+		opts.inSampleSize = sample;
 		opts.inJustDecodeBounds = false;
 		Bitmap bmp = BitmapFactory.decodeFile(path, opts);
-		return fixSize(bmp, dstWidth, dstHeight);
+		return cropSize(bmp, dstWidth, dstHeight);
 	}
 
 	/**
 	 * 裁剪并缩放成固定尺寸大小的图片
 	 */
-	public static Bitmap fixSize(Bitmap bmp, int dstWidth, int dstHeight) {
+	public static Bitmap cropSize(Bitmap bmp, int dstWidth, int dstHeight) {
 		// 根据目标尺寸的长宽比，将原图进行截取，取最中间那一块
 		int cutHeight = 0;
 		int cutWidth = 0;

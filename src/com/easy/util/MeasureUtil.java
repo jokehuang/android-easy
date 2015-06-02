@@ -1,9 +1,9 @@
 package com.easy.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * MeasureUtil
@@ -29,12 +29,14 @@ public class MeasureUtil {
 
 	// public static float scale;
 
-	private static void measure(Activity activity) {
+	private static void measure(Context context) {
 		if (type != 0) {
 			return;
 		}
 
-		Display d = activity.getWindowManager().getDefaultDisplay();
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display d = wm.getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		d.getMetrics(outMetrics);
 
@@ -82,8 +84,8 @@ public class MeasureUtil {
 		return (int) (pxValue / scale + 0.5f);
 	}
 
-	public static int getType(Activity activity) {
-		measure(activity);
+	public static int getType(Context context) {
+		measure(context);
 		return type;
 	}
 
@@ -91,8 +93,8 @@ public class MeasureUtil {
 	// MeasureUtil.type = type;
 	// }
 	//
-	// public static int getScreenRelativeHeight(Activity activity) {
-	// measure(activity);
+	// public static int getScreenRelativeHeight(Context context) {
+	// measure(context);
 	// return screenRelativeHeight;
 	// }
 	//
@@ -100,8 +102,8 @@ public class MeasureUtil {
 	// MeasureUtil.screenRelativeHeight = screenRelativeHeight;
 	// }
 	//
-	// public static int getScreenRelativeWidth(Activity activity) {
-	// measure(activity);
+	// public static int getScreenRelativeWidth(Context context) {
+	// measure(context);
 	// return screenRelativeWidth;
 	// }
 	//
@@ -109,8 +111,8 @@ public class MeasureUtil {
 	// MeasureUtil.screenRelativeWidth = screenRelativeWidth;
 	// }
 
-	public static int getScreenHeight(Activity activity) {
-		measure(activity);
+	public static int getScreenHeight(Context context) {
+		measure(context);
 		return screenHeight;
 	}
 
@@ -119,8 +121,8 @@ public class MeasureUtil {
 	// MeasureUtil.screenHeight = screenHeight;
 	// }
 
-	public static int getScreenWidth(Activity activity) {
-		measure(activity);
+	public static int getScreenWidth(Context context) {
+		measure(context);
 		return screenWidth;
 	}
 
@@ -129,8 +131,8 @@ public class MeasureUtil {
 	// MeasureUtil.screenWidth = screenWidth;
 	// }
 
-	// public static float getScale(Activity activity) {
-	// measure(activity);
+	// public static float getScale(Context context) {
+	// measure(context);
 	// return scale;
 	// }
 	//
@@ -138,13 +140,13 @@ public class MeasureUtil {
 	// MeasureUtil.scale = scale;
 	// }
 
-	public static int getLongSide(Activity activity) {
-		measure(activity);
-		return type == TYPE_PHONE ? screenHeight : screenWidth;
+	public static int getLongSide(Context context) {
+		measure(context);
+		return screenHeight > screenWidth ? screenHeight : screenWidth;
 	}
 
-	public static int getShortSide(Activity activity) {
-		measure(activity);
-		return type == TYPE_PHONE ? screenWidth : screenHeight;
+	public static int getShortSide(Context context) {
+		measure(context);
+		return screenHeight > screenWidth ? screenWidth : screenHeight;
 	}
 }
