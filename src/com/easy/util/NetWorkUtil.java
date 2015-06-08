@@ -31,8 +31,8 @@ public class NetWorkUtil {
 	 * @return
 	 */
 	public static boolean isNetworkConnected(Context context) {
-		ConnectivityManager connManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connManager = SystemServiceUtil
+				.getConnectivityManager(context);
 		NetworkInfo netInfo = connManager.getActiveNetworkInfo();
 		if (netInfo != null) {
 			return netInfo.isConnected();
@@ -47,8 +47,8 @@ public class NetWorkUtil {
 	 * @return
 	 */
 	public static boolean isWifiConnected(Context context) {
-		ConnectivityManager connManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connManager = SystemServiceUtil
+				.getConnectivityManager(context);
 		NetworkInfo netInfo = connManager
 				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (netInfo != null) {
@@ -64,8 +64,8 @@ public class NetWorkUtil {
 	 * @return
 	 */
 	public static boolean isMobileConnected(Context context) {
-		ConnectivityManager connManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connManager = SystemServiceUtil
+				.getConnectivityManager(context);
 		NetworkInfo netInfo = connManager
 				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		if (netInfo != null) {
@@ -108,8 +108,7 @@ public class NetWorkUtil {
 	 */
 	public static String getMacAddress(Context context) {
 		try {
-			WifiManager wifi = (WifiManager) context
-					.getSystemService(Context.WIFI_SERVICE);
+			WifiManager wifi = SystemServiceUtil.getWifiManager(context);
 			WifiInfo info = wifi.getConnectionInfo();
 			return info.getMacAddress();
 		} catch (Exception e) {

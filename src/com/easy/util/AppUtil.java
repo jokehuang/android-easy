@@ -25,8 +25,8 @@ public class AppUtil {
 	 * @return
 	 */
 	public static boolean isForeground(Context context) {
-		ActivityManager activityManager = (ActivityManager) context
-				.getSystemService(Context.ACTIVITY_SERVICE);
+		ActivityManager activityManager = SystemServiceUtil
+				.getActivityManager(context);
 		String packageName = context.getPackageName();
 		List<RunningAppProcessInfo> appProcesses = activityManager
 				.getRunningAppProcesses();

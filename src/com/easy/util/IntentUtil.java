@@ -1,6 +1,7 @@
 package com.easy.util;
 
 import java.io.File;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentUris;
@@ -55,6 +56,48 @@ public class IntentUtil {
 	public static void openTelephone(Context context, String tel) {
 		context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
 				+ tel)));
+	}
+
+	/**
+	 * 安装apk
+	 * 
+	 * @param context
+	 * @param filePath
+	 * @return
+	 */
+	public static boolean install(Context context, String filePath) {
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		File file = new File(filePath);
+		if (file == null || !file.exists() || !file.isFile()
+				|| file.length() <= 0) {
+			return false;
+		}
+
+		i.setDataAndType(Uri.parse("file://" + filePath),
+				"application/vnd.android.package-archive");
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
+		return true;
+	}
+
+	/**
+	 * 卸载app
+	 * 
+	 * @param context
+	 * @param packageName
+	 * @return
+	 */
+	public static boolean uninstall(Context context, String packageName) {
+		if (packageName == null || packageName.length() == 0) {
+			return false;
+		}
+
+		Intent i = new Intent(Intent.ACTION_DELETE,
+				Uri.parse(new StringBuilder(32).append("package:")
+						.append(packageName).toString()));
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
+		return true;
 	}
 
 	/**

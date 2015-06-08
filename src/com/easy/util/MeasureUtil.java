@@ -34,8 +34,7 @@ public class MeasureUtil {
 			return;
 		}
 
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = SystemServiceUtil.getWindowManager(context);
 		Display d = wm.getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		d.getMetrics(outMetrics);
