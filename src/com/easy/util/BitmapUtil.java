@@ -31,7 +31,8 @@ import android.widget.ImageView;
  */
 
 public class BitmapUtil {
-	private static final String EXT = ".png";
+	public static final String EXT_PNG = ".png";
+	public static final String EXT_JPG = ".jpg";
 
 	private BitmapUtil() {
 	}
@@ -61,15 +62,33 @@ public class BitmapUtil {
 	}
 
 	/** 计算合适的缩放大小 */
+	public static float measureScale(Bitmap src, int maxSize) {
+		return measureScale(src.getWidth(), src.getHeight(), maxSize);
+	}
+
+	public static float measureScale(String path, int maxSize) {
+		BitmapFactory.Options op = decodeBounds(path);
+		return measureScale(op.outWidth, op.outHeight, maxSize);
+	}
+
 	public static float measureScale(int width, int height, int maxSize) {
 		int longSize = width > height ? width : height;
 		if (longSize <= maxSize) {
 			return 1;
 		}
-		return (float) longSize / maxSize;
+		return (float) maxSize / longSize;
 	}
 
 	/** 计算合适的样本大小 */
+	public static float measureSample(Bitmap src, int maxSize) {
+		return measureSample(src.getWidth(), src.getHeight(), maxSize);
+	}
+
+	public static float measureSample(String path, int maxSize) {
+		BitmapFactory.Options op = decodeBounds(path);
+		return measureSample(op.outWidth, op.outHeight, maxSize);
+	}
+
 	public static int measureSample(int width, int height, int maxSize) {
 		float scale = measureScale(width, height, maxSize);
 		if (scale % 1f > 0) {
@@ -79,7 +98,7 @@ public class BitmapUtil {
 	}
 
 	/** 获取图片尺寸信息 */
-	public static BitmapFactory.Options getBounds(String path) {
+	public static BitmapFactory.Options decodeBounds(String path) {
 		BitmapFactory.Options opts = createOptions();
 		opts.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(path, opts);
@@ -102,9 +121,8 @@ public class BitmapUtil {
 	/** 获取应用目录下的图片 */
 	public static Bitmap get(Context context, String fileName, Options options) {
 		try {
-			return BitmapFactory
-					.decodeFile(context.getFileStreamPath(fileName + EXT)
-							.getAbsolutePath(), options);
+			return BitmapFactory.decodeFile(context.getFileStreamPath(fileName)
+					.getAbsolutePath(), options);
 		} catch (Exception e) {
 			return null;
 		}
@@ -141,43 +159,17 @@ public class BitmapUtil {
 		return create(data, createOptions());
 	}
 
-	/** 缩放比例 */
-	public static Bitmap scale(Bitmap src, float scale) {
-		if (src == null) {
-			return null;
-		}
-
-		Matrix m = new Matrix();
-		m.setScale(scale, scale);
-		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(),
-				m, true);
-	}
-
-	/** 限制大小 */
-	public static Bitmap limit(Bitmap src, int maxSize) {
-		if (src == null) {
-			return null;
-		}
-
-		Bitmap result = null;
-		int w = src.getWidth();
-		int h = src.getHeight();
-		if (w > maxSize || h > maxSize) {
-			if (w > h) {
-				result = scale(src, maxSize * 1f / w);
-			} else {
-				result = scale(src, maxSize * 1f / h);
-			}
-		}
-		return result;
-	}
-
 	/** 保存图片 */
-	public static String save(String absolutePath, Bitmap bm, int quality) {
+	public static String save(String absolutePath, Bitmap bm,
+			CompressFormat format, int quality) {
 		FileOutputStream fos = null;
 		try {
-			fos = new FileOutputStream(absolutePath);
-			bm.compress(CompressFormat.PNG, quality, fos);
+			File f = new File(absolutePath);
+			if (!f.getParentFile().exists()) {
+				f.getParentFile().mkdirs();
+			}
+			fos = new FileOutputStream(f);
+			bm.compress(format, quality, fos);
 			return absolutePath;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -194,12 +186,12 @@ public class BitmapUtil {
 
 	/** 保存图片到应用文件夹 */
 	public static String save(Context context, String fileName, Bitmap bm,
-			int quality) {
+			CompressFormat format, int quality) {
 		FileOutputStream fos = null;
 		try {
-			File bmFile = context.getFileStreamPath(fileName + EXT);
+			File bmFile = context.getFileStreamPath(fileName);
 			fos = new FileOutputStream(bmFile);
-			bm.compress(CompressFormat.PNG, quality, fos);
+			bm.compress(format, quality, fos);
 			return bmFile.getAbsolutePath();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -214,33 +206,75 @@ public class BitmapUtil {
 		return null;
 	}
 
-	/** 删除图片从应用文件夹 */
-	public static String deleteBitmap(Context context, String fileName) {
-		try {
-			File bmFile = context.getFileStreamPath(fileName + EXT);
-			bmFile.delete();
-			return bmFile.getAbsolutePath();
-		} catch (Exception e) {
-			return null;
-		}
+	/** 删除绝对路径文件夹下的所有图片 */
+	public static boolean clear(String dir) {
+		return FileUtil.clear(dir, new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(EXT_JPG) || filename.endsWith(EXT_PNG);
+			}
+		});
 	}
 
 	/** 删除应用文件夹下的所有图片 */
-	public static void clearBitmap(Context context) {
-		try {
-			File dir = context.getFilesDir();
-			FilenameFilter ff = new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String filename) {
-					return filename.endsWith(EXT);
-				}
-			};
-			for (File subFile : dir.listFiles(ff)) {
-				subFile.delete();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static boolean clear(Context context) {
+		return FileUtil.clear(context.getFilesDir().getAbsolutePath(),
+				new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String filename) {
+						return filename.endsWith(EXT_JPG)
+								|| filename.endsWith(EXT_PNG);
+					}
+				});
+	}
+
+	/** 缩放比例 */
+	public static Bitmap scale(Bitmap src, float scale) {
+		if (src == null) {
+			return null;
 		}
+
+		Matrix m = new Matrix();
+		m.setScale(scale, scale);
+		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(),
+				m, true);
+	}
+
+	/** 限制大小 */
+	public static Bitmap limitSize(String path, int maxSize) {
+		if (path == null || path.length() == 0)
+			return null;
+
+		BitmapFactory.Options opts = decodeBounds(path);
+
+		// 找出最接近目标尺寸的sampleSize，但不能小于目标尺寸
+		int sample = 0;
+		int nextSample = 1;
+		do {
+			sample = nextSample;
+			nextSample++;
+		} while (opts.outWidth / nextSample >= maxSize
+				&& opts.outHeight / nextSample >= maxSize);
+		opts.inSampleSize = sample;
+		opts.inJustDecodeBounds = false;
+		Bitmap tempBmp = BitmapFactory.decodeFile(path, opts);
+		Bitmap bmp = limitSize(tempBmp, maxSize);
+		if (tempBmp != bmp) {
+			tempBmp.recycle();
+		}
+		return bmp;
+	}
+
+	public static Bitmap limitSize(Bitmap src, int maxSize) {
+		if (src == null) {
+			return null;
+		}
+
+		float scale = measureScale(src, maxSize);
+		if (scale == 1) {
+			return src;
+		}
+		return scale(src, scale);
 	}
 
 	/**
@@ -250,7 +284,7 @@ public class BitmapUtil {
 		if (path == null || path.length() == 0)
 			return null;
 
-		BitmapFactory.Options opts = getBounds(path);
+		BitmapFactory.Options opts = decodeBounds(path);
 
 		// 找出最接近目标尺寸的sampleSize，但不能小于目标尺寸
 		int sample = 0;
@@ -262,8 +296,12 @@ public class BitmapUtil {
 				&& opts.outHeight / nextSample >= dstHeight);
 		opts.inSampleSize = sample;
 		opts.inJustDecodeBounds = false;
-		Bitmap bmp = BitmapFactory.decodeFile(path, opts);
-		return cropSize(bmp, dstWidth, dstHeight);
+		Bitmap tempBmp = BitmapFactory.decodeFile(path, opts);
+		Bitmap bmp = cropSize(tempBmp, dstWidth, dstHeight);
+		if (tempBmp != bmp) {
+			tempBmp.recycle();
+		}
+		return bmp;
 	}
 
 	/**
@@ -282,11 +320,13 @@ public class BitmapUtil {
 			cutWidth = (int) (bmp.getWidth() - bmp.getHeight()
 					/ dstHeightWidthScale);
 		}
-		bmp = Bitmap.createBitmap(bmp, cutWidth / 2, cutHeight / 2,
+		Bitmap tempBmp = Bitmap.createBitmap(bmp, cutWidth / 2, cutHeight / 2,
 				bmp.getWidth() - cutWidth, bmp.getHeight() - cutHeight);
-
 		// 根据目标尺寸大小进行缩放
-		return Bitmap.createScaledBitmap(bmp, dstWidth, dstHeight, true);
+		bmp = Bitmap.createScaledBitmap(tempBmp, dstWidth, dstHeight, true);
+		tempBmp.recycle();
+
+		return bmp;
 	}
 
 	/**
