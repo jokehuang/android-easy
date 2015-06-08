@@ -1,9 +1,7 @@
 package com.easy.activity;
 
-import java.util.Timer;
-
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,15 +24,11 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 	// 双击退出应用的有效间隔时间
 	private static final int BACK_PRESSED_TIME = 2000;
 	// 退出程序提示
-	private static int exitTipsId = 0;
+	private static String exitTips = "再按一次退出";
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向activity自己，当内部类调用activity时，不用写“类名.this”，供懒人使用
 	protected EasyActivity self;
-	// 常用的加载提示框，仅声明，当activity销毁时会自动dismiss
-	protected Dialog loadingDialog;
-	// 常用的超时定时器，仅声明，当activity销毁时会自动cancel
-	protected Timer timeoutTimer;
 	// 最后一次按下后退键的时间
 	private long lastBackPressedTime;
 	// 当前activity是否为整个应用的出口，也就是允许双击退出应用
@@ -125,12 +119,6 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 
 	@Override
 	protected void onDestroy() {
-		if (loadingDialog != null) {
-			loadingDialog.dismiss();
-		}
-		if (timeoutTimer != null) {
-			timeoutTimer.cancel();
-		}
 		super.onDestroy();
 		if (isLogLife)
 			log("onDestroy");
@@ -155,11 +143,7 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastBackPressedTime > BACK_PRESSED_TIME) {
 				lastBackPressedTime = currentTime;
-				if (exitTipsId == 0) {
-					ToastUtil.show(this, "再按一次退出");
-				} else {
-					ToastUtil.show(this, exitTipsId);
-				}
+				ToastUtil.show(this, "再按一次退出");
 				return;
 			}
 			EasyActivityManager.getInstance().finishAll();
@@ -195,12 +179,16 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 		}
 	}
 
-	public static int getExitTipsId() {
-		return exitTipsId;
+	public static String getExitTips() {
+		return exitTips;
 	}
 
-	public static void setExitTipsId(int exitTipsId) {
-		EasyActivity.exitTipsId = exitTipsId;
+	public static void setExitTips(Context context, int exitTipsId) {
+		EasyActivity.exitTips = context.getString(exitTipsId);
+	}
+
+	public static void setExitTips(String exitTips) {
+		EasyActivity.exitTips = exitTips;
 	}
 
 	public boolean isExitable() {
