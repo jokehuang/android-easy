@@ -23,21 +23,19 @@ public abstract class EasyDbHelper extends SQLiteOpenHelper {
 	 * 代理读取
 	 */
 	public <T> T agentRead(Reader<T> reader) {
-		synchronized (this) {
-			T result = null;
-			SQLiteDatabase db = this.getReadableDatabase();
-			db.beginTransaction();
-			try {
-				result = reader.doRead(db);
-				db.setTransactionSuccessful();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				db.endTransaction();
-				db.close();
-			}
-			return result;
+		T result = null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		db.beginTransaction();
+		try {
+			result = reader.doRead(db);
+			db.setTransactionSuccessful();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.endTransaction();
+			db.close();
 		}
+		return result;
 	}
 
 	/**
@@ -49,9 +47,8 @@ public abstract class EasyDbHelper extends SQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 			db.beginTransaction();
 			try {
-				writer.doWrite(db);
+				result = writer.doWrite(db);
 				db.setTransactionSuccessful();
-				result = true;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -67,6 +64,6 @@ public abstract class EasyDbHelper extends SQLiteOpenHelper {
 	}
 
 	public interface Writer {
-		void doWrite(SQLiteDatabase db);
+		boolean doWrite(SQLiteDatabase db);
 	}
 }

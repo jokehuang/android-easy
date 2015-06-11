@@ -44,12 +44,13 @@ public class FileUtil {
 		return null;
 	}
 
-	public static void putObj(Context context, String key, Object obj) {
+	public static boolean putObj(Context context, String key, Object obj) {
 		ObjectOutputStream oos = null;
 		try {
 			oos = new ObjectOutputStream(new FileOutputStream(
 					context.getFileStreamPath(key + ".obj"), false));
 			oos.writeObject(obj);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -60,6 +61,48 @@ public class FileUtil {
 				e.printStackTrace();
 			}
 		}
+		return false;
+	}
+
+	public static <T> T agentInput(String path, Inputer<T> inputer) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(path);
+			return inputer.doInput(fis);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fis != null)
+					fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public static boolean agentOutput(String path, Outputer outputer) {
+		FileOutputStream fos = null;
+		try {
+			File file = new File(path);
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdirs();
+			}
+			fos = new FileOutputStream(file);
+			outputer.doOutput(fos);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fos != null)
+					fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	public static boolean clear(File[] files) {
@@ -98,5 +141,13 @@ public class FileUtil {
 	public static boolean hasExternalStorage() {
 		return Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState());
+	}
+
+	public interface Inputer<T> {
+		T doInput(FileInputStream fis) throws IOException;
+	}
+
+	public interface Outputer {
+		void doOutput(FileOutputStream fos) throws IOException;
 	}
 }

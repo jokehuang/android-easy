@@ -1,6 +1,8 @@
 package com.easy.view;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -26,8 +28,8 @@ public class EasyPager extends ViewPager {
 
 	private boolean isScrollable = true;// 是否允许滑动切换页面
 	private RadioGroup rg;// 对应不同页面的单选按钮组
-	private List<? extends View> vs;// 不同页面，View的方式
-	private List<? extends Fragment> fs;// 不同页面，Fragment的方式
+	private List<View> vs;// 不同页面，View的方式
+	private List<Fragment> fs;// 不同页面，Fragment的方式
 	private OnPageChangeListener opclCustom;// 自定义的页面切换监听器
 	private boolean fragmentDistroyable = true;// 是否允许销毁远处的Fragment页面
 
@@ -159,9 +161,33 @@ public class EasyPager extends ViewPager {
 	}
 
 	/**
+	 * 添加页面
+	 */
+	public void addPages(View v) {
+		if (vs == null) {
+			vs = new ArrayList<View>();
+			setAdapter(new ViewAdapter());
+		}
+		vs.add(v);
+		getAdapter().notifyDataSetChanged();
+	}
+
+	/**
+	 * 添加页面
+	 */
+	public void addPages(Fragment f, FragmentManager fm) {
+		if (fs == null) {
+			fs = new ArrayList<Fragment>();
+			setAdapter(new FragmentAdapter(fm));
+		}
+		fs.add(f);
+		getAdapter().notifyDataSetChanged();
+	}
+
+	/**
 	 * 设置页面内容
 	 */
-	public void setPages(List<? extends View> vs) {
+	public void setPages(List<View> vs) {
 		this.fs = null;
 		this.vs = vs;
 		setAdapter(new ViewAdapter());
@@ -170,7 +196,7 @@ public class EasyPager extends ViewPager {
 	/**
 	 * 设置页面内容
 	 */
-	public void setPages(List<? extends Fragment> fs, FragmentManager fm) {
+	public void setPages(List<Fragment> fs, FragmentManager fm) {
 		this.vs = null;
 		this.fs = fs;
 		setAdapter(new FragmentAdapter(fm));

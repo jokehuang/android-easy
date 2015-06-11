@@ -21,10 +21,14 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	/** 普通模式，用户不能选中item */
 	public static final int MODE_NON = 0;
 	/** 多选模式，用户可以选中多个item */
+	@Deprecated
 	public static final int MODE_CHECK_BOX = 1;
+	public static final int MODE_MULTIPLE_SELECT = 1;
 	/** 单选模式，用户只能选中其中一个item */
+	@Deprecated
 	public static final int MODE_RADIO_GROUP = 2;
-	protected int mode;
+	public static final int MODE_SINGLE_SELECT = 2;
+	protected int mode = MODE_NON;
 
 	protected Context context;
 	protected List<T> items;
@@ -198,12 +202,14 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = newHolder();
-			convertView = holder.initUI();
+			convertView = holder.init(LayoutInflater.from(context));
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.setByPosition(position, isSelected(position));
+		holder.setPosition(position);
+		holder.setSelected(isSelected(position));
+		holder.update();
 
 		return convertView;
 	}
@@ -220,58 +226,41 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	 *
 	 */
 	protected abstract class ViewHolder {
-		/** 对应的布局资源id */
-		protected int layoutId;
 		/** 当前item的下标 */
 		protected int position;
 		/** 当前item是否被选中，mode为MODE_NON时一般为false */
 		protected boolean isSelected;
 
 		/**
-		 * 构造器
 		 * 
-		 * @param layoutId
-		 */
-		public ViewHolder(int layoutId) {
-			this.layoutId = layoutId;
-		}
-
-		/**
-		 * 初始化UI
+		 * 加载布局，查找出需要的子控件，保存到自己声明的成员变量，供set()方法使用
 		 * 
+		 * @param inflater
 		 * @return 根布局
 		 */
-		private View initUI() {
-			View root = LayoutInflater.from(context).inflate(layoutId, null);
-			findView(root);
-			return root;
-		}
-
-		/**
-		 * 查找出需要的子控件，保存到自己声明的成员变量，供set()方法使用
-		 * 
-		 * @param root
-		 *            根布局
-		 */
-		protected abstract void findView(View root);
-
-		/**
-		 * 和set()唯一区别就是将position和isSelected保存到成员变量
-		 * 
-		 * @param position
-		 * @param isSelected
-		 */
-		private void setByPosition(int position, boolean isSelected) {
-			this.position = position;
-			this.isSelected = isSelected;
-			set();
-		}
+		protected abstract View init(LayoutInflater inflater);
 
 		/**
 		 * 设置当前item对应的ui或响应事件等
 		 * 
 		 */
-		protected abstract void set();
+		protected abstract void update();
+
+		public int getPosition() {
+			return position;
+		}
+
+		public void setPosition(int position) {
+			this.position = position;
+		}
+
+		public boolean isSelected() {
+			return isSelected;
+		}
+
+		public void setSelected(boolean isSelected) {
+			this.isSelected = isSelected;
+		}
 
 		// @Override
 		// public void onClick(View v) {
@@ -330,6 +319,28 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	}
 
 	/**
+	 * 反转选择对应下标的item
+	 * 
+	 * @param position
+	 */
+	public void reverseSelect(int position) {
+		reverseSelect(get(position));
+	}
+
+	/**
+	 * 反转选择指定的item
+	 * 
+	 * @param item
+	 */
+	public void reverseSelect(T item) {
+		if (isSelected(item)) {
+			unselect(item);
+		} else {
+			select(item);
+		}
+	}
+
+	/**
 	 * 选中对应下标的item
 	 * 
 	 * @param position
@@ -349,13 +360,13 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		}
 
 		switch (mode) {
-		case MODE_CHECK_BOX:
+		case MODE_MULTIPLE_SELECT:
 			selectedItems.remove(item);
 			selectedItems.add(item);
 			// Collections.sort(selections);
 			notifyDataSetChanged();
 			break;
-		case MODE_RADIO_GROUP:
+		case MODE_SINGLE_SELECT:
 			selectedItems.clear();
 			selectedItems.add(item);
 			// Collections.sort(selections);

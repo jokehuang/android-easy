@@ -13,6 +13,7 @@ import android.view.WindowManager;
  * @version 1.0.0
  */
 
+@Deprecated
 public class MeasureUtil {
 	// public static final int[] SCREEN_RELATIVE_SIZE = new int[] { 1920, 1080
 	// };
