@@ -1,9 +1,6 @@
 package com.easy.fragment;
 
-import java.util.Timer;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,10 +25,6 @@ public class EasyFragment extends Fragment implements OnClickListener {
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向Fragment自己，当内部类调用Fragment时，不用写“类名.this”，供懒人使用
 	protected EasyFragment self;
-	// 常用的加载提示框，仅声明，当activity销毁时会自动dismiss
-	protected Dialog loadingDialog;
-	// 常用的超时定时器，仅声明，当activity销毁时会自动cancel
-	protected Timer timeoutTimer;
 	// 是否打印生命周期相关的log
 	private boolean isLogLife;
 	// 是否保持View，使得页面不受生命周期影响，但会占用内存空间
@@ -170,12 +163,6 @@ public class EasyFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onDestroy() {
-		if (loadingDialog != null) {
-			loadingDialog.dismiss();
-		}
-		if (timeoutTimer != null) {
-			timeoutTimer.cancel();
-		}
 		super.onDestroy();
 		if (isLogLife)
 			log("onDestroy");

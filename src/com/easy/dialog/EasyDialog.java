@@ -9,13 +9,14 @@ import android.widget.TextView;
 import com.easy.R;
 
 /**
- * @description 常用的dialog，包含标题、内容、左右按钮。
+ * @description 常用的dialog，包含标题、内容、左右按钮。然而用了xutil后，这个类并没有什么卵用
  * @author Joke
  * @email 113979462@qq.com
  * @create 2015年4月16日
  * @version 1.0.0
  */
 
+@Deprecated
 public class EasyDialog extends Dialog {
 	public EasyDialog(Context context, boolean cancelable,
 			OnCancelListener cancelListener) {
