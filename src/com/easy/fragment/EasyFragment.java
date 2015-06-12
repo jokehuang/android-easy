@@ -89,13 +89,16 @@ public class EasyFragment extends Fragment implements OnClickListener {
 		super.onCreateView(inflater, container, savedInstanceState);
 		if (isLogLife)
 			log("onCreateView");
-		if (rootView != null)
+		if (isHoldView && rootView != null)
 			return rootView;
 		initData();
 		View v = initUI(inflater);
 		initEvent();
-		if (isHoldView)
+		if (isHoldView) {
 			rootView = v;
+		} else {
+			rootView = null;
+		}
 		return v;
 	}
 
@@ -154,10 +157,14 @@ public class EasyFragment extends Fragment implements OnClickListener {
 		if (isLogLife)
 			log("onDestroyView");
 		if (isHoldView) {
-			ViewParent vp = rootView.getParent();
-			if (vp != null && vp instanceof ViewGroup) {
-				((ViewGroup) vp).removeAllViews();
+			if (rootView != null) {
+				ViewParent vp = rootView.getParent();
+				if (vp != null && vp instanceof ViewGroup) {
+					((ViewGroup) vp).removeAllViews();
+				}
 			}
+		} else {
+			rootView = null;
 		}
 	}
 
