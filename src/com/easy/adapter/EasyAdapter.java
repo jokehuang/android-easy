@@ -36,6 +36,7 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	// protected OnItemClickListener onItemClickListener;
 	/** 已选中的item */
 	protected List<T> selectedItems = new ArrayList<T>();
+	protected boolean isAutoNotify = true;
 
 	public EasyAdapter(Context context) {
 		this.context = context;
@@ -77,7 +78,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		if (items == null)
 			return;
 		items.add(item);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -90,7 +92,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		if (items == null)
 			return;
 		items.add(position, item);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -102,7 +105,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		if (this.items == null)
 			return;
 		this.items.addAll(items);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -115,7 +119,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		if (this.items == null)
 			return;
 		this.items.addAll(position, items);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -128,7 +133,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 			return;
 		T item = items.remove(position);
 		selectedItems.remove(item);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -141,7 +147,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 			return;
 		items.remove(item);
 		selectedItems.remove(item);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -154,7 +161,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 			return;
 		this.items.removeAll(items);
 		selectedItems.removeAll(items);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -165,7 +173,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 			return;
 		items.clear();
 		selectedItems.clear();
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -294,7 +303,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		if (this.mode != mode) {
 			this.mode = mode;
 			selectedItems.clear();
-			notifyDataSetChanged();
+			if (isAutoNotify)
+				notifyDataSetChanged();
 		}
 	}
 
@@ -364,13 +374,15 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 			selectedItems.remove(item);
 			selectedItems.add(item);
 			// Collections.sort(selections);
-			notifyDataSetChanged();
+			if (isAutoNotify)
+				notifyDataSetChanged();
 			break;
 		case MODE_SINGLE_SELECT:
 			selectedItems.clear();
 			selectedItems.add(item);
 			// Collections.sort(selections);
-			notifyDataSetChanged();
+			if (isAutoNotify)
+				notifyDataSetChanged();
 			break;
 		default:
 			break;
@@ -383,7 +395,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	public void selectAll() {
 		selectedItems.clear();
 		selectedItems.addAll(items);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -391,7 +404,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	 */
 	public void unselectAll() {
 		selectedItems.clear();
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**
@@ -410,7 +424,8 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 	 */
 	public void unselect(T item) {
 		selectedItems.remove(item);
-		notifyDataSetChanged();
+		if (isAutoNotify)
+			notifyDataSetChanged();
 	}
 
 	/**

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.easy.manager.EasyActivityManager;
 import com.easy.util.LogUtil;
@@ -20,7 +19,7 @@ import com.easy.util.ToastUtil;
  * @version 1.1.0
  */
 
-public class EasyActivity extends FragmentActivity implements OnClickListener {
+public class EasyActivity extends FragmentActivity {
 	// 双击退出应用的有效间隔时间
 	private static final int BACK_PRESSED_TIME = 2000;
 	// 退出程序提示
@@ -37,20 +36,16 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 	private boolean isLogLife;
 
 	/****************************************** 初始化 ****************************************/
-
+	@Deprecated
 	protected void initData() {
-		if (isLogLife)
-			log("initData");
 	}
 
+	@Deprecated
 	protected void initUI() {
-		if (isLogLife)
-			log("initUI");
 	}
 
+	@Deprecated
 	protected void initEvent() {
-		if (isLogLife)
-			log("initEvent");
 	}
 
 	/****************************************** 初始化 ****************************************/
@@ -134,16 +129,12 @@ public class EasyActivity extends FragmentActivity implements OnClickListener {
 
 	/***************************************** 公用方法 ****************************************/
 	@Override
-	public void onClick(View v) {
-	}
-
-	@Override
 	public void onBackPressed() {
 		if (exitable) {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastBackPressedTime > BACK_PRESSED_TIME) {
 				lastBackPressedTime = currentTime;
-				ToastUtil.show(this, "再按一次退出");
+				ToastUtil.show(this, exitTips);
 				return;
 			}
 			EasyActivityManager.getInstance().finishAll();

@@ -24,7 +24,7 @@ import android.util.Log;
 
 public class LogUtil {
 	// default tag
-	public static final String tag = LogUtil.class.getSimpleName();
+	private static final String tag = LogUtil.class.getSimpleName();
 	// output degree
 	public static final int DEGREE_VERBOSE = 1;
 	public static final int DEGREE_DEBUG = 2;
@@ -33,9 +33,9 @@ public class LogUtil {
 	public static final int DEGREE_ERROR = 5;
 	public static final int DEGREE_ASSERT = 6;
 	// log到文件中的有效期60天
-	public static long datedTime = 60 * 24 * 3600000l;
+	private static long datedTime = 60 * 24 * 3600000l;
 	// log的输出等级
-	public static int degree = DEGREE_VERBOSE;
+	private static int degree = DEGREE_VERBOSE;
 
 	private LogUtil() {
 	}
@@ -91,6 +91,7 @@ public class LogUtil {
 	 * @param message
 	 *            log的内容
 	 */
+	//TODO 加入debug模式
 	public static void log2File(String dirName, String message) {
 		if (!FileUtil.hasExternalStorage()) {
 			return;
@@ -198,89 +199,19 @@ public class LogUtil {
 		return obj == null ? "null" : obj.toString();
 	}
 
-	// public static void v(String tag, Object... objs) {
-	// if (degree <= DEGREE_VERBOSE)
-	// Log.v(tag, getStr(objs));
-	// }
-	//
-	// public static void v0(Object... objs) {
-	// if (degree <= DEGREE_VERBOSE)
-	// Log.v(tag, getStr(objs));
-	// }
-	//
-	// public static void d(String tag, Object... objs) {
-	// if (degree <= DEGREE_DEBUG)
-	// Log.d(tag, getStr(objs));
-	// }
-	//
-	// public static void d0(Object... objs) {
-	// if (degree <= DEGREE_DEBUG)
-	// Log.d(tag, getStr(objs));
-	// }
-	//
-	// public static void i(String tag, Object... objs) {
-	// if (degree <= DEGREE_INFO)
-	// Log.i(tag, getStr(objs));
-	// }
-	//
-	// public static void i0(Object... objs) {
-	// if (degree <= DEGREE_INFO)
-	// Log.i(tag, getStr(objs));
-	// }
-	//
-	// public static void w(String tag, Object... objs) {
-	// if (degree <= DEGREE_WARN)
-	// Log.w(tag, getStr(objs));
-	// }
-	//
-	// public static void w0(Object... objs) {
-	// if (degree <= DEGREE_WARN)
-	// Log.w(tag, getStr(objs));
-	// }
-	//
-	// public static void e(String tag, Object... objs) {
-	// if (degree <= DEGREE_ERROR)
-	// Log.e(tag, getStr(objs));
-	// }
-	//
-	// public static void e0(Object... objs) {
-	// if (degree <= DEGREE_ERROR)
-	// Log.e(tag, getStr(objs));
-	// }
-	//
-	// public static void wtf(String tag, Object... objs) {
-	// if (degree <= DEGREE_ASSERT)
-	// Log.wtf(tag, getStr(objs));
-	// }
-	//
-	// public static void wtf0(Object... objs) {
-	// if (degree <= DEGREE_ASSERT)
-	// Log.wtf(tag, getStr(objs));
-	// }
-	//
-	// /**
-	// * 调用object.toStirng方法拼接字符串
-	// *
-	// * @param objs
-	// * @return
-	// */
-	// private static String getStr(Object... objs) {
-	// if (objs == null || objs.length == 0 || objs[0] == null) {
-	// return "null";
-	// }
-	//
-	// String str = objs[0].toString();
-	// for (int i = 1; i < objs.length; i++) {
-	// str += "; " + objs[i];
-	// }
-	// return str;
-	// }
-
 	public static long getDatedTime() {
 		return datedTime;
 	}
 
 	public static void setDatedTime(long datedTime) {
 		LogUtil.datedTime = datedTime;
+	}
+
+	public static int getDegree() {
+		return degree;
+	}
+
+	public static void setDegree(int degree) {
+		LogUtil.degree = degree;
 	}
 }

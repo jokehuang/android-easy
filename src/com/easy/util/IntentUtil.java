@@ -42,6 +42,7 @@ public class IntentUtil {
 	 * @param activity
 	 * @param tel
 	 */
+	@Deprecated
 	public static void callTelephone(Context context, String tel) {
 		context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 				+ tel)));

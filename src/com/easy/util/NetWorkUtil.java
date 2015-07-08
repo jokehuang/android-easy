@@ -96,6 +96,7 @@ public class NetWorkUtil {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -112,6 +113,7 @@ public class NetWorkUtil {
 			WifiInfo info = wifi.getConnectionInfo();
 			return info.getMacAddress();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

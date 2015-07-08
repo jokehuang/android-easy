@@ -31,7 +31,7 @@ public class EasyPager extends ViewPager {
 	private List<View> vs;// 不同页面，View的方式
 	private List<Fragment> fs;// 不同页面，Fragment的方式
 	private OnPageChangeListener opclCustom;// 自定义的页面切换监听器
-	private boolean fragmentDistroyable = true;// 是否允许销毁远处的Fragment页面
+	private boolean fragmentDestroyable = true;// 是否允许销毁远处的Fragment页面
 
 	/**
 	 * 默认页面切换监听器
@@ -109,7 +109,7 @@ public class EasyPager extends ViewPager {
 		}
 
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			if (fragmentDistroyable) {
+			if (fragmentDestroyable) {
 				// 如果允许销毁Fragment，调用父类方法执行销毁相关的生命周期
 				super.destroyItem(container, position, object);
 			}
@@ -297,12 +297,12 @@ public class EasyPager extends ViewPager {
 		this.isScrollable = isScrollable;
 	}
 
-	public boolean isFragmentDistroyable() {
-		return fragmentDistroyable;
+	public boolean isFragmentDestroyable() {
+		return fragmentDestroyable;
 	}
 
-	public void setFragmentDistroyable(boolean fragmentDistroyable) {
-		this.fragmentDistroyable = fragmentDistroyable;
+	public void setFragmentDestroyable(boolean fragmentDestroyable) {
+		this.fragmentDestroyable = fragmentDestroyable;
 	}
 
 }

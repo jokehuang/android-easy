@@ -77,11 +77,19 @@ public class EasyPopup extends PopupWindow {
 		init();
 	}
 
-	@SuppressWarnings("deprecation")
 	private void init() {
 		setFocusable(true);
-		setOutsideTouchable(true);
-		setBackgroundDrawable(new BitmapDrawable());
+		setOutsideDismissable(true);
+	}
+
+	@SuppressWarnings("deprecation")
+	public void setOutsideDismissable(boolean dismissable) {
+		if (dismissable) {
+			setOutsideTouchable(true);
+			setBackgroundDrawable(new BitmapDrawable());
+		} else {
+			setBackgroundDrawable(null);
+		}
 	}
 
 	public View findViewById(int id) {

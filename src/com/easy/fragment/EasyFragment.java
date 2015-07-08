@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
@@ -20,7 +19,7 @@ import com.easy.util.LogUtil;
  * @version 1.0.0
  */
 
-public class EasyFragment extends Fragment implements OnClickListener {
+public class EasyFragment extends Fragment {
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向Fragment自己，当内部类调用Fragment时，不用写“类名.this”，供懒人使用
@@ -33,21 +32,10 @@ public class EasyFragment extends Fragment implements OnClickListener {
 	private View rootView;
 
 	/****************************************** 初始化 ****************************************/
-
-	protected void initData() {
+	protected View onInitView(LayoutInflater inflater) {
 		if (isLogLife)
-			log("initData");
-	}
-
-	protected View initUI(LayoutInflater inflater) {
-		if (isLogLife)
-			log("initUI");
+			log("onInitView");
 		return null;
-	}
-
-	protected void initEvent() {
-		if (isLogLife)
-			log("initEvent");
 	}
 
 	/****************************************** 初始化 ****************************************/
@@ -91,9 +79,7 @@ public class EasyFragment extends Fragment implements OnClickListener {
 			log("onCreateView");
 		if (isHoldView && rootView != null)
 			return rootView;
-		initData();
-		View v = initUI(inflater);
-		initEvent();
+		View v = onInitView(inflater);
 		if (isHoldView) {
 			rootView = v;
 		} else {
@@ -185,10 +171,6 @@ public class EasyFragment extends Fragment implements OnClickListener {
 	/****************************************** 生命周期 ****************************************/
 
 	/***************************************** 公用方法 ****************************************/
-
-	@Override
-	public void onClick(View arg0) {
-	}
 
 	public void log(Object obj) {
 		LogUtil.v(tag, obj);
