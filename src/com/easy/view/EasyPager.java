@@ -5,15 +5,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -24,14 +18,12 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
  * @version 1.1.0
  */
 
-public class EasyPager extends ViewPager {
+abstract class EasyPager<T> extends ViewPager {
 
-	private boolean isScrollable = true;// 是否允许滑动切换页面
-	private RadioGroup rg;// 对应不同页面的单选按钮组
-	private List<View> vs;// 不同页面，View的方式
-	private List<Fragment> fs;// 不同页面，Fragment的方式
-	private OnPageChangeListener opclCustom;// 自定义的页面切换监听器
-	private boolean fragmentDestroyable = true;// 是否允许销毁远处的Fragment页面
+	protected boolean isScrollable = true;// 是否允许滑动切换页面
+	protected RadioGroup rg;// 对应页面的单选按钮组
+	protected List<T> ls;// 页面
+	protected OnPageChangeListener opclCustom;// 自定义的页面切换监听器
 
 	/**
 	 * 默认页面切换监听器
@@ -88,63 +80,6 @@ public class EasyPager extends ViewPager {
 	};
 
 	/**
-	 * 默认的Fragment适配器，只在使用Fragment做页面的时候创建
-	 */
-	// private FragmentAdapter fragmentAdapter;
-
-	class FragmentAdapter extends FragmentPagerAdapter {
-
-		public FragmentAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public int getCount() {
-			return fs.size();
-		}
-
-		@Override
-		public Fragment getItem(int paramInt) {
-			return fs.get(paramInt);
-		}
-
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			if (fragmentDestroyable) {
-				// 如果允许销毁Fragment，调用父类方法执行销毁相关的生命周期
-				super.destroyItem(container, position, object);
-			}
-		};
-	};
-
-	/**
-	 * 默然的View适配器，只在使用View做页面的时候创建
-	 */
-	// private ViewAdapter viewAdapter;
-
-	class ViewAdapter extends PagerAdapter {
-		@Override
-		public int getCount() {
-			return vs.size();
-		}
-
-		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-			return arg0 == arg1;
-		}
-
-		@Override
-		public Object instantiateItem(ViewGroup container, int position) {
-			container.addView(vs.get(position));
-			return vs.get(position);
-		}
-
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView(vs.get(position));
-		}
-	};
-
-	/**
 	 * 构造器
 	 */
 	public EasyPager(Context context) {
@@ -161,48 +96,6 @@ public class EasyPager extends ViewPager {
 	}
 
 	/**
-	 * 添加页面
-	 */
-	public void addPages(View v) {
-		if (vs == null) {
-			vs = new ArrayList<View>();
-			setAdapter(new ViewAdapter());
-		}
-		vs.add(v);
-		getAdapter().notifyDataSetChanged();
-	}
-
-	/**
-	 * 添加页面
-	 */
-	public void addPages(Fragment f, FragmentManager fm) {
-		if (fs == null) {
-			fs = new ArrayList<Fragment>();
-			setAdapter(new FragmentAdapter(fm));
-		}
-		fs.add(f);
-		getAdapter().notifyDataSetChanged();
-	}
-
-	/**
-	 * 设置页面内容
-	 */
-	public void setPages(List<View> vs) {
-		this.fs = null;
-		this.vs = vs;
-		setAdapter(new ViewAdapter());
-	}
-
-	/**
-	 * 设置页面内容
-	 */
-	public void setPages(List<Fragment> fs, FragmentManager fm) {
-		this.vs = null;
-		this.fs = fs;
-		setAdapter(new FragmentAdapter(fm));
-	}
-
-	/**
 	 * 设置页面对应的单选按钮
 	 */
 	public void setRadioGroup(RadioGroup rg) {
@@ -214,36 +107,57 @@ public class EasyPager extends ViewPager {
 	}
 
 	/**
-	 * 获取当前的Fragment
+	 * 设置页面内容
 	 */
-	public Fragment getCurrentFragment() {
-		return fs == null ? null : fs.get(getCurrentItem());
+	public void setPages(List<T> ls) {
+		this.ls = ls;
+		notifyDataSetChanged();
 	}
 
 	/**
-	 * 获取当前的View
+	 * 添加页面
 	 */
-	public View getCurrentView() {
-		return vs == null ? null : vs.get(getCurrentItem());
+	public void addPages(List<T> pages) {
+		if (ls == null) {
+			ls = new ArrayList<T>();
+		}
+		ls.addAll(pages);
+		notifyDataSetChanged();
 	}
 
 	/**
-	 * 获取对应下标的Fragment
+	 * 添加页面
 	 */
-	public Fragment getFragmentAt(int index) {
-		try {
-			return fs.get(index);
-		} catch (Exception e) {
-			return null;
+	public void addPage(T page) {
+		if (ls == null) {
+			ls = new ArrayList<T>();
+		}
+		ls.add(page);
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * 刷新UI
+	 */
+	public void notifyDataSetChanged() {
+		if (getAdapter() != null) {
+			getAdapter().notifyDataSetChanged();
 		}
 	}
 
 	/**
-	 * 获取对应下标的View
+	 * 获取当前页面
 	 */
-	public View getViewAt(int index) {
+	public T getCurrentPage() {
+		return ls == null ? null : ls.get(getCurrentItem());
+	}
+
+	/**
+	 * 获取对应下标的页面
+	 */
+	public T getPage(int index) {
 		try {
-			return vs.get(index);
+			return ls.get(index);
 		} catch (Exception e) {
 			return null;
 		}
@@ -295,14 +209,6 @@ public class EasyPager extends ViewPager {
 
 	public void setScrollable(boolean isScrollable) {
 		this.isScrollable = isScrollable;
-	}
-
-	public boolean isFragmentDestroyable() {
-		return fragmentDestroyable;
-	}
-
-	public void setFragmentDestroyable(boolean fragmentDestroyable) {
-		this.fragmentDestroyable = fragmentDestroyable;
 	}
 
 }
