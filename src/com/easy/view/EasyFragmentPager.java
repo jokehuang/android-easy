@@ -3,6 +3,7 @@ package com.easy.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.AttributeSet;
@@ -25,6 +26,10 @@ public class EasyFragmentPager extends EasyPager<Fragment> {
 	 */
 	public EasyFragmentPager(Context context) {
 		super(context);
+		if (context instanceof FragmentActivity) {
+			initAdapter(((FragmentActivity) context)
+					.getSupportFragmentManager());
+		}
 	}
 
 	/**
@@ -32,6 +37,10 @@ public class EasyFragmentPager extends EasyPager<Fragment> {
 	 */
 	public EasyFragmentPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		if (context instanceof FragmentActivity) {
+			initAdapter(((FragmentActivity) context)
+					.getSupportFragmentManager());
+		}
 	}
 
 	/**

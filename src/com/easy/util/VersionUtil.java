@@ -76,5 +76,4 @@ public class VersionUtil {
 		// 如果两个版本号前段数字全部相同，则“.”比较多的版本号作为较新的版本
 		return DataUtil.compare(codes1.length, codes2.length);
 	}
-
 }

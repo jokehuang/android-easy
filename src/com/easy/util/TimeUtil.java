@@ -1,7 +1,6 @@
 package com.easy.util;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -63,47 +62,5 @@ public class TimeUtil {
 		} catch (Exception e) {
 			return "";
 		}
-	}
-
-	/**
-	 * 描述之前的某个时刻距离现在多久，一般用于检查版本更新
-	 * 
-	 * @param currentTime
-	 * @param lastTime
-	 * @return
-	 */
-	public static String toLastTimeString(long currentTime, long lastTime) {
-		if (currentTime < lastTime) {
-			return "";
-		}
-		if (lastTime == 0) {
-			return "";
-		}
-
-		int subTime = (int) (currentTime - lastTime);
-		subTime /= 1000 * 60;
-		if (subTime == 0) {
-			return "刚刚";
-		}
-		if (subTime < 60) {
-			return subTime + "分钟前";
-		}
-		subTime /= 60;
-		if (subTime < 24) {
-			return subTime + "小时前";
-		}
-
-		Calendar currentCalendar = Calendar.getInstance();
-		Calendar lastCalendar = Calendar.getInstance();
-		currentCalendar.setTimeInMillis(currentTime);
-		lastCalendar.setTimeInMillis(lastTime);
-		if (currentCalendar.get(Calendar.YEAR) == lastCalendar
-				.get(Calendar.YEAR)) {
-			return (lastCalendar.get(Calendar.MONTH) + 1) + "月"
-					+ lastCalendar.get(Calendar.DATE) + "日";
-		}
-		return lastCalendar.get(Calendar.YEAR) + "年"
-				+ (lastCalendar.get(Calendar.MONTH) + 1) + "月"
-				+ lastCalendar.get(Calendar.DATE) + "日";
 	}
 }
