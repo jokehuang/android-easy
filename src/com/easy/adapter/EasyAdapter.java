@@ -211,13 +211,15 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = newHolder();
+			holder.setPosition(position);
+			holder.setSelected(isSelected(position));
 			convertView = holder.init(LayoutInflater.from(context));
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
+			holder.setPosition(position);
+			holder.setSelected(isSelected(position));
 		}
-		holder.setPosition(position);
-		holder.setSelected(isSelected(position));
 		holder.update();
 
 		return convertView;
