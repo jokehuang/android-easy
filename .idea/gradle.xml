@@ -10,8 +10,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/androideasy" />
-            <option value="$PROJECT_DIR$/androideasyexample" />
+            <option value="$PROJECT_DIR$/android-easy-core" />
+            <option value="$PROJECT_DIR$/android-easy-example" />
           </set>
         </option>
       </GradleProjectSettings>

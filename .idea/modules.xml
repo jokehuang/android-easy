@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-easy.iml" filepath="$PROJECT_DIR$/android-easy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/androideasy/androideasy.iml" filepath="$PROJECT_DIR$/androideasy/androideasy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/androideasyexample/androideasyexample.iml" filepath="$PROJECT_DIR$/androideasyexample/androideasyexample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-easy-core/android-easy-core.iml" filepath="$PROJECT_DIR$/android-easy-core/android-easy-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-easy-example/android-easy-example.iml" filepath="$PROJECT_DIR$/android-easy-example/android-easy-example.iml" />
     </modules>
   </component>
 </project>

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="xUtils-2.6.14">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/androideasyexample/libs/xUtils-2.6.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/android-easy-example/libs/xUtils-2.6.14.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,1 +1,1 @@
-include ':androideasyexample', ':androideasy'
+include ':android-easy-core', ':android-easy-example'
