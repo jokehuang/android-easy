@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout style="@style/ll" >
+
+        <Button
+            android:id="@+id/btn_activity"
+            style="@style/btn_main"
+            android:text="Activity" />
+
+        <Button
+            android:id="@+id/btn_adapter"
+            style="@style/btn_main"
+            android:text="Adapter" />
+
+        <Button
+            android:id="@+id/btn_database"
+            style="@style/btn_main"
+            android:text="Database" />
+
+        <Button
+            android:id="@+id/btn_fragment"
+            style="@style/btn_main"
+            android:text="Fragment" />
+
+        <Button
+            android:id="@+id/btn_manager"
+            style="@style/btn_main"
+            android:text="Manager" />
+
+        <Button
+            android:id="@+id/btn_popup"
+            style="@style/btn_main"
+            android:text="Popup" />
+
+        <Button
+            android:id="@+id/btn_util"
+            style="@style/btn_main"
+            android:text="Util" />
+
+        <Button
+            android:id="@+id/btn_view"
+            style="@style/btn_main"
+            android:text="View" />
+    </LinearLayout>
+
+</ScrollView>
