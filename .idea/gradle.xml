@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/android-easy-core" />
             <option value="$PROJECT_DIR$/android-easy-example" />
+            <option value="$PROJECT_DIR$/test-temp" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/android-easy.iml" filepath="$PROJECT_DIR$/android-easy.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-easy-core/android-easy-core.iml" filepath="$PROJECT_DIR$/android-easy-core/android-easy-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-easy-example/android-easy-example.iml" filepath="$PROJECT_DIR$/android-easy-example/android-easy-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-temp/test-temp.iml" filepath="$PROJECT_DIR$/test-temp/test-temp.iml" />
     </modules>
   </component>
 </project>

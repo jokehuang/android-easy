@@ -20,11 +20,11 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.lidroid.xutils.view.annotation.event.OnCompoundButtonCheckedChange;
 
 /**
- * @description
  * @author Joke
+ * @version 1.0.0
+ * @description
  * @email 113979462@qq.com
  * @create 2015年6月8日
- * @version 1.0.0
  */
 
 @ContentView(R.layout.activity_activity)
@@ -36,7 +36,7 @@ public class ActivityActivity extends EasyActivity {
 	private MyFragment f1;
 	private MyFragment f2;
 
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ public class ActivityActivity extends EasyActivity {
 
 	/**
 	 * 设置为双击后退键退出应用
-	 * 
+	 *
 	 * @param cb
 	 * @param checked
 	 */
@@ -59,7 +59,7 @@ public class ActivityActivity extends EasyActivity {
 
 	/**
 	 * 设置为打印生命周期到LogCat
-	 * 
+	 *
 	 * @param cb
 	 * @param checked
 	 */
@@ -71,7 +71,7 @@ public class ActivityActivity extends EasyActivity {
 
 	/**
 	 * 使用父类已经定义好的Tag，Tag的内容是当前Activity的类名
-	 * 
+	 *
 	 * @param v
 	 */
 	@OnClick(R.id.btn_tag)
@@ -81,7 +81,7 @@ public class ActivityActivity extends EasyActivity {
 
 	/**
 	 * 封装了repalceFragment的事务，使得代码更简洁
-	 * 
+	 *
 	 * @param v
 	 */
 	@OnClick(R.id.btn_fragment1)
@@ -90,8 +90,7 @@ public class ActivityActivity extends EasyActivity {
 			Bundle data = new Bundle();
 			data.putString("name", "Fragment1");
 			data.putInt("color", 0x66660000);
-			f1 = (MyFragment) Fragment.instantiate(self,
-					MyFragment.class.getName(), data);
+			f1 = (MyFragment) Fragment.instantiate(self, MyFragment.class.getName(), data);
 		}
 		repalceFragment(R.id.rl_fragment, f1);
 	}
@@ -102,8 +101,7 @@ public class ActivityActivity extends EasyActivity {
 			Bundle data = new Bundle();
 			data.putString("name", "Fragment2");
 			data.putInt("color", 0x66000066);
-			f2 = (MyFragment) Fragment.instantiate(self,
-					MyFragment.class.getName(), data);
+			f2 = (MyFragment) Fragment.instantiate(self, MyFragment.class.getName(), data);
 		}
 		repalceFragment(R.id.rl_fragment, f2);
 	}
@@ -111,13 +109,13 @@ public class ActivityActivity extends EasyActivity {
 	public static class MyFragment extends EasyFragment {
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+				savedInstanceState) {
 			TextView tv = new TextView(getActivity());
 			tv.setText(getArguments().getString("name"));
 			tv.setBackgroundColor(getArguments().getInt("color"));
-			tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-					LayoutParams.MATCH_PARENT));
+			tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams
+					.MATCH_PARENT));
 			tv.setGravity(Gravity.CENTER);
 			return tv;
 		}
