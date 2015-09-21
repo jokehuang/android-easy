@@ -67,7 +67,7 @@ public class EasyFragmentPager extends EasyPager<Fragment> {
 				// 如果允许销毁Fragment，调用父类方法执行销毁相关的生命周期
 				super.destroyItem(container, position, object);
 			}
-		};
+		}
 	}
 
 	public void initAdapter(FragmentManager fm) {
