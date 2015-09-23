@@ -1,4 +1,4 @@
-package com.xpg.hssy.util;
+package com.easy.util;
 
 import android.content.Context;
 import android.content.Intent;

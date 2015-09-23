@@ -33,7 +33,7 @@ abstract class EasyPager<T> extends ViewPager {
 	protected OnPageChangeListener opclCustom;// 自定义的页面切换监听器
 	protected Handler autoScrollHandler = new Handler();//自动滚动定时处理器
 	protected Runnable autoScrollRunnable;
-	protected long autoScrollInterval = 2000;//自动滚动间隔时间
+	protected long autoScrollInterval = 3000;//自动滚动间隔时间
 
 	/**
 	 * 默认页面切换监听器
