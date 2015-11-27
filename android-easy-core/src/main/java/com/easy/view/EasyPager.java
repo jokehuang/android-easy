@@ -2,10 +2,12 @@ package com.easy.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -33,8 +35,9 @@ abstract class EasyPager<T> extends ViewPager {
 	protected OnPageChangeListener opclCustom;// 自定义的页面切换监听器
 	protected Handler autoScrollHandler = new Handler();//自动滚动定时处理器
 	protected Runnable autoScrollRunnable;
-	protected long autoScrollInterval = 3000;//自动滚动间隔时间
+	protected long autoScrollInterval = 2000;//自动滚动间隔时间
 
+	private boolean drawed = false;
 	/**
 	 * 默认页面切换监听器
 	 */
@@ -160,7 +163,19 @@ abstract class EasyPager<T> extends ViewPager {
 	 * 刷新UI
 	 */
 	public void notifyDataSetChanged() {
-		if (getAdapter() != null) {
+		if (getAdapter() == null) {
+			return;
+		}
+
+		if (isLoop && EmptyUtil.notEmpty(ls)) {
+			getAdapter().notifyDataSetChanged();
+			int curLoopItem = super.getCurrentItem();
+			super.setOnPageChangeListener(null);
+			for (int i = 0; i < ls.size(); i++) {
+				super.setCurrentItem(++curLoopItem);
+			}
+			super.setOnPageChangeListener(opcl);
+		} else {
 			getAdapter().notifyDataSetChanged();
 		}
 	}
@@ -199,7 +214,10 @@ abstract class EasyPager<T> extends ViewPager {
 			autoScrollRunnable = new Runnable() {
 				@Override
 				public void run() {
-					EasyPager.super.setCurrentItem(EasyPager.super.getCurrentItem() + 1, true);
+					if (getAdapter() != null && EasyPager.super.getCurrentItem() < getAdapter()
+							.getCount() - 1 && ls != null && ls.size() > 1) {
+						EasyPager.super.setCurrentItem(EasyPager.super.getCurrentItem() + 1, true);
+					}
 					autoScrollHandler.postDelayed(autoScrollRunnable, autoScrollInterval);
 				}
 			};
@@ -212,6 +230,7 @@ abstract class EasyPager<T> extends ViewPager {
 	/**
 	 * 停止自动滚动
 	 */
+
 	public void stopAutoScroll() {
 		isAutoScroll = false;
 		if (autoScrollRunnable != null) {
@@ -233,7 +252,7 @@ abstract class EasyPager<T> extends ViewPager {
 	 */
 	@Override
 	public void setCurrentItem(int item, boolean smoothScroll) {
-		if(isAutoScroll){
+		if (isAutoScroll) {
 			startAutoScroll();
 		}
 		if (isLoop) {
@@ -243,11 +262,10 @@ abstract class EasyPager<T> extends ViewPager {
 				return;
 			}
 			int increase = item > curLoopItem ? 1 : -1;
-			int i = super.getCurrentItem();
 			do {
-				i += increase;
-				super.setCurrentItem(i, smoothScroll);
-			} while (i != item);
+				curLoopItem += increase;
+				super.setCurrentItem(curLoopItem, smoothScroll);
+			} while (curLoopItem != item);
 		} else {
 			super.setCurrentItem(item, smoothScroll);
 		}
@@ -255,7 +273,7 @@ abstract class EasyPager<T> extends ViewPager {
 
 	@Override
 	public void setCurrentItem(int item) {
-		if(isAutoScroll){
+		if (isAutoScroll) {
 			startAutoScroll();
 		}
 		if (isLoop) {
@@ -265,11 +283,10 @@ abstract class EasyPager<T> extends ViewPager {
 				return;
 			}
 			int increase = item > curLoopItem ? 1 : -1;
-			int i = super.getCurrentItem();
 			do {
-				i += increase;
-				super.setCurrentItem(i);
-			} while (i != item);
+				curLoopItem += increase;
+				super.setCurrentItem(curLoopItem);
+			} while (curLoopItem != item);
 		} else {
 			super.setCurrentItem(item);
 		}
@@ -284,6 +301,10 @@ abstract class EasyPager<T> extends ViewPager {
 		}
 	}
 
+	public int getCurrentItem4Loop() {
+		return super.getCurrentItem();
+	}
+
 	/**
 	 * 设置自定义的页面切换监听器
 	 */
@@ -292,20 +313,22 @@ abstract class EasyPager<T> extends ViewPager {
 		this.opclCustom = opclCustom;
 	}
 
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		drawed = true;
+	}
+
 	/**
 	 * 控制是否允许滚动切换页面
 	 */
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (ev.getAction() != 2) {
-			LogUtil.e0("onTouchEvent: " + ev.getAction());
-		}
 		if (isAutoScroll) {
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 				pauseAutoScroll();
-			}
-			if (ev.getAction() == MotionEvent.ACTION_UP) {
+			} else if (ev.getAction() == MotionEvent.ACTION_UP) {
 				startAutoScroll();
 			}
 		}
@@ -318,14 +341,10 @@ abstract class EasyPager<T> extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		if (ev.getAction() != 2) {
-			LogUtil.e0("onInterceptTouchEvent: " + ev.getAction());
-		}
 		if (isAutoScroll) {
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 				pauseAutoScroll();
-			}
-			if (ev.getAction() == MotionEvent.ACTION_UP) {
+			} else if (ev.getAction() == MotionEvent.ACTION_UP) {
 				startAutoScroll();
 			}
 		}
@@ -388,14 +407,13 @@ abstract class EasyPager<T> extends ViewPager {
 		return isLoop;
 	}
 
-	public void setLoop(boolean isLoop) {
-		if (this.isLoop == isLoop) {
-			return;
+	public void loop() {
+		if (drawed) {
+			//只能在onDraw之前设置无限循环，不然调用super.setCurrentItem(LOOP_ORIGIN)跳转到起始页面时会卡死
+			throw new RuntimeException("please call loop before onDraw!");
 		}
-		this.isLoop = isLoop;
+		this.isLoop = true;
 		notifyDataSetChanged();
-		if (isLoop) {
-			super.setCurrentItem(LOOP_ORIGIN);
-		}
+		super.setCurrentItem(LOOP_ORIGIN);
 	}
 }

@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.TextView;
 
 import com.easy.util.EmptyUtil;
+import com.easy.util.LogUtil;
 
 /**
  * @author Joke
@@ -65,27 +68,31 @@ public class EasyViewPager extends EasyPager<View> implements View.OnClickListen
 			if (EmptyUtil.isEmpty(ls)) {
 				return null;
 			}
-			if (isLoop) {
-				position = toUnLoopPosition(position);
-			}
-			View v = ls.get(position);
-			if (isLoop) {
-				ViewParent vp = v.getParent();
-				if (vp != null) {
-					ViewGroup vg = (ViewGroup) vp;
-					vg.removeView(v);
-				}
-			}
-			container.addView(v);
+
+			View v = ls.get(isLoop ? toUnLoopPosition(position) : position);
+			addView(container, v);
 			if (onItemClickListener != null) {
 				v.setOnClickListener(EasyViewPager.this);
 			}
+
 			return v;
 		}
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			if (!isLoop) container.removeView(ls.get(position));
+		}
+
+		private void addView(ViewGroup container, View v) {
+			if (container == null || v == null) {
+				return;
+			}
+			ViewParent vp = v.getParent();
+			if (vp != null) {
+				ViewGroup vg = (ViewGroup) vp;
+				vg.removeView(v);
+			}
+			container.addView(v);
 		}
 	}
 
