@@ -1,2 +1,5 @@
 /build/
 /test-temp/
+/.gradle/
+/.idea/
+*.properties
