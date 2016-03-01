@@ -23,7 +23,7 @@ public class EasyFragment extends Fragment {
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向Fragment自己，当内部类调用Fragment时，不用写“类名.this”，供懒人使用
-	protected EasyFragment self;
+	protected final EasyFragment self = this;
 	// 是否打印生命周期相关的log
 	private boolean isLogLife;
 	// 可被重用的View
@@ -66,7 +66,6 @@ public class EasyFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (isLogLife) log("onCreate");
-		self = this;
 	}
 
 	@Override

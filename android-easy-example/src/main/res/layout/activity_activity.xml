@@ -1,55 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <LinearLayout style="@style/ll" >
+    <LinearLayout style="@style/ll">
 
         <ToggleButton
             android:id="@+id/tb_exitable"
             style="@style/btn_main"
             android:textOff="Exitable"
-            android:textOn="Exitable" />
+            android:textOn="Exitable"/>
 
         <TextView
             android:id="@+id/tv_exitable_tips"
             style="@style/btn_main"
             android:gravity="center"
-            android:text="请双击后退键测试退出功能" />
+            android:text="请双击后退键测试退出功能"/>
 
         <ToggleButton
             android:id="@+id/tb_log_life"
             style="@style/btn_main"
             android:textOff="Log Life"
-            android:textOn="Log Life" />
+            android:textOn="Log Life"/>
 
         <TextView
             android:id="@+id/tv_log_life_tips"
             style="@style/btn_main"
             android:gravity="center"
-            android:text="请点回到桌面或退出此界面\n从ADT工具观察log" />
+            android:text="请点回到桌面或退出此界面\n从ADT工具观察log"/>
 
-        <Button
-            android:id="@+id/btn_tag"
-            style="@style/btn_main"
-            android:text="Tag" />
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
 
-        <Button
-            android:id="@+id/btn_fragment1"
-            style="@style/btn_main"
-            android:text="Replace Fragment1" />
+        <!--<Button-->
+        <!--android:id="@+id/btn_f1"-->
+        <!--style="@style/btn_main"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="Fragment1"/>-->
 
-        <Button
-            android:id="@+id/btn_fragment2"
-            style="@style/btn_main"
-            android:text="Replace Fragment2" />
+        <!--<Button-->
+        <!--android:id="@+id/btn_f2"-->
+        <!--style="@style/btn_main"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="Fragment2"/>-->
+        <!--</LinearLayout>-->
 
-        <RelativeLayout
-            android:id="@+id/rl_fragment"
-            style="@style/fill_parent"
-            android:layout_height="@dimen/h150"
-            android:background="@color/bg_green" >
-        </RelativeLayout>
+        <!--<LinearLayout-->
+        <!--android:id="@+id/ll_fragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/h200"-->
+        <!--android:background="@color/black"-->
+        <!--android:orientation="vertical">-->
+
+        <!--</LinearLayout>-->
     </LinearLayout>
 
 </ScrollView>

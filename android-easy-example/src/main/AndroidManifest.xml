@@ -22,6 +22,7 @@
         <activity android:name=".ActivityActivity" />
         <activity android:name=".AdapterActivity" />
         <activity android:name=".DatabaseActivity" />
+        <activity android:name=".FragmentActivity" />
     </application>
 
 </manifest>

@@ -53,33 +53,6 @@ public class EasySql {
 		return sb.toString();
 	}
 
-	@Deprecated
-	public static String buildCreateTableSql(String tbName,
-			List<String> fieldNames, List<String> fieldTypes,
-			List<String> fieldConstraints) {
-		return buildCreateTableSql(tbName, fieldNames.toArray(new String[] {}),
-				fieldTypes.toArray(new String[] {}),
-				fieldConstraints.toArray(new String[] {}));
-	}
-
-	@Deprecated
-	public static String buildCreateTableSql(String tbName,
-			String[] fieldNames, String[] fieldTypes, String[] fieldConstraints) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(Cmd.CREATE_TABLE + " " + tbName + " (");
-		for (int i = 0; i < fieldNames.length; i++) {
-			String name = fieldNames[i];
-			String type = fieldTypes[i];
-			String constraint = "";
-			if (fieldConstraints != null && i < fieldConstraints.length) {
-				constraint = fieldConstraints[i];
-			}
-			sb.append(name + " " + type + " " + constraint + ",");
-		}
-		sb.replace(sb.length() - 1, sb.length(), ");");
-		return sb.toString();
-	}
-
 	public static String buildDropTableSql(String tbName) {
 		return Cmd.DROP_TABLE + " " + tbName + ";";
 	}

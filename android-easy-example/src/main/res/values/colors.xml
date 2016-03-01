@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="bg_red">#66660000</color>
     <color name="bg_green">#66006600</color>
+    <color name="bg_blue">#66000066</color>
 
 </resources>

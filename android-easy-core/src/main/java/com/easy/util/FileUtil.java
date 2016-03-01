@@ -4,39 +4,73 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Environment;
 
 /**
  * FileUtil
- * 
+ *
  * @author Joke Huang
- * @createDate 2014年2月28日
  * @version 1.0.0
+ * @createDate 2014年2月28日
  */
 
 public class FileUtil {
 
+	public static final long B = 1;
+	public static final long KB = B << 10;
+	public static final long MB = KB << 10;
+	public static final long GB = MB << 10;
+	public static final long TB = GB << 10;
+	public static final long PB = TB << 10;
+
 	private FileUtil() {
 	}
 
-	public static Object getObj(Context context, String key) {
+	public static String formatSize(long size) {
+		if (size >= PB) {
+			return formatSize(size, PB, "PB");
+		} else if (size >= TB) {
+			return formatSize(size, TB, "TB");
+		} else if (size >= GB) {
+			return formatSize(size, GB, "GB");
+		} else if (size >= MB) {
+			return formatSize(size, MB, "MB");
+		} else if (size >= KB) {
+			return formatSize(size, KB, "KB");
+		} else {
+			return formatSize(size, B, "B");
+		}
+	}
+
+	public static String formatSize(long size, long unit, String unitString) {
+		DecimalFormat df = new DecimalFormat("#");
+		df.setMaximumFractionDigits(2);
+		df.setRoundingMode(RoundingMode.HALF_UP);
+		return df.format((double) size / unit) + " " + unitString;
+	}
+
+	public static <T> T getObj(Context context, String key, Class<T> objClass) {
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(new FileInputStream(
-					context.getFileStreamPath(key + ".obj")));
-			return ois.readObject();
+			ois = new ObjectInputStream(new FileInputStream(context.getFileStreamPath(key + "" +
+					".obj")));
+			return (T) ois.readObject();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (ois != null)
-					ois.close();
+				if (ois != null) ois.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -47,16 +81,15 @@ public class FileUtil {
 	public static boolean putObj(Context context, String key, Object obj) {
 		ObjectOutputStream oos = null;
 		try {
-			oos = new ObjectOutputStream(new FileOutputStream(
-					context.getFileStreamPath(key + ".obj"), false));
+			oos = new ObjectOutputStream(new FileOutputStream(context.getFileStreamPath(key + "" +
+					".obj"), false));
 			oos.writeObject(obj);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (oos != null)
-					oos.close();
+				if (oos != null) oos.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -73,8 +106,7 @@ public class FileUtil {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (fis != null)
-					fis.close();
+				if (fis != null) fis.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -96,8 +128,7 @@ public class FileUtil {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (fos != null)
-					fos.close();
+				if (fos != null) fos.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -105,42 +136,35 @@ public class FileUtil {
 		return false;
 	}
 
-	public static boolean clear(File[] files) {
-		boolean result = true;
-		for (File subFile : files) {
-			try {
-				subFile.delete();
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = false;
+	public static boolean clear(File file) {
+		return delete(file, true, null);
+	}
+
+	public static boolean delete(File file, boolean isDeep, FileFilter filter) {
+		if (filter == null || filter.accept(file)) {
+			if (isDeep && file.isDirectory()) {
+				for (File subFile : file.listFiles()) {
+					if (!delete(subFile, true, filter)) {
+						return false;
+					}
+				}
 			}
+			return delete(file);
 		}
-		return result;
+		return true;
 	}
 
-	public static boolean clear(String dir) {
-		return clear(new File(dir).listFiles());
-	}
-
-	public static boolean clear(String dir, FileFilter fileFilter) {
-		return clear(new File(dir).listFiles(fileFilter));
-	}
-
-	public static boolean clear(String dir, FilenameFilter filenameFilter) {
-		return clear(new File(dir).listFiles(filenameFilter));
-	}
-
-	public static boolean delete(String path) {
+	public static boolean delete(File file) {
 		try {
-			return new File(path).delete();
+			return file.delete();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
 	public static boolean hasExternalStorage() {
-		return Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState());
+		return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
 	}
 
 	public interface Inputer<T> {

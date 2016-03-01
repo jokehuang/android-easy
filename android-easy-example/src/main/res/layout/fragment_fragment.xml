@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <LinearLayout style="@style/ll" >
-
-        <ToggleButton
-            android:id="@+id/tb_hold_view"
-            style="@style/btn_main"
-            android:textOff="Hold View"
-            android:textOn="Hold View" />
+    <LinearLayout style="@style/ll">
 
         <TextView
-            android:id="@+id/tv_hold_view_tips"
+            android:id="@+id/tv_title"
             style="@style/btn_main"
             android:gravity="center"
-            android:text="请替换Fragment观察UI控件的变化" />
+            android:text="title"
+            android:textSize="@dimen/w20"
+            android:textStyle="bold"/>
 
         <ToggleButton
             android:id="@+id/tb_log_life"
             style="@style/btn_main"
+            android:checked="false"
             android:textOff="Log Life"
-            android:textOn="Log Life" />
+            android:textOn="Log Life"/>
 
         <TextView
             android:id="@+id/tv_log_life_tips"
             style="@style/btn_main"
             android:gravity="center"
-            android:text="请替换Fragment从ADT工具观察log" />
+            android:text="请替换Fragment从ADT工具观察log"/>
 
         <Button
-            android:id="@+id/btn_tag"
+            android:id="@+id/btn_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Color"/>
+
+        <TextView
             style="@style/btn_main"
-            android:text="Tag" />
+            android:gravity="center"
+            android:text="请改变按钮颜色后替换Fragment\n观察Normal和Reuse的区别"/>
+
     </LinearLayout>
 
 </ScrollView>

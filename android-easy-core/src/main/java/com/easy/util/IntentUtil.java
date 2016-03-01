@@ -37,17 +37,6 @@ public class IntentUtil {
 	}
 
 	/**
-	 * 拨打电话
-	 *
-	 * @param context
-	 * @param tel
-	 */
-	@Deprecated
-	public static void callTelephone(Context context, String tel) {
-		context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tel)));
-	}
-
-	/**
 	 * 打开电话面板
 	 *
 	 * @param context

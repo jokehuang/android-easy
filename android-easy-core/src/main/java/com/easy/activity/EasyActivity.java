@@ -22,31 +22,18 @@ import com.easy.util.ToastUtil;
 public class EasyActivity extends FragmentActivity {
 	// 双击退出应用的有效间隔时间
 	private static final int BACK_PRESSED_TIME = 2000;
-	// 退出程序提示
-	private static int exitTipsId;
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向activity自己，当内部类调用activity时，不用写“类名.this”，供懒人使用
-	protected EasyActivity self;
+	protected final EasyActivity self = this;
 	// 最后一次按下后退键的时间
 	private long lastBackPressedTime;
+	// 退出程序提示
+	private static int exitTipsId;
 	// 当前activity是否为整个应用的出口，也就是允许双击退出应用
 	private boolean exitable;
 	// 是否打印生命周期相关的log
 	private boolean isLogLife;
-
-	@Deprecated
-	protected void initData() {
-	}
-
-	@Deprecated
-	protected void initUI() {
-	}
-
-	@Deprecated
-	protected void initEvent() {
-	}
-
 	@Override
 	protected void onNewIntent(Intent intent) {
 		if (isLogLife) log("onNewIntent");
@@ -57,11 +44,7 @@ public class EasyActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (isLogLife) log("onCreate");
-		self = this;
 		EasyActivityManager.getInstance().add(this);
-		initData();
-		initUI();
-		initEvent();
 	}
 
 	@Override
@@ -142,11 +125,11 @@ public class EasyActivity extends FragmentActivity {
 		startActivity(intent);
 	}
 
-	public void repalceFragment(int contentId, Fragment fragment) {
-		repalceFragment(contentId, fragment, false);
+	public void replaceFragment(int contentId, Fragment fragment) {
+		replaceFragment(contentId, fragment, false);
 	}
 
-	public void repalceFragment(int contentId, Fragment fragment, boolean addToBackStack) {
+	public void replaceFragment(int contentId, Fragment fragment, boolean addToBackStack) {
 		if (addToBackStack) {
 			getSupportFragmentManager().beginTransaction().replace(contentId, fragment)
 					.addToBackStack(null).commit();

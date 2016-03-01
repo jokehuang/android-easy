@@ -9,11 +9,11 @@ import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 /**
- * @description
  * @author Joke
+ * @version 1.0.0
+ * @description
  * @email 113979462@qq.com
  * @create 2015年6月8日
- * @version 1.0.0
  */
 
 @ContentView(R.layout.activity_main)
@@ -42,6 +42,7 @@ public class MainActivity extends EasyActivity {
 
 	@OnClick(R.id.btn_fragment)
 	public void onClickFragment(View v) {
+		startActivity(FragmentActivity.class);
 	}
 
 	@OnClick(R.id.btn_manager)
