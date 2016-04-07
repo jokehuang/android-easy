@@ -49,7 +49,7 @@ public class EasyActivityManager {
 
 	/**
 	 * 移除一个已经被结束的activity，在activity的onDestroy方法调用
-	 * @param newActivity
+	 * @param activity
 	 */
 	public void remove(Activity activity) {
 		synchronized (EasyActivityManager.class) {
@@ -63,13 +63,13 @@ public class EasyActivityManager {
 	 */
 	public void finish(Class<? extends Activity> activityClass) {
 		synchronized (EasyActivityManager.class) {
-			List<Activity> matchActivity = new ArrayList<Activity>();
+			List<Activity> matchActivitys = new ArrayList<Activity>();
 			for (Activity activity : allActivitys) {
 				if (activity.getClass().equals(activityClass)) {
-					matchActivity.add(activity);
+					matchActivitys.add(activity);
 				}
 			}
-			for (Activity activity : matchActivity) {
+			for (Activity activity : matchActivitys) {
 				if (!activity.isFinishing()) {
 					activity.finish();
 				}

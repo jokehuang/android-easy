@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.easy.view.EasyViewPager
+                android:id="@+id/vp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/h300"></com.easy.view.EasyViewPager>
+
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/h10"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RadioGroup>
+        </RelativeLayout>
+
+        <ToggleButton
+            android:id="@+id/tb_scrollable"
+            style="@style/btn_main"
+            android:checked="true"
+            android:textOff="Scrollable"
+            android:textOn="Scrollable"/>
+
+        <ToggleButton
+            android:id="@+id/tb_auto_scroll"
+            style="@style/btn_main"
+            android:checked="true"
+            android:textOff="Auto Scroll"
+            android:textOn="Auto Scroll"/>
+
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interval: "/>
+
+            <TextView
+                android:id="@+id/tv_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2000ms"/>
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sb"
+            style="@style/btn_main"
+            android:max="99"
+            android:progress="19"/>
+
+    </LinearLayout>
+</ScrollView>

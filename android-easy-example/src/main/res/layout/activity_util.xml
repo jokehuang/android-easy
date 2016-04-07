@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <Button
+            android:id="@+id/btn_appinfo"
+            style="@style/btn_main"
+            android:text="AppInfo"/>
+
+        <Button
+            android:id="@+id/btn_apputil"
+            style="@style/btn_main"
+            android:text="AppUtil"/>
+
+        <Button
+            android:id="@+id/btn_badgeutil"
+            style="@style/btn_main"
+            android:text="BadgeUtil"/>
+
+        <Button
+            android:id="@+id/btn_bitmaputil"
+            style="@style/btn_main"
+            android:text="BitmapUtil"/>
+
+        <Button
+            android:id="@+id/btn_datautil"
+            style="@style/btn_main"
+            android:text="DataUtil"/>
+
+        <Button
+            android:id="@+id/btn_dialogutil"
+            style="@style/btn_main"
+            android:text="DialogUtil"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_emptyutil"
+            style="@style/btn_main"
+            android:text="EmptyUtil"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_fileutil"
+            style="@style/btn_main"
+            android:text="FileUtil"/>
+
+        <Button
+            android:id="@+id/btn_intentutil"
+            style="@style/btn_main"
+            android:text="IntentUtil"/>
+
+        <Button
+            android:id="@+id/btn_keyboardutil"
+            style="@style/btn_main"
+            android:text="KeyboardUtil"/>
+
+        <Button
+            android:id="@+id/btn_logutil"
+            style="@style/btn_main"
+            android:text="LogUtil"/>
+
+        <Button
+            android:id="@+id/btn_networkutil"
+            style="@style/btn_main"
+            android:text="NetWorkUtil"/>
+
+        <Button
+            android:id="@+id/btn_reflectutil"
+            style="@style/btn_main"
+            android:text="ReflectUtil"/>
+
+        <Button
+            android:id="@+id/btn_runduration"
+            style="@style/btn_main"
+            android:text="RunDuration"/>
+
+        <Button
+            android:id="@+id/btn_screenutil"
+            style="@style/btn_main"
+            android:text="ScreenUtil"/>
+
+        <Button
+            android:id="@+id/btn_scrollcontroller"
+            style="@style/btn_main"
+            android:text="ScrollController"/>
+
+        <Button
+            android:id="@+id/btn_spfile"
+            style="@style/btn_main"
+            android:text="SPFile"/>
+
+        <Button
+            android:id="@+id/btn_systeminfo"
+            style="@style/btn_main"
+            android:text="SystemInfo"/>
+
+        <Button
+            android:id="@+id/btn_systemserviceutil"
+            style="@style/btn_main"
+            android:text="SystemServiceUtil"/>
+
+        <Button
+            android:id="@+id/btn_timeutil"
+            style="@style/btn_main"
+            android:text="TimeUtil"/>
+
+        <Button
+            android:id="@+id/btn_toastutil"
+            style="@style/btn_main"
+            android:text="ToastUtil"/>
+
+        <Button
+            android:id="@+id/btn_versionutil"
+            style="@style/btn_main"
+            android:text="VersionUtil"/>
+    </LinearLayout>
+</ScrollView>

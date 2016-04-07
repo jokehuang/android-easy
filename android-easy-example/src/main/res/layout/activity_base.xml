@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/w10"
+        android:paddingLeft="@dimen/w10"
+        android:paddingRight="@dimen/w10"
+        android:paddingTop="@dimen/w30">
+
+        <Button
+            android:layout_width="@dimen/w30"
+            android:layout_height="@dimen/w30"
+            android:background="@drawable/back"
+            android:onClick="back"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Title"
+            android:textSize="@dimen/w20"/>
+    </RelativeLayout>
+
+    <!--存放页面内容，同时抢占EditText的焦点-->
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+    </RelativeLayout>
+</LinearLayout>

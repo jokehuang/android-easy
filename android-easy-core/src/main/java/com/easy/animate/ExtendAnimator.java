@@ -6,11 +6,18 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.view.View;
+import android.view.ViewGroup;
+
+import com.easy.util.LogUtil;
+
+import java.security.InvalidParameterException;
+import java.security.spec.InvalidParameterSpecException;
 
 /**
  * @author Joke
  * @version 1.0.0
  * @description 展开动画，可以将任意view竖向或横向动态展开和收起。
+ * 由于是通过修改padding达到动画效果，所以要求layout_width或者layout_height必须为wrap_content，不然动画将没有效果
  * @email 113979462@qq.com
  * @create 2015年5月22日
  */
@@ -20,47 +27,40 @@ public class ExtendAnimator extends ExtendAnimate {
 	private float percent;//当前已经展开的百分比
 	private TimeInterpolator interpolator;// 插值器，控制动画的变化快慢规律
 	//目标控件原有的尺寸值
-	private int extendPaddingLeft;
-	private int extendPaddingTop;
-	private int extendPaddingRight;
-	private int extendPaddingBottom;
-	private int measuredWidth = -1;
-	private int measuredHeight = -1;
+	private int originalPaddingLeft;
+	private int originalPaddingTop;
+	private int originalPaddingRight;
+	private int originalPaddingBottom;
+	private int originalWidth;
+	private int originalHeight;
 
 	public ExtendAnimator(View target) {
 		super(target);
+		init();
 	}
 
 	public ExtendAnimator(View target, int orientation) {
 		super(target, orientation);
+		init();
+	}
 
-		extendPaddingLeft = target.getPaddingLeft();
-		extendPaddingTop = target.getPaddingTop();
-		extendPaddingRight = target.getPaddingRight();
-		extendPaddingBottom = target.getPaddingBottom();
-
-		target.measure(0, 0);
-		measuredWidth = target.getMeasuredWidth();
-		measuredHeight = target.getMeasuredHeight();
-
-		//		LogUtil.e("init: ", extendPaddingLeft + "," + extendPaddingTop + "," +
-		// extendPaddingRight
-		//				+ "," + extendPaddingBottom + "," + measuredWidth + "," + measuredHeight);
-
-		if (target.getVisibility() == View.GONE) {
-			status = STATUS_UNEXTENDED;
-			percent = 0;
-			target.setPadding(getUnextendPaddingLeft(), getUnextendPaddingTop(),
-					getUnextendPaddingRight(), getUnextendPaddingBottom());
-		} else {
-			status = STATUS_EXTENDED;
-			percent = 1;
-		}
+	private void init() {
+		originalPaddingLeft = target.getPaddingLeft();
+		originalPaddingTop = target.getPaddingTop();
+		originalPaddingRight = target.getPaddingRight();
+		originalPaddingBottom = target.getPaddingBottom();
 	}
 
 	@Override
 	public void extend() {
-		cancelAnimator();
+		if (va == null) {
+			if (target.getVisibility() == View.VISIBLE) {
+				return;
+			} else {
+				percent = 0;
+			}
+		}
+		cancelAnimate();
 		va = ValueAnimator.ofFloat(percent, 1).setDuration(duration);
 		if (interpolator != null) {
 			va.setInterpolator(interpolator);
@@ -72,7 +72,6 @@ public class ExtendAnimator extends ExtendAnimate {
 			public void onAnimationStart(Animator arg0) {
 				// LogUtil.e("extend", "onAnimationStart");
 				target.setVisibility(View.VISIBLE);
-				status = STATUS_EXTENDING;
 				if (oal != null) {
 					oal.onStart();
 				}
@@ -87,7 +86,6 @@ public class ExtendAnimator extends ExtendAnimate {
 			public void onAnimationEnd(Animator arg0) {
 				// LogUtil.e("extend", "onAnimationEnd");
 				if (!isCanceled) {
-					status = STATUS_EXTENDED;
 					va = null;
 				}
 				if (oal != null) {
@@ -101,12 +99,19 @@ public class ExtendAnimator extends ExtendAnimate {
 				isCanceled = true;
 			}
 		});
-		startAnimator();
+		startAnimate();
 	}
 
 	@Override
 	public void unextend() {
-		cancelAnimator();
+		if (va == null) {
+			if (target.getVisibility() == View.VISIBLE) {
+				percent = 1;
+			} else {
+				return;
+			}
+		}
+		cancelAnimate();
 		va = ValueAnimator.ofFloat(percent, 0).setDuration(duration);
 		if (interpolator != null) {
 			va.setInterpolator(interpolator);
@@ -117,7 +122,6 @@ public class ExtendAnimator extends ExtendAnimate {
 			@Override
 			public void onAnimationStart(Animator arg0) {
 				// LogUtil.e("unextend", "onAnimationStart");
-				status = STATUS_UNEXTENDING;
 				if (oal != null) {
 					oal.onStart();
 				}
@@ -132,8 +136,7 @@ public class ExtendAnimator extends ExtendAnimate {
 			public void onAnimationEnd(Animator arg0) {
 				// LogUtil.e("unextend", "onAnimationEnd");
 				if (!isCanceled) {
-					target.setVisibility(View.GONE);
-					status = STATUS_UNEXTENDED;
+					target.setVisibility(View.INVISIBLE);
 					va = null;
 				}
 				if (oal != null) {
@@ -147,10 +150,10 @@ public class ExtendAnimator extends ExtendAnimate {
 				isCanceled = true;
 			}
 		});
-		startAnimator();
+		startAnimate();
 	}
 
-	private void startAnimator() {
+	protected void startAnimate() {
 		if (va == null) {
 			return;
 		}
@@ -159,28 +162,30 @@ public class ExtendAnimator extends ExtendAnimate {
 			@Override
 			public void onAnimationUpdate(ValueAnimator valueanimator) {
 				percent = (Float) valueanimator.getAnimatedValue();
-				int paddingLeft = measureValue(extendPaddingLeft, getUnextendPaddingLeft(),
+				int paddingLeft = measureValue(originalPaddingLeft, getUnextendPaddingLeft(),
 						percent);
-				int paddingTop = measureValue(extendPaddingTop, getUnextendPaddingTop(), percent);
-				int paddingRight = measureValue(extendPaddingRight, getUnextendPaddingRight(),
+				int paddingTop = measureValue(originalPaddingTop, getUnextendPaddingTop(),
 						percent);
-				int paddingBottom = measureValue(extendPaddingBottom, getUnextendPaddingBottom(),
+				int paddingRight = measureValue(originalPaddingRight, getUnextendPaddingRight(),
 						percent);
-				target.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+				int paddingBottom = measureValue(originalPaddingBottom, getUnextendPaddingBottom()
+						, percent);
+
 				//				LogUtil.e("ExtendAnimator", "onAnimationUpdate: " + paddingLeft +
-				// "," + paddingTop
-				//						+ "," +
+				//						"," + paddingTop + "," +
 				//						paddingRight + "," + paddingBottom);
+				target.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 			}
 		});
-		if (measuredWidth == -1) {
-			measuredWidth = target.getWidth();
-			measuredHeight = target.getHeight();
+		if (originalWidth <= 0) {
+			originalWidth = target.getWidth();
+			originalHeight = target.getHeight();
+			//			LogUtil.e("init: ", target.getWidth() + "," + target.getHeight());
 		}
 		va.start();
 	}
 
-	private void cancelAnimator() {
+	protected void cancelAnimate() {
 		if (va != null) {
 			va.cancel();
 			va = null;
@@ -194,48 +199,48 @@ public class ExtendAnimator extends ExtendAnimate {
 	private int getUnextendPaddingLeft() {
 		if (hasLeftOrientation()) {
 			if (hasRightOrientation()) {
-				return extendPaddingLeft - measuredWidth / 2;
+				return originalPaddingLeft - originalWidth / 2;
 			} else {
-				return extendPaddingLeft - measuredWidth;
+				return originalPaddingLeft - originalWidth;
 			}
 		} else {
-			return extendPaddingLeft;
+			return originalPaddingLeft;
 		}
 	}
 
 	private int getUnextendPaddingTop() {
 		if (hasTopOrientation()) {
 			if (hasBottomOrientation()) {
-				return extendPaddingTop - measuredHeight / 2;
+				return originalPaddingTop - originalHeight / 2;
 			} else {
-				return extendPaddingTop - measuredHeight;
+				return originalPaddingTop - originalHeight;
 			}
 		} else {
-			return extendPaddingTop;
+			return originalPaddingTop;
 		}
 	}
 
 	private int getUnextendPaddingRight() {
 		if (hasRightOrientation()) {
 			if (hasLeftOrientation()) {
-				return extendPaddingRight - measuredWidth / 2;
+				return originalPaddingRight - originalWidth / 2;
 			} else {
-				return extendPaddingRight - measuredWidth;
+				return originalPaddingRight - originalWidth;
 			}
 		} else {
-			return extendPaddingRight;
+			return originalPaddingRight;
 		}
 	}
 
 	private int getUnextendPaddingBottom() {
 		if (hasBottomOrientation()) {
 			if (hasTopOrientation()) {
-				return extendPaddingBottom - measuredHeight / 2;
+				return originalPaddingBottom - originalHeight / 2;
 			} else {
-				return extendPaddingBottom - measuredHeight;
+				return originalPaddingBottom - originalHeight;
 			}
 		} else {
-			return extendPaddingBottom;
+			return originalPaddingBottom;
 		}
 	}
 

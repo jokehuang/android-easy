@@ -127,7 +127,7 @@ public class EasyFragment extends Fragment {
 		if (reuseView != null) {
 			ViewParent vp = reuseView.getParent();
 			if (vp != null && vp instanceof ViewGroup) {
-				((ViewGroup) vp).removeAllViews();
+				((ViewGroup) vp).removeView(reuseView);
 			}
 		}
 	}

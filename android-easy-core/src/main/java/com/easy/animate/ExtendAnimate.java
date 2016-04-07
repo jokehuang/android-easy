@@ -11,17 +11,14 @@ import android.view.View;
  */
 
 public abstract class ExtendAnimate {
-	public static final int STATUS_EXTENDING = 1;//展开中
-	public static final int STATUS_EXTENDED = 2;//已展开
-	public static final int STATUS_UNEXTENDING = 3;//收起中
-	public static final int STATUS_UNEXTENDED = 4;//已收起
 
 	public static final int ORIENTATION_LEFT = 0x01;//左
 	public static final int ORIENTATION_TOP = 0x10;//上
 	public static final int ORIENTATION_RIGHT = 0x02;//右
 	public static final int ORIENTATION_BOTTOM = 0x20;//下
+	public static final int ORIENTATION_ALL = ORIENTATION_LEFT | ORIENTATION_TOP |
+			ORIENTATION_RIGHT | ORIENTATION_BOTTOM;//全部
 
-	protected int status;// 动画的状态
 	protected View target;// 被操作的目标控件
 	protected int duration = 500;// 动画持续时间
 	protected int orientation;// 动画的方向
@@ -41,7 +38,7 @@ public abstract class ExtendAnimate {
 	}
 
 	public void reverse() {
-		if (status == STATUS_EXTENDED || status == STATUS_EXTENDING) {
+		if (target.getVisibility() == View.VISIBLE) {
 			unextend();
 		} else {
 			extend();
@@ -51,6 +48,10 @@ public abstract class ExtendAnimate {
 	public abstract void extend();
 
 	public abstract void unextend();
+
+	protected abstract void startAnimate();
+
+	protected abstract void cancelAnimate();
 
 	public boolean hasHorizontalOrientation() {
 		return (orientation & 0x0f) > 0;
@@ -98,14 +99,6 @@ public abstract class ExtendAnimate {
 
 	public int getVerticalOrientation() {
 		return orientation & 0xf0;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public int getDuration() {

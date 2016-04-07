@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * ToastUtil
- * 
+ *
  * @author Joke Huang
- * @createDate 2014年3月30日
  * @version 1.0.0
+ * @createDate 2014年3月30日
  */
 
 public class ToastUtil {
@@ -19,14 +22,15 @@ public class ToastUtil {
 	private static Integer yOffset;
 	private static Float horizontalMargin;
 	private static Float verticalMargin;
-	private static boolean isDebug = false;
+	private static boolean isDebugMode = false;
+	private static Map<String, Toast> toastMap = new HashMap<>();
 
 	private ToastUtil() {
 	}
 
 	/**
 	 * 设置默认的显示持续时间
-	 * 
+	 *
 	 * @param duration
 	 */
 	public static void setDuration(int duration) {
@@ -35,7 +39,7 @@ public class ToastUtil {
 
 	/**
 	 * 设置默认的显示位置
-	 * 
+	 *
 	 * @param gravity
 	 */
 	public static void setGravity(int gravity, int xOffset, int yOffset) {
@@ -46,141 +50,147 @@ public class ToastUtil {
 
 	/**
 	 * 设置默认的间隔大小
-	 * 
-	 * @param gravity
+	 *
+	 * @param horizontalMargin
+	 * @param verticalMargin
 	 */
 	public static void setMargin(float horizontalMargin, float verticalMargin) {
 		ToastUtil.horizontalMargin = horizontalMargin;
 		ToastUtil.verticalMargin = verticalMargin;
 	}
 
-	/**
-	 * 显示Debug消息
-	 * 
-	 * @param context
-	 * @param msg
-	 */
-	public static void showDebug(Context context, String msg) {
-		if (isDebug) {
-			show(context, msg);
-		}
+
+	public static Toast showDebug(Context context, String msg) {
+		return showDebug(context, msg, null);
 	}
 
-	/**
-	 * 显示Debug消息
-	 * 
-	 * @param context
-	 * @param resId
-	 */
-	public static void showDebug(Context context, int resId) {
-		if (isDebug) {
-			show(context, resId);
-		}
+	public static Toast showDebug(Context context, int resId) {
+		return showDebug(context, resId, null);
 	}
 
-	/**
-	 * 显示消息
-	 * 
-	 * @param context
-	 * @param msg
-	 */
-	public static void show(Context context, String msg) {
+	public static Toast showDebug(Context context, String msg, String flag) {
+		if (isDebugMode) {
+			return show(context, msg, flag);
+		}
+		return null;
+	}
+
+	public static Toast showDebug(Context context, int resId, String flag) {
+		if (isDebugMode) {
+			return show(context, resId, flag);
+		}
+		return null;
+	}
+
+	public static Toast show(Context context, String msg) {
+		return show(context, msg, null);
+	}
+
+	public static Toast show(Context context, int resId) {
+		return show(context, resId, null);
+	}
+
+	public static Toast show(Context context, String msg, String flag) {
+		Toast t = create(context, msg);
+		show(t, flag);
+		return t;
+	}
+
+	public static Toast show(Context context, int resId, String flag) {
+		Toast t = create(context, resId);
+		show(t, flag);
+		return t;
+	}
+
+	public static Toast showDebugOnUiThread(Activity activity, String msg) {
+		return showDebugOnUiThread(activity, msg, null);
+	}
+
+	public static Toast showDebugOnUiThread(Activity activity, int resId) {
+		return showDebugOnUiThread(activity, resId, null);
+	}
+
+	public static Toast showDebugOnUiThread(Activity activity, String msg, String flag) {
+		if (isDebugMode) {
+			return showOnUiThread(activity, msg, flag);
+		}
+		return null;
+	}
+
+	public static Toast showDebugOnUiThread(Activity activity, int resId, String flag) {
+		if (isDebugMode) {
+			return showOnUiThread(activity, resId, flag);
+		}
+		return null;
+	}
+
+	public static Toast showOnUiThread(Activity activity, String msg) {
+		return showOnUiThread(activity, msg, null);
+	}
+
+	public static Toast showOnUiThread(Activity activity, int resId) {
+		return showOnUiThread(activity, resId, null);
+	}
+
+	public static Toast showOnUiThread(Activity activity, String msg, String flag) {
+		final Toast t = create(activity, msg);
+		showOnUiThread(activity, t, flag);
+		return t;
+	}
+
+	public static Toast showOnUiThread(Activity activity, int resId, String flag) {
+		final Toast t = create(activity, resId);
+		showOnUiThread(activity, t, flag);
+		return t;
+	}
+
+	public static Toast showOnUiThread(Activity activity, final Toast t, final String flag) {
+		if (activity == null || activity.isFinishing()) return null;
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				show(t, flag);
+			}
+		});
+		return t;
+	}
+
+	public static Toast create(Context context, String msg) {
+		if (context == null || msg == null) return null;
 		Toast t = Toast.makeText(context, msg, duration);
-		show(t);
+		if (gravity != null) t.setGravity(gravity, xOffset, yOffset);
+		if (horizontalMargin != null) t.setMargin(horizontalMargin, verticalMargin);
+		return t;
 	}
 
-	/**
-	 * 显示消息
-	 * 
-	 * @param context
-	 * @param resId
-	 */
-	public static void show(Context context, int resId) {
+	public static Toast create(Context context, int resId) {
+		if (context == null) return null;
 		Toast t = Toast.makeText(context, resId, duration);
-		show(t);
+		if (gravity != null) t.setGravity(gravity, xOffset, yOffset);
+		if (horizontalMargin != null) t.setMargin(horizontalMargin, verticalMargin);
+		return t;
 	}
 
-	/**
-	 * 显示消息
-	 * 
-	 * @param context
-	 * @param resId
-	 */
-	public static void show(Toast t) {
-		if (gravity != null)
-			t.setGravity(gravity, xOffset, yOffset);
-		if (horizontalMargin != null)
-			t.setMargin(horizontalMargin, verticalMargin);
-		t.show();
-	}
-
-	/**
-	 * 在ui线程中显示Debug消息
-	 * 
-	 * @param activity
-	 * @param msg
-	 */
-	public static void showDebugOnUiThread(final Activity activity,
-			final String msg) {
-		if (isDebug) {
-			showOnUiThread(activity, msg);
+	public static Toast cancel(String flag) {
+		Toast t = toastMap.remove(flag);
+		if (t != null) {
+			t.cancel();
 		}
+		return t;
 	}
 
-	/**
-	 * 在ui线程中显示Debug消息
-	 * 
-	 * @param activity
-	 * @param resId
-	 */
-	public static void showDebugOnUiThread(final Activity activity,
-			final int resId) {
-		if (isDebug) {
-			showOnUiThread(activity, resId);
-		}
+	public static Toast show(Toast t, String flag) {
+		if (flag != null) cancel(flag);
+		if (t != null) t.show();
+		if (flag != null && t != null) toastMap.put(flag, t);
+		return t;
 	}
 
-	/**
-	 * 在ui线程中显示消息
-	 * 
-	 * @param activity
-	 * @param msg
-	 */
-	public static void showOnUiThread(final Activity activity, final String msg) {
-		if (activity == null || activity.isFinishing())
-			return;
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				show(activity, msg);
-			}
-		});
+	public static boolean isDebugMode() {
+		return isDebugMode;
 	}
 
-	/**
-	 * 在ui线程中显示消息
-	 * 
-	 * @param activity
-	 * @param resId
-	 */
-	public static void showOnUiThread(final Activity activity, final int resId) {
-		if (activity == null || activity.isFinishing())
-			return;
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				show(activity, resId);
-			}
-		});
-	}
-
-	public static boolean isDebug() {
-		return isDebug;
-	}
-
-	public static void setDebug(boolean isDebug) {
-		ToastUtil.isDebug = isDebug;
+	public static void setDebugMode(boolean isDebugMode) {
+		ToastUtil.isDebugMode = isDebugMode;
 	}
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="File MD5: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_md5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="File Size: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_select_file"
+            style="@style/btn_main"
+            android:text="Select File"/>
+
+        <EditText
+            android:id="@+id/et_output"
+            style="@style/btn_main"
+            android:text="Test Output"/>
+
+        <Button
+            android:id="@+id/btn_output"
+            style="@style/btn_main"
+            android:text="Output"/>
+
+        <EditText
+            android:id="@+id/et_input"
+            style="@style/btn_main"
+            android:editable="false"/>
+
+        <Button
+            android:id="@+id/btn_input"
+            style="@style/btn_main"
+            android:text="Input"/>
+
+        <Button
+            android:id="@+id/btn_clear"
+            style="@style/btn_main"
+            android:text="Clear"/>
+
+        <Button
+            android:id="@+id/btn_calculate_size"
+            style="@style/btn_main"
+            android:text="Calculate Size"/>
+    </LinearLayout>
+</ScrollView>

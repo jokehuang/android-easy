@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/fill_parent" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <LinearLayout style="@style/ll" >
+    <LinearLayout style="@style/ll">
 
         <ScrollView
             style="@style/fill_width"
             android:layout_height="@dimen/h200"
-            android:background="@color/bg_green" >
+            android:background="@color/bg_green">
 
             <LinearLayout
                 style="@style/fill_width"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_user"
                     style="@style/wrap_content"
                     android:focusable="true"
-                    android:focusableInTouchMode="true" />
+                    android:focusableInTouchMode="true"/>
             </LinearLayout>
         </ScrollView>
 
@@ -25,43 +26,43 @@
             android:id="@+id/btn_read_all"
             style="@style/btn_main"
             android:layout_marginTop="@dimen/h10"
-            android:text="Read All" />
+            android:text="Read All"/>
 
         <Button
             android:id="@+id/btn_delete_all"
             style="@style/btn_main"
-            android:text="Delete All" />
+            android:text="Delete All"/>
 
         <RelativeLayout
             style="@style/fill_width"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_read"
                 style="@style/wrap_content"
                 android:layout_width="@dimen/w70"
-                android:text="Read" />
+                android:text="Read"/>
 
             <Button
                 android:id="@+id/btn_delete"
                 style="@style/wrap_content"
                 android:layout_width="@dimen/w70"
                 android:layout_below="@+id/btn_read"
-                android:text="Delete" />
+                android:text="Delete"/>
 
             <Button
                 android:id="@+id/btn_insert"
                 style="@style/wrap_content"
                 android:layout_width="@dimen/w70"
                 android:layout_below="@+id/btn_delete"
-                android:text="Insert" />
+                android:text="Insert"/>
 
             <Button
                 android:id="@+id/btn_update"
                 style="@style/wrap_content"
                 android:layout_width="@dimen/w70"
                 android:layout_below="@+id/btn_insert"
-                android:text="Update" />
+                android:text="Update"/>
 
             <TextView
                 android:id="@+id/tv_id"
@@ -71,14 +72,14 @@
                 android:layout_margin="@dimen/w10"
                 android:layout_toRightOf="@+id/btn_read"
                 android:gravity="right"
-                android:text="id:" />
+                android:text="id:"/>
 
             <EditText
                 android:id="@+id/et_id"
                 style="@style/fill_width"
                 android:layout_toRightOf="@+id/tv_id"
                 android:inputType="number"
-                android:text="1" />
+                android:text="1"/>
 
             <TextView
                 android:id="@+id/tv_name"
@@ -88,14 +89,14 @@
                 android:layout_margin="@dimen/w10"
                 android:layout_toRightOf="@+id/btn_read"
                 android:gravity="right"
-                android:text="name:" />
+                android:text="name:"/>
 
             <EditText
                 android:id="@+id/et_name"
                 style="@style/fill_width"
                 android:layout_below="@+id/et_id"
                 android:layout_toRightOf="@+id/tv_name"
-                android:text="Joke" />
+                android:text="Joke"/>
 
             <TextView
                 android:id="@+id/tv_gender"
@@ -105,25 +106,25 @@
                 android:layout_margin="@dimen/w10"
                 android:layout_toRightOf="@+id/btn_insert"
                 android:gravity="right"
-                android:text="gender:" />
+                android:text="gender:"/>
 
             <RadioGroup
                 android:id="@+id/rg_gender"
                 style="@style/wrap_content"
                 android:layout_below="@+id/et_name"
                 android:layout_toRightOf="@+id/tv_gender"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/rb_male"
                     style="@style/wrap_content"
                     android:checked="true"
-                    android:text="male" />
+                    android:text="male"/>
 
                 <RadioButton
                     android:id="@+id/rb_female"
                     style="@style/wrap_content"
-                    android:text="female" />
+                    android:text="female"/>
             </RadioGroup>
         </RelativeLayout>
     </LinearLayout>

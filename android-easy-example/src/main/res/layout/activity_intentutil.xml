@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="File Path: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_file_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_file_manager"
+            style="@style/btn_main"
+            android:text="File Manager"/>
+
+        <Button
+            android:id="@+id/btn_install"
+            style="@style/btn_main"
+            android:text="Install"/>
+
+        <EditText
+            android:id="@+id/et_is_installed"
+            style="@style/btn_main"
+            android:hint="app package name"
+            android:text="com.tencent.mm"/>
+
+        <Button
+            android:id="@+id/btn_is_installed"
+            style="@style/btn_main"
+            android:text="Is Installed"/>
+
+        <EditText
+            android:id="@+id/et_uninstall"
+            style="@style/btn_main"
+            android:hint="app package name"
+            android:text="com.tencent.mm"/>
+
+        <Button
+            android:id="@+id/btn_uninstall"
+            style="@style/btn_main"
+            android:text="Uninstall"/>
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Picture Path: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_photo_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_photo"
+            style="@style/btn_main"
+            android:text="Photo"/>
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Picture Path: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_album_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_album"
+            style="@style/btn_main"
+            android:text="Album"/>
+
+        <Button
+            android:id="@+id/btn_share_image"
+            style="@style/btn_main"
+            android:text="Share Image"/>
+
+        <EditText
+            android:id="@+id/et_share"
+            style="@style/btn_main"
+            android:hint="share content"
+            android:inputType="number"
+            android:text="Hello"/>
+
+        <Button
+            android:id="@+id/btn_share_text"
+            style="@style/btn_main"
+            android:text="Share Text"/>
+
+        <EditText
+            android:id="@+id/et_tel_num"
+            style="@style/btn_main"
+            android:hint="telephone number"
+            android:inputType="number"
+            android:text="12580"/>
+
+        <Button
+            android:id="@+id/btn_telephone"
+            style="@style/btn_main"
+            android:text="Telephone"/>
+
+        <Button
+            android:id="@+id/btn_map"
+            style="@style/btn_main"
+            android:text="Map"/>
+
+        <EditText
+            android:id="@+id/et_web"
+            style="@style/btn_main"
+            android:hint="url"
+            android:text="http://www.baidu.com"/>
+
+        <Button
+            android:id="@+id/btn_web"
+            style="@style/btn_main"
+            android:text="Web"/>
+
+        <EditText
+            android:id="@+id/et_search"
+            style="@style/btn_main"
+            android:hint="keyword"/>
+
+        <Button
+            android:id="@+id/btn_search"
+            style="@style/btn_main"
+            android:text="Search"/>
+
+        <EditText
+            android:id="@+id/et_market"
+            style="@style/btn_main"
+            android:hint="app package name"
+            android:text="com.tencent.mm"/>
+
+        <Button
+            android:id="@+id/btn_market"
+            style="@style/btn_main"
+            android:text="Market"/>
+    </LinearLayout>
+</ScrollView>

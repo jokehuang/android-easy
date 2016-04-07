@@ -1,12 +1,10 @@
 package com.easy.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
 
 import com.easy.manager.EasyActivityManager;
 import com.easy.util.LogUtil;
@@ -34,6 +32,7 @@ public class EasyActivity extends FragmentActivity {
 	private boolean exitable;
 	// 是否打印生命周期相关的log
 	private boolean isLogLife;
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		if (isLogLife) log("onNewIntent");
@@ -118,7 +117,7 @@ public class EasyActivity extends FragmentActivity {
 	}
 
 	public void startActivity(Class<? extends Activity> activityClass, Bundle bundle) {
-		Intent intent = new Intent(self, activityClass);
+		Intent intent = new Intent(this, activityClass);
 		if (bundle != null) {
 			intent.putExtras(bundle);
 		}

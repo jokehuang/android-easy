@@ -1,18 +1,17 @@
 package com.easy.view;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.easy.util.EmptyUtil;
-import com.easy.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -214,6 +213,12 @@ abstract class EasyPager<T> extends ViewPager {
 			autoScrollRunnable = new Runnable() {
 				@Override
 				public void run() {
+					//如果activity已经结束，则停止自动滚动
+					if (getContext() == null) return;
+					if (getContext() instanceof Activity && ((Activity) getContext())
+							.isFinishing())
+						return;
+
 					if (getAdapter() != null && EasyPager.super.getCurrentItem() < getAdapter()
 							.getCount() - 1 && ls != null && ls.size() > 1) {
 						EasyPager.super.setCurrentItem(EasyPager.super.getCurrentItem() + 1, true);
@@ -325,34 +330,55 @@ abstract class EasyPager<T> extends ViewPager {
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (isAutoScroll) {
-			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-				pauseAutoScroll();
-			} else if (ev.getAction() == MotionEvent.ACTION_UP) {
-				startAutoScroll();
-			}
+		switch (ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				//				LogUtil.e("onTouchEvent", "onTouchEvent: ACTION_DOWN");
+				if (isAutoScroll) {
+					pauseAutoScroll();
+				}
+				break;
+			case MotionEvent.ACTION_MOVE:
+				//				LogUtil.e("onTouchEvent", "onTouchEvent: ACTION_MOVE");
+				if (!isScrollable) {
+					return false;
+				}
+				break;
+			case MotionEvent.ACTION_UP:
+				//				LogUtil.e("onTouchEvent", "onTouchEvent: ACTION_UP");
+				if (isAutoScroll) {
+					startAutoScroll();
+				}
+				break;
 		}
-		if (isScrollable == false) {
-			return false;
-		} else {
-			return super.onTouchEvent(ev);
-		}
+		return super.onTouchEvent(ev);
 	}
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		if (isAutoScroll) {
-			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-				pauseAutoScroll();
-			} else if (ev.getAction() == MotionEvent.ACTION_UP) {
-				startAutoScroll();
-			}
+		switch (ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				//				LogUtil.e("onInterceptTouchEvent", "onInterceptTouchEvent:
+				// ACTION_DOWN");
+				if (isAutoScroll) {
+					pauseAutoScroll();
+				}
+				break;
+			case MotionEvent.ACTION_MOVE:
+				//				LogUtil.e("onInterceptTouchEvent", "onInterceptTouchEvent:
+				// ACTION_MOVE");
+				if (!isScrollable) {
+					return false;
+				}
+				break;
+			case MotionEvent.ACTION_UP:
+				//				LogUtil.e("onInterceptTouchEvent", "onInterceptTouchEvent:
+				// ACTION_UP");
+				if (isAutoScroll) {
+					startAutoScroll();
+				}
+				break;
 		}
-		if (isScrollable == false) {
-			return false;
-		} else {
-			return super.onInterceptTouchEvent(ev);
-		}
+		return super.onInterceptTouchEvent(ev);
 	}
 
 	protected int toLoopPosition(int position) {
@@ -380,7 +406,13 @@ abstract class EasyPager<T> extends ViewPager {
 	}
 
 	public void setAutoScrollInterval(long autoScrollInterval) {
-		this.autoScrollInterval = autoScrollInterval;
+		if (autoScrollInterval != this.autoScrollInterval) {
+			this.autoScrollInterval = autoScrollInterval;
+			if (isAutoScroll) {
+				stopAutoScroll();
+				startAutoScroll();
+			}
+		}
 	}
 
 	public boolean isAutoScroll() {

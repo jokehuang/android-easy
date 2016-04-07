@@ -28,35 +28,6 @@
             style="@style/btn_main"
             android:gravity="center"
             android:text="请点回到桌面或退出此界面\n从ADT工具观察log"/>
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<Button-->
-        <!--android:id="@+id/btn_f1"-->
-        <!--style="@style/btn_main"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Fragment1"/>-->
-
-        <!--<Button-->
-        <!--android:id="@+id/btn_f2"-->
-        <!--style="@style/btn_main"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Fragment2"/>-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:id="@+id/ll_fragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/h200"-->
-        <!--android:background="@color/black"-->
-        <!--android:orientation="vertical">-->
-
-        <!--</LinearLayout>-->
     </LinearLayout>
 
 </ScrollView>

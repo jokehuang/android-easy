@@ -1,20 +1,21 @@
 package com.easy.util;
 
+import android.annotation.SuppressLint;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import android.annotation.SuppressLint;
+import java.text.ParseException;
 
 /**
  * DataConvert
- * 
- * @Description
+ *
  * @author Joke Huang
- * @createDate 2014年7月2日
  * @version 1.0.0
+ * @Description
+ * @createDate 2014年7月2日
  */
 
 public class DataUtil {
@@ -24,47 +25,40 @@ public class DataUtil {
 
 	/**
 	 * 获取指定文件的MD5码
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 */
-	public static String getMD5(File file) {
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-			byte[] date = new byte[1024 * 32];
-			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			int len;
-			while ((len = fis.read(date)) != -1) {
-				md5.update(date, 0, len);
-			}
-			return bytesToHexString(md5.digest());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} finally {
-			if (fis != null) {
+	public static String encodeMD5(File file) {
+		return FileUtil.agentInput(file, new FileUtil.Inputer<String>() {
+			@Override
+			public String doInput(FileInputStream fis) throws IOException {
 				try {
-					fis.close();
-				} catch (IOException e) {
+					MessageDigest md5 = MessageDigest.getInstance("MD5");
+					byte[] date = new byte[1024 * 32];
+					int len;
+					while ((len = fis.read(date)) != -1) {
+						md5.update(date, 0, len);
+					}
+					return bytesToHexString(md5.digest());
+				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				}
+				return null;
 			}
-		}
-		return null;
+		});
 	}
 
 	/**
 	 * 将指定字符串转换为MD5
-	 * 
-	 * @param src
+	 *
+	 * @param str
 	 * @return
 	 */
-	public static String toMD5(String src) {
+	public static String encodeMD5(String str) {
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			md5.update(src.getBytes());
+			md5.update(str.getBytes());
 			return bytesToHexString(md5.digest());
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -75,9 +69,8 @@ public class DataUtil {
 	/**
 	 * Convert byte[] to hex
 	 * string.这里我们可以将byte转换成int，然后利用Integer.toHexString(int)来转换成16进制字符串。
-	 * 
-	 * @param src
-	 *            byte[] data
+	 *
+	 * @param src byte[] data
 	 * @return hex string
 	 */
 	public static String bytesToHexString(byte[] src) {
@@ -98,45 +91,52 @@ public class DataUtil {
 
 	/**
 	 * Convert hex string to byte[]
-	 * 
-	 * @param hexString
-	 *            the hex string
+	 *
+	 * @param hexString the hex string
 	 * @return byte[]
 	 */
 	@SuppressLint("DefaultLocale")
-	public static byte[] hexStringToBytes(String hexString) {
+	public static byte[] hexStringToBytes(String hexString) throws ParseException {
 		if (hexString == null || hexString.equals("")) {
 			return null;
 		}
-		hexString = hexString.trim().toUpperCase();
+		hexString = hexString.replaceFirst("0x", "");
+		if (hexString.length() % 2 == 1) {
+			hexString = "0" + hexString;
+		}
+		hexString = hexString.trim().toLowerCase();
 		int length = hexString.length() / 2;
 		char[] hexChars = hexString.toCharArray();
 		byte[] d = new byte[length];
 		for (int i = 0; i < length; i++) {
 			int pos = i * 2;
-			d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+			byte hight4Bit = charToByte(hexChars[pos]);
+			byte low4Bit = charToByte(hexChars[pos + 1]);
+			if (hight4Bit < 0) throw new ParseException("found not hex string: " + hexString, pos);
+			if (low4Bit < 0)
+				throw new ParseException("found not hex string: " + hexString, pos + 1);
+			d[i] = (byte) (hight4Bit << 4 | low4Bit);
 		}
 		return d;
 	}
 
 	/**
 	 * Convert char to byte
-	 * 
-	 * @param c
-	 *            char
+	 *
+	 * @param c char
 	 * @return byte
 	 */
 	private static byte charToByte(char c) {
-		return (byte) "0123456789ABCDEF".indexOf(c);
+		return (byte) "0123456789abcdef".indexOf(c);
 	}
 
 	/**
 	 * 反转byte数组
-	 * 
+	 *
 	 * @param bytes
 	 * @return
 	 */
-	public static byte[] revert(byte[] bytes) {
+	public static byte[] reverse(byte[] bytes) {
 		byte[] result = new byte[bytes.length];
 		for (int i = 0; i < bytes.length; i++) {
 			result[i] = bytes[bytes.length - i - 1];
@@ -145,8 +145,20 @@ public class DataUtil {
 	}
 
 	/**
+	 * 复制一个byte数组
+	 *
+	 * @param bytes
+	 * @return
+	 */
+	public static byte[] copy(byte[] bytes) {
+		byte[] copyBytes = new byte[bytes.length];
+		System.arraycopy(bytes, 0, copyBytes, 0, bytes.length);
+		return copyBytes;
+	}
+
+	/**
 	 * 合并byte数组
-	 * 
+	 *
 	 * @param bytes1
 	 * @param bytes2
 	 * @return
@@ -158,7 +170,14 @@ public class DataUtil {
 		return bytes3;
 	}
 
-	public static int compare(int i1, int i2) {
+	/**
+	 * 兼容低版本
+	 *
+	 * @param i1
+	 * @param i2
+	 * @return
+	 */
+	static int compare(int i1, int i2) {
 		return i1 == i2 ? 0 : (i1 < i2 ? -1 : 1);
 	}
 }

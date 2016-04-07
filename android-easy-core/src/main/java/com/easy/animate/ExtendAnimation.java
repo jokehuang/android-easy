@@ -23,20 +23,14 @@ public class ExtendAnimation extends ExtendAnimate {
 
 	public ExtendAnimation(View target, int orientation) {
 		super(target, orientation);
-
-		if (target.getVisibility() == View.GONE) {
-			status = STATUS_UNEXTENDED;
-		} else {
-			status = STATUS_EXTENDED;
-		}
 	}
 
 	@Override
 	public void extend() {
-		if (status == STATUS_EXTENDING || status == STATUS_EXTENDED) {
+		if (sa != null || target.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		cancelAnimator();
+		cancelAnimate();
 
 		float fromX = hasHorizontalOrientation() ? 0f : 1f;
 		float fromY = hasVerticalOrientation() ? 0f : 1f;
@@ -53,7 +47,6 @@ public class ExtendAnimation extends ExtendAnimate {
 			public void onAnimationStart(Animation animation) {
 				// LogUtil.e("extend", "onAnimationStart");
 				target.setVisibility(View.VISIBLE);
-				status = STATUS_EXTENDING;
 				if (oal != null) {
 					oal.onStart();
 				}
@@ -63,7 +56,6 @@ public class ExtendAnimation extends ExtendAnimate {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				// LogUtil.e("extend", "onAnimationEnd");
-				status = STATUS_EXTENDED;
 				sa = null;
 				if (oal != null) {
 					oal.onEnd();
@@ -76,16 +68,17 @@ public class ExtendAnimation extends ExtendAnimate {
 			}
 		});
 
-		startAnimator();
+		startAnimate();
 	}
 
 
 	@Override
 	public void unextend() {
-		if (status == STATUS_UNEXTENDING || status == STATUS_UNEXTENDED) {
+		if (sa != null || target.getVisibility() == View.INVISIBLE || target.getVisibility() ==
+				View.GONE) {
 			return;
 		}
-		cancelAnimator();
+		cancelAnimate();
 
 		float toX = hasHorizontalOrientation() ? 0f : 1f;
 		float toY = hasVerticalOrientation() ? 0f : 1f;
@@ -101,7 +94,6 @@ public class ExtendAnimation extends ExtendAnimate {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				// LogUtil.e("unextend", "onAnimationStart");
-				status = STATUS_UNEXTENDING;
 				if (oal != null) {
 					oal.onStart();
 				}
@@ -110,8 +102,7 @@ public class ExtendAnimation extends ExtendAnimate {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				// LogUtil.e("unextend", "onAnimationEnd");
-				target.setVisibility(View.GONE);
-				status = STATUS_UNEXTENDED;
+				target.setVisibility(View.INVISIBLE);
 				sa = null;
 				if (oal != null) {
 					oal.onEnd();
@@ -124,17 +115,17 @@ public class ExtendAnimation extends ExtendAnimate {
 			}
 		});
 
-		startAnimator();
+		startAnimate();
 	}
 
-	private void startAnimator() {
+	protected void startAnimate() {
 		if (sa == null) {
 			return;
 		}
 		target.startAnimation(sa);
 	}
 
-	private void cancelAnimator() {
+	protected void cancelAnimate() {
 		if (sa != null) {
 			sa.cancel();
 			sa = null;

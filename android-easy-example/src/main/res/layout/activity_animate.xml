@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <RadioGroup
+            android:id="@+id/rg_animate"
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_animation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Animation"/>
+
+            <RadioButton
+                android:id="@+id/rb_animator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Animator"/>
+        </RadioGroup>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/h300">
+
+            <TextView
+                android:id="@+id/target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/w10"
+                android:background="@color/bg_green"
+                android:gravity="center"
+                android:padding="@dimen/w50"
+                android:text="Target"
+                android:textColor="@color/white"/>
+
+
+            <CheckBox
+                android:id="@+id/cb_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/target"
+                android:checked="true"
+                android:text="Left"/>
+
+            <CheckBox
+                android:id="@+id/cb_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/target"
+                android:layout_centerHorizontal="true"
+                android:checked="true"
+                android:text="Top"/>
+
+            <CheckBox
+                android:id="@+id/cb_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/target"
+                android:checked="true"
+                android:text="Right"/>
+
+            <CheckBox
+                android:id="@+id/cb_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/target"
+                android:layout_centerHorizontal="true"
+                android:checked="true"
+                android:text="Bottom"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_reverse"
+            style="@style/btn_main"
+            android:text="Reverse"/>
+
+        <Button
+            android:id="@+id/btn_extend"
+            style="@style/btn_main"
+            android:text="Extend"/>
+
+        <Button
+            android:id="@+id/btn_unextend"
+            style="@style/btn_main"
+            android:text="Unextend"/>
+
+    </LinearLayout>
+</ScrollView>

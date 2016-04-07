@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.util.Map;
 
 /**
  * BitmapUtil
@@ -45,11 +44,10 @@ public class BitmapUtil {
 	 * 新建基本配置
 	 */
 	@SuppressWarnings("deprecation")
-	public static BitmapFactory.Options createOptions(Context context, boolean isTransparent) {
+	public static BitmapFactory.Options createOptions(Context context, Bitmap.Config colorMode) {
 		// 设置编码、可自动回收、可拷贝、非增强色、密度
 		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inPreferredConfig = isTransparent ? Bitmap.Config.ARGB_4444 : Bitmap.Config
-				.RGB_565;
+		options.inPreferredConfig = colorMode == null ? Bitmap.Config.ARGB_8888 : colorMode;
 		options.inPurgeable = true;
 		options.inInputShareable = true;
 		options.inDither = false;
@@ -72,34 +70,28 @@ public class BitmapUtil {
 	public static float measureScale(int srcWidth, int srcHeight, int maxWidth, int maxHeight) {
 		if (srcWidth <= maxWidth && srcHeight <= maxHeight) return 1f;
 
-		float widthScale = maxWidth / srcWidth;
-		float heightScale = maxHeight / srcHeight;
+		float widthScale = maxWidth <= 0 ? 1f : (float) maxWidth / srcWidth;
+		float heightScale = maxHeight <= 0 ? 1f : (float) maxHeight / srcHeight;
 
-		return widthScale < heightScale ? widthScale : heightScale;
+		return Math.min(widthScale, heightScale);
 	}
 
 	/**
 	 * 计算合适的样本大小
 	 */
-	public static int measureSample(int srcWidth, int srcHeight, int closeSize, boolean
-			isQualityPriority) {
-		return measureSample(srcWidth, srcHeight, closeSize, closeSize, isQualityPriority);
+	public static int measureSample(int srcWidth, int srcHeight, int maxSize) {
+		return measureSample(srcWidth, srcHeight, maxSize, maxSize);
 
 	}
 
-	public static int measureSample(int srcWidth, int srcHeight, int closeWidth, int closeHeight,
-	                                boolean isQualityPriority) {
-		if (srcWidth <= closeWidth && srcHeight <= closeHeight) return 1;
+	public static int measureSample(int srcWidth, int srcHeight, int maxWidth, int maxHeight) {
+		if (srcWidth <= maxWidth && srcHeight <= maxHeight) return 1;
 
-		float widthSample = srcWidth / closeWidth;
-		float heightSample = srcHeight / closeHeight;
-
-		if (isQualityPriority) {
-			return (int) (widthSample < heightSample ? widthSample : heightSample);
-		} else {
-			float targetSample = widthSample > heightSample ? widthSample : heightSample;
-			return (int) (targetSample % 1f == 0f ? targetSample : targetSample + 1);
-		}
+		float widthSample = maxWidth <= 0 ? 1f : (float) srcWidth / maxWidth;
+		float heightSample = maxHeight <= 0 ? 1f : (float) srcHeight / maxHeight;
+		float maxSample = Math.max(widthSample, heightSample);
+		double power = Math.log(maxSample) / Math.log(2.0);
+		return (int) Math.pow(2, Math.ceil(power));
 	}
 
 	/**
@@ -150,27 +142,46 @@ public class BitmapUtil {
 			public void doOutput(FileOutputStream fos) throws IOException {
 				bm.compress(format, quality, fos);
 			}
-		});
+		}, false);
 	}
 
 	/**
 	 * 删除绝对路径文件夹下的所有图片
 	 */
+	public static boolean clear(String dirPath) {
+		return clear(new File(dirPath));
+	}
+
 	public static boolean clear(File dir) {
-		return FileUtil.delete(dir, true, new FileFilter() {
+		if (!dir.exists()) return false;
+		File[] list = dir.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File file) {
 				return file.getAbsolutePath().endsWith(EXT_JPG) || file.getAbsolutePath().endsWith
 						(EXT_PNG);
 			}
 		});
+		if (list != null) {// 子文件正在被写入, 文件属性异常返回null.
+			for (File subFile : list) {
+				FileUtil.delete(subFile);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 旋转
+	 */
+	public static Bitmap rotate(Bitmap src, float degress) {
+		Matrix m = new Matrix();
+		m.setRotate(degress);
+		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, true);
 	}
 
 	/**
 	 * 缩放比例
 	 */
 	public static Bitmap scale(Bitmap src, float scale) {
-		if (scale == 1f) return src;
 		Matrix m = new Matrix();
 		m.setScale(scale, scale);
 		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, true);
@@ -195,9 +206,9 @@ public class BitmapUtil {
 		Bitmap target = src;
 
 		//缩放到合适大小
-		float widthScale = dstWidth / src.getWidth();
-		float heightScale = dstHeight / src.getHeight();
-		float targetScale = widthScale > heightScale ? widthScale : heightScale;
+		float widthScale = (float) dstWidth / src.getWidth();
+		float heightScale = (float) dstHeight / src.getHeight();
+		float targetScale = Math.max(widthScale, heightScale);
 		if (targetScale != 1f) {
 			target = scale(src, targetScale);
 		}
@@ -213,6 +224,47 @@ public class BitmapUtil {
 		}
 
 		return target;
+	}
+
+	public static Bitmap decodeByUri(Context context, Uri uri, int maxWidth, int maxHeight, Bitmap
+			.Config colorMode) {
+		Map<String, String> info = IntentUtil.getInfo(context, uri);
+		//获取不到路径
+		if (EmptyUtil.isEmpty(info) || !info.containsKey("path")) {
+			return null;
+		}
+		String path = info.get("path");
+		File file = new File(path);
+		//文件不存在
+		if (!file.exists()) {
+			return null;
+		}
+
+		//获取旋转角度
+		String orientation = info.get("orientation");
+		int degress = EmptyUtil.isEmpty(orientation) ? 0 : Integer.parseInt(orientation);
+		//获得正向的宽高
+		BitmapFactory.Options opts = BitmapUtil.decodeBounds(path);
+		int outWidth = degress % 180 != 0 ? opts.outHeight : opts.outWidth;
+		int outHeight = degress % 180 != 0 ? opts.outWidth : opts.outHeight;
+		//计算合适的sample值
+		int sample = BitmapUtil.measureSample(outWidth, outHeight, maxWidth, maxHeight);
+		opts = BitmapUtil.createOptions(context, colorMode);
+		opts.inSampleSize = sample;
+		try {
+			Bitmap tempBmp = BitmapFactory.decodeFile(path, opts);
+			if (degress == 0) {
+				return tempBmp;
+			} else {
+				//将图片转正
+				Bitmap bmp = BitmapUtil.rotate(tempBmp, degress);
+				tempBmp.recycle();
+				return bmp;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**

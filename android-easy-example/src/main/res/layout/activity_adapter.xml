@@ -1,77 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ll" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/lv"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/h200"
-        android:layout_marginBottom="@dimen/h10"
-        android:background="@color/bg_green" />
+    <LinearLayout
+        style="@style/ll"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/btn_add"
-        style="@style/btn_main"
-        android:text="Add" />
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/h200"
+            android:layout_marginBottom="@dimen/h10"
+            android:background="@color/bg_green"/>
 
-    <Button
-        android:id="@+id/btn_remove"
-        style="@style/btn_main"
-        android:text="Remove" />
+        <Button
+            android:id="@+id/btn_add"
+            style="@style/btn_main"
+            android:text="Add"/>
 
-    <Button
-        android:id="@+id/btn_clear"
-        style="@style/btn_main"
-        android:text="Clear" />
+        <Button
+            android:id="@+id/btn_remove"
+            style="@style/btn_main"
+            android:text="Remove"/>
 
-    <RadioGroup
-        android:id="@+id/rg_mode"
-        style="@style/fill_width"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/btn_clear"
+            style="@style/btn_main"
+            android:text="Clear"/>
 
-        <RadioButton
-            android:id="@+id/rb_non"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="NON"
-            android:textSize="@dimen/h15" />
-
-        <RadioButton
-            android:id="@+id/rb_single_select"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Single\nSelect"
-            android:textSize="@dimen/h15" />
-
-        <RadioButton
-            android:id="@+id/rb_multiple_select"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Multiple\nSelect"
-            android:textSize="@dimen/h15" />
-    </RadioGroup>
-
-    <TextView
-        style="@style/wrap_content"
-        android:layout_marginBottom="@dimen/h5"
-        android:text="Selections: "
-        android:textStyle="bold" />
-
-    <ScrollView style="@style/fill_width" >
-
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/rg_mode"
             style="@style/fill_width"
-            android:orientation="vertical" >
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_selection"
-                style="@style/wrap_content" />
-        </LinearLayout>
-    </ScrollView>
+            <RadioButton
+                android:id="@+id/rb_non"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="NON"
+                android:textSize="@dimen/h15"/>
 
-</LinearLayout>
+            <RadioButton
+                android:id="@+id/rb_single_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Single\nSelect"
+                android:textSize="@dimen/h15"/>
+
+            <RadioButton
+                android:id="@+id/rb_multiple_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Multiple\nSelect"
+                android:textSize="@dimen/h15"/>
+        </RadioGroup>
+
+        <TextView
+            style="@style/wrap_content"
+            android:layout_marginBottom="@dimen/h5"
+            android:text="Selections: "
+            android:textStyle="bold"/>
+
+        <ScrollView style="@style/fill_width">
+
+            <LinearLayout
+                style="@style/fill_width"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_selection"
+                    style="@style/wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</ScrollView>

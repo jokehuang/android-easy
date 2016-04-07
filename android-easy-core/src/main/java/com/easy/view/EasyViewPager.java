@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.TextView;
 
 import com.easy.util.EmptyUtil;
-import com.easy.util.LogUtil;
 
 /**
  * @author Joke
@@ -71,9 +68,7 @@ public class EasyViewPager extends EasyPager<View> implements View.OnClickListen
 
 			View v = ls.get(isLoop ? toUnLoopPosition(position) : position);
 			addView(container, v);
-			if (onItemClickListener != null) {
-				v.setOnClickListener(EasyViewPager.this);
-			}
+			v.setOnClickListener(onItemClickListener == null ? null : EasyViewPager.this);
 
 			return v;
 		}
@@ -106,6 +101,11 @@ public class EasyViewPager extends EasyPager<View> implements View.OnClickListen
 
 	public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
 		this.onItemClickListener = onItemClickListener;
+		if (EmptyUtil.notEmpty(ls)) {
+			for (View v : ls) {
+				v.setOnClickListener(onItemClickListener == null ? null : EasyViewPager.this);
+			}
+		}
 	}
 
 	public static interface OnItemClickListener {

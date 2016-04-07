@@ -9,7 +9,9 @@
     <color name="trans">#00000000</color>
 
     <!-- style -->
-    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar"></style>
+    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
 
     <style name="no_frame_dialog" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>

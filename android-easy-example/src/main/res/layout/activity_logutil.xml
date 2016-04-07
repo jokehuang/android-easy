@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <EditText
+            android:id="@+id/et_log2file"
+            style="@style/btn_main"/>
+
+        <Button
+            android:id="@+id/btn_log2file"
+            style="@style/btn_main"
+            android:text="Log To File"/>
+
+        <Button
+            android:id="@+id/btn_show"
+            style="@style/btn_main"
+            android:text="Show"/>
+
+        <Button
+            android:id="@+id/btn_hide"
+            style="@style/btn_main"
+            android:text="Hide"/>
+    </LinearLayout>
+</ScrollView>

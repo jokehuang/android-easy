@@ -64,7 +64,7 @@ public class EasyPopup extends PopupWindow {
 
 	public EasyPopup(View contentView, int width, int height, boolean focusable) {
 		super(contentView, width, height, focusable);
-		init();
+		setOutsideDismissable(true);
 	}
 
 	public EasyPopup(View contentView, int width, int height) {

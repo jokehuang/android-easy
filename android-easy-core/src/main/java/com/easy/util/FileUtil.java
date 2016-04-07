@@ -1,21 +1,17 @@
 package com.easy.util;
 
+import android.content.Context;
+import android.os.Environment;
+
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
-
-import android.content.Context;
-import android.os.Environment;
 
 /**
  * FileUtil
@@ -26,6 +22,7 @@ import android.os.Environment;
  */
 
 public class FileUtil {
+	private static final String TAG = FileUtil.class.getSimpleName();
 
 	public static final long B = 1;
 	public static final long KB = B << 10;
@@ -98,11 +95,17 @@ public class FileUtil {
 	}
 
 	public static <T> T agentInput(String path, Inputer<T> inputer) {
+		return agentInput(new File(path), inputer);
+	}
+
+	public static <T> T agentInput(File file, Inputer<T> inputer) {
 		FileInputStream fis = null;
 		try {
-			fis = new FileInputStream(path);
+			fis = new FileInputStream(file);
 			return inputer.doInput(fis);
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -114,17 +117,22 @@ public class FileUtil {
 		return null;
 	}
 
-	public static boolean agentOutput(String path, Outputer outputer) {
+	public static boolean agentOutput(String path, Outputer outputer, boolean append) {
+		return agentOutput(new File(path), outputer, append);
+	}
+
+	public static boolean agentOutput(File file, Outputer outputer, boolean append) {
 		FileOutputStream fos = null;
 		try {
-			File file = new File(path);
 			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
 			}
-			fos = new FileOutputStream(file);
+			fos = new FileOutputStream(file, append);
 			outputer.doOutput(fos);
 			return true;
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -136,26 +144,39 @@ public class FileUtil {
 		return false;
 	}
 
-	public static boolean clear(File file) {
-		return delete(file, true, null);
+	public static boolean clear(String path, boolean isDeep) {
+		return clear(new File(path), isDeep);
 	}
 
-	public static boolean delete(File file, boolean isDeep, FileFilter filter) {
-		if (filter == null || filter.accept(file)) {
-			if (isDeep && file.isDirectory()) {
-				for (File subFile : file.listFiles()) {
-					if (!delete(subFile, true, filter)) {
-						return false;
-					}
+	public static boolean clear(File file, boolean isDeep) {
+		if (!file.isDirectory()) return false;
+
+		File[] list = file.listFiles();
+		if (list != null) {// 子文件正在被写入, 文件属性异常返回null.
+			for (File subFile : list) {
+				if (!subFile.isDirectory() || isDeep) {
+					delete(file);
 				}
 			}
-			return delete(file);
 		}
 		return true;
 	}
 
+	public static boolean delete(String path) {
+		return delete(new File(path));
+	}
+
 	public static boolean delete(File file) {
+		if (file.isDirectory()) {
+			File[] list = file.listFiles();
+			if (list != null) {// 子文件正在被写入, 文件属性异常返回null.
+				for (File subFile : list) {
+					delete(subFile);
+				}
+			}
+		}
 		try {
+			LogUtil.i(TAG, "delete file: " + file.getAbsolutePath());
 			return file.delete();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,8 +184,35 @@ public class FileUtil {
 		}
 	}
 
+	public static long calculateSize(String path) {
+		return calculateSize(new File(path));
+	}
+
+	public static long calculateSize(File file) {
+		if (!file.exists()) return 0;
+		if (!file.isDirectory()) return file.length();
+
+		long length = 0;
+		File[] list = file.listFiles();
+		if (list != null) { // 子文件正在被写入, 文件属性异常返回null.
+			for (File item : list) {
+				length += calculateSize(item);
+			}
+		}
+
+		return length;
+	}
+
 	public static boolean hasExternalStorage() {
 		return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+	}
+
+	public static String encodeMD5(String path) {
+		return encodeMD5(new File(path));
+	}
+
+	public static String encodeMD5(File file) {
+		return DataUtil.encodeMD5(file);
 	}
 
 	public interface Inputer<T> {

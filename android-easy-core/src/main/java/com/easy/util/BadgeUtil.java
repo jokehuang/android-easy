@@ -25,11 +25,7 @@ public class BadgeUtil {
 	 * @param count   Badge count to be set
 	 */
 	public static void setBadgeCount(Context context, int count) {
-		if (count <= 0) {
-			count = 0;
-		} else {
-			count = Math.max(0, Math.min(count, 999));
-		}
+		count = Math.max(0, Math.min(count, 999));
 
 		if (Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
 			sendToXiaoMi(context, count);
@@ -38,6 +34,7 @@ public class BadgeUtil {
 		} else if (Build.MANUFACTURER.toLowerCase().contains("samsung")) {
 			sendToSamsumg(context, count);
 		} else {
+			LogUtil.e(BadgeUtil.class.getSimpleName(), "this device not support badge!");
 		}
 	}
 
@@ -53,13 +50,16 @@ public class BadgeUtil {
 			Object miuiNotification = miuiNotificationClass.newInstance();
 			Field field = miuiNotification.getClass().getDeclaredField("messageCount");
 			field.setAccessible(true);
-			field.set(miuiNotification, String.valueOf(count == 0 ? "" : count));  // 设置信息数-->这种发送必须是miui 6才行
+			field.set(miuiNotification, String.valueOf(count == 0 ? "" : count));  //
+			// 设置信息数-->这种发送必须是miui 6才行
 		} catch (Exception e) {
 			e.printStackTrace();
 			// miui 6之前的版本
 			Intent localIntent = new Intent("android.intent.action.APPLICATION_MESSAGE_UPDATE");
-			localIntent.putExtra("android.intent.extra.update_application_component_name", context.getPackageName() + "/" + getLauncherClassName(context));
-			localIntent.putExtra("android.intent.extra.update_application_message_text", String.valueOf(count == 0 ? "" : count));
+			localIntent.putExtra("android.intent.extra.update_application_component_name", context
+					.getPackageName() + "/" + getLauncherClassName(context));
+			localIntent.putExtra("android.intent.extra.update_application_message_text", String
+					.valueOf(count == 0 ? "" : count));
 			context.sendBroadcast(localIntent);
 		}
 	}
@@ -67,10 +67,13 @@ public class BadgeUtil {
 
 	/**
 	 * 向索尼手机发送未读消息数广播<br/>
-	 * 据说：需添加权限：<uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" /> [未验证]
+	 * 据说：需添加权限：<uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"
+	 * /
+	 * >[未验证]
 	 *
 	 * @param count
 	 */
+
 	private static void sendToSony(Context context, int count) {
 		String launcherClassName = getLauncherClassName(context);
 		if (launcherClassName == null) {
@@ -83,10 +86,14 @@ public class BadgeUtil {
 		}
 		Intent localIntent = new Intent();
 		localIntent.setAction("com.sonyericsson.home.action.UPDATE_BADGE");
-		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.SHOW_MESSAGE", isShow);//是否显示
-		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.ACTIVITY_NAME", launcherClassName);//启动页
-		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.MESSAGE", String.valueOf(count));//数字
-		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.PACKAGE_NAME", context.getPackageName());//包名
+		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.SHOW_MESSAGE", isShow);
+		//是否显示
+		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.ACTIVITY_NAME",
+				launcherClassName);//启动页
+		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.MESSAGE", String.valueOf
+				(count));//数字
+		localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.PACKAGE_NAME", context
+				.getPackageName());//包名
 		context.sendBroadcast(localIntent);
 	}
 
@@ -137,7 +144,8 @@ public class BadgeUtil {
 
 		// All Application must have 1 Activity at least.
 		// Launcher activity must be found!
-		ResolveInfo info = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		ResolveInfo info = packageManager.resolveActivity(intent, PackageManager
+				.MATCH_DEFAULT_ONLY);
 
 		// get a ResolveInfo containing ACTION_MAIN, CATEGORY_LAUNCHER
 		// if there is no Activity which has filtered by CATEGORY_DEFAULT

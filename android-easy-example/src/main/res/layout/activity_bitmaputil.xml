@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/ll">
+
+        <ImageView
+            android:id="@+id/iv_src"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/h300"
+            android:scaleType="centerInside"
+            android:src="@drawable/add"/>
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="File Size: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 x 0"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/btn_main"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Size: "
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_current_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 x 0"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_raw_size"
+            style="@style/btn_main"
+            android:text="Raw Size"/>
+
+        <Button
+            android:id="@+id/btn_limit_size"
+            style="@style/btn_main"
+            android:text="Limit Size"/>
+
+        <Button
+            android:id="@+id/btn_crop_center"
+            style="@style/btn_main"
+            android:text="Crop Center"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/btn_main"
+            android:text="Save"/>
+
+        <Button
+            android:id="@+id/btn_clear"
+            style="@style/btn_main"
+            android:text="Clear"/>
+    </LinearLayout>
+</ScrollView>
