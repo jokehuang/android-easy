@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.easy.manager.EasyActivityManager;
-import com.easy.util.ImmersionUtil;
 import com.easy.util.LogUtil;
+import com.easy.util.StatusBarUtil;
 import com.easy.util.ToastUtil;
 
 /**
@@ -118,19 +118,19 @@ public class EasyActivity extends FragmentActivity {
 	@Override
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
-		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+		if (isImmersion) StatusBarUtil.setColor(this, immersionColor);
 	}
 
 	@Override
 	public void setContentView(View view) {
 		super.setContentView(view);
-		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+		if (isImmersion) StatusBarUtil.setColor(this, immersionColor);
 	}
 
 	@Override
 	public void setContentView(View view, ViewGroup.LayoutParams params) {
 		super.setContentView(view, params);
-		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+		if (isImmersion) StatusBarUtil.setColor(this, immersionColor);
 	}
 
 	public View getContentView() {
@@ -194,6 +194,6 @@ public class EasyActivity extends FragmentActivity {
 	public void setImmersion(int color) {
 		isImmersion = true;
 		immersionColor = color;
-		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+		StatusBarUtil.setColor(this, immersionColor);
 	}
 }
