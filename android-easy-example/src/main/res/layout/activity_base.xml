@@ -7,10 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/w10"
-        android:paddingLeft="@dimen/w10"
-        android:paddingRight="@dimen/w10"
-        android:paddingTop="@dimen/w30">
+        android:padding="@dimen/w10">
 
         <Button
             android:layout_width="@dimen/w30"

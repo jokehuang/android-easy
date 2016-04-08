@@ -29,6 +29,5 @@ public class MyApplication extends Application {
 		x.Ext.setDebug(true);
 		LogUtil.setDegree(LogUtil.DEGREE_VERBOSE);
 		LogUtil.clearDatedLog(LogUtilActivity.LOG_DIR_PATH);
-		EasyActivity.setImmersionBar(true);
 	}
 }

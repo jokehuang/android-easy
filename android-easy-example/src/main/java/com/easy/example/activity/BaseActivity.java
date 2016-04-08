@@ -1,10 +1,9 @@
 package com.easy.example.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +21,7 @@ public class BaseActivity extends EasyActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		x.view().inject(this);
+		setImmersion(0);
 	}
 
 	@Override

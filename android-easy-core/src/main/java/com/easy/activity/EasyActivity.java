@@ -2,13 +2,14 @@ package com.easy.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.WindowManager;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.easy.manager.EasyActivityManager;
+import com.easy.util.ImmersionUtil;
 import com.easy.util.LogUtil;
 import com.easy.util.ToastUtil;
 
@@ -24,8 +25,10 @@ public class EasyActivity extends FragmentActivity {
 	private static final int BACK_PRESSED_TIME = 2000;
 	// 退出程序提示
 	private static int exitTipsId;
-	//是否应用沉浸式通知栏
-	private static boolean isImmersionBar;
+	//是否沉浸式
+	private boolean isImmersion;
+	//沉浸颜色
+	private int immersionColor;
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向activity自己，当内部类调用activity时，不用写“类名.this”，供懒人使用
@@ -48,10 +51,6 @@ public class EasyActivity extends FragmentActivity {
 		if (isLogLife) log("onCreate");
 		super.onCreate(savedInstanceState);
 		EasyActivityManager.getInstance().add(this);
-		if (isImmersionBar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-		}
 	}
 
 	@Override
@@ -116,8 +115,26 @@ public class EasyActivity extends FragmentActivity {
 		super.onBackPressed();
 	}
 
-	public void log(Object obj) {
-		LogUtil.v(tag, obj);
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+	}
+
+	@Override
+	public void setContentView(View view) {
+		super.setContentView(view);
+		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+	}
+
+	@Override
+	public void setContentView(View view, ViewGroup.LayoutParams params) {
+		super.setContentView(view, params);
+		if (isImmersion) ImmersionUtil.set(this, immersionColor);
+	}
+
+	public View getContentView() {
+		return ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 	}
 
 	public void startActivity(Class<? extends Activity> activityClass) {
@@ -145,6 +162,10 @@ public class EasyActivity extends FragmentActivity {
 		}
 	}
 
+	public void log(Object obj) {
+		LogUtil.v(tag, obj);
+	}
+
 	public static void setExitTips(int exitTipsId) {
 		EasyActivity.exitTipsId = exitTipsId;
 	}
@@ -170,11 +191,9 @@ public class EasyActivity extends FragmentActivity {
 		this.isLogLife = isLogLife;
 	}
 
-	public static boolean isImmersionBar() {
-		return isImmersionBar;
-	}
-
-	public static void setImmersionBar(boolean isImmersionBar) {
-		EasyActivity.isImmersionBar = isImmersionBar;
+	public void setImmersion(int color) {
+		isImmersion = true;
+		immersionColor = color;
+		if (isImmersion) ImmersionUtil.set(this, immersionColor);
 	}
 }
