@@ -2,9 +2,11 @@ package com.easy.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.WindowManager;
 
 import com.easy.manager.EasyActivityManager;
 import com.easy.util.LogUtil;
@@ -20,14 +22,16 @@ import com.easy.util.ToastUtil;
 public class EasyActivity extends FragmentActivity {
 	// 双击退出应用的有效间隔时间
 	private static final int BACK_PRESSED_TIME = 2000;
+	// 退出程序提示
+	private static int exitTipsId;
+	//是否应用沉浸式通知栏
+	private static boolean isImmersionBar;
 	// log使用的tag
 	protected final String tag = this.getClass().getSimpleName();
 	// 指向activity自己，当内部类调用activity时，不用写“类名.this”，供懒人使用
 	protected final EasyActivity self = this;
 	// 最后一次按下后退键的时间
 	private long lastBackPressedTime;
-	// 退出程序提示
-	private static int exitTipsId;
 	// 当前activity是否为整个应用的出口，也就是允许双击退出应用
 	private boolean exitable;
 	// 是否打印生命周期相关的log
@@ -41,51 +45,55 @@ public class EasyActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		if (isLogLife) log("onCreate");
+		super.onCreate(savedInstanceState);
 		EasyActivityManager.getInstance().add(this);
+		if (isImmersionBar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+		}
 	}
 
 	@Override
 	protected void onStart() {
-		super.onStart();
 		if (isLogLife) log("onStart");
+		super.onStart();
 	}
 
 	@Override
 	protected void onRestart() {
-		super.onRestart();
 		if (isLogLife) log("onRestart");
+		super.onRestart();
 	}
 
 	@Override
 	protected void onResume() {
-		super.onResume();
 		if (isLogLife) log("onResume");
+		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		super.onPause();
 		if (isLogLife) log("onPause");
+		super.onPause();
 	}
 
 	@Override
 	protected void onStop() {
-		super.onStop();
 		if (isLogLife) log("onStop");
+		super.onStop();
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
 		if (isLogLife) log("onActivityResult: " + requestCode + "/" + resultCode);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
 		if (isLogLife) log("onDestroy");
+		super.onDestroy();
 		EasyActivityManager.getInstance().remove(this);
 	}
 
@@ -160,5 +168,13 @@ public class EasyActivity extends FragmentActivity {
 
 	public void setLogLife(boolean isLogLife) {
 		this.isLogLife = isLogLife;
+	}
+
+	public static boolean isImmersionBar() {
+		return isImmersionBar;
+	}
+
+	public static void setImmersionBar(boolean isImmersionBar) {
+		EasyActivity.isImmersionBar = isImmersionBar;
 	}
 }

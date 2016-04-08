@@ -3,6 +3,7 @@ package com.easy.example;
 import android.app.Application;
 import android.os.Environment;
 
+import com.easy.activity.EasyActivity;
 import com.easy.example.activity.util.LogUtilActivity;
 import com.easy.util.LogUtil;
 
@@ -28,5 +29,6 @@ public class MyApplication extends Application {
 		x.Ext.setDebug(true);
 		LogUtil.setDegree(LogUtil.DEGREE_VERBOSE);
 		LogUtil.clearDatedLog(LogUtilActivity.LOG_DIR_PATH);
+		EasyActivity.setImmersionBar(true);
 	}
 }
