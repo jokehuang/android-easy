@@ -41,8 +41,6 @@ public class StatusBarUtil {
 		int height = getHeight(act);
 		if (height <= 0) return;
 
-		LogUtil.wtf("!!!!!!!!!!!!!!!!color!!!!!!!!!!!!!!!");
-
 		//设置沉浸式
 		act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 		act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);

@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.AdapterView;
 
 import com.easy.util.EmptyUtil;
 
@@ -68,7 +69,8 @@ public class EasyViewPager extends EasyPager<View> implements View.OnClickListen
 
 			View v = ls.get(isLoop ? toUnLoopPosition(position) : position);
 			addView(container, v);
-			v.setOnClickListener(onItemClickListener == null ? null : EasyViewPager.this);
+			if (!(v instanceof AdapterView))
+				v.setOnClickListener(onItemClickListener == null ? null : EasyViewPager.this);
 
 			return v;
 		}
@@ -103,7 +105,8 @@ public class EasyViewPager extends EasyPager<View> implements View.OnClickListen
 		this.onItemClickListener = onItemClickListener;
 		if (EmptyUtil.notEmpty(ls)) {
 			for (View v : ls) {
-				v.setOnClickListener(onItemClickListener == null ? null : EasyViewPager.this);
+				if (!(v instanceof AdapterView))
+					v.setOnClickListener(onItemClickListener == null ? null : EasyViewPager.this);
 			}
 		}
 	}
