@@ -29,7 +29,7 @@ public class EasyActivity extends FragmentActivity {
     private boolean isImmersion;
     //沉浸颜色
     private int statusColor;
-    private int navigationColor;
+    //    private int navigationColor;
     // log使用的tag
     protected final String tag = this.getClass().getSimpleName();
     // 指向activity自己，当内部类调用activity时，不用写“类名.this”，供懒人使用
@@ -121,7 +121,7 @@ public class EasyActivity extends FragmentActivity {
         super.setContentView(layoutResID);
         if (isImmersion) {
             ImmersionUtil.setStatusBarColor(this, statusColor);
-            ImmersionUtil.setNavigationBarColor(this, navigationColor);
+            //            ImmersionUtil.setNavigationBarColor(this, navigationColor);
         }
     }
 
@@ -130,7 +130,7 @@ public class EasyActivity extends FragmentActivity {
         super.setContentView(view);
         if (isImmersion) {
             ImmersionUtil.setStatusBarColor(this, statusColor);
-            ImmersionUtil.setNavigationBarColor(this, navigationColor);
+            //            ImmersionUtil.setNavigationBarColor(this, navigationColor);
         }
     }
 
@@ -139,7 +139,7 @@ public class EasyActivity extends FragmentActivity {
         super.setContentView(view, params);
         if (isImmersion) {
             ImmersionUtil.setStatusBarColor(this, statusColor);
-            ImmersionUtil.setNavigationBarColor(this, navigationColor);
+            //            ImmersionUtil.setNavigationBarColor(this, navigationColor);
         }
     }
 
@@ -200,11 +200,11 @@ public class EasyActivity extends FragmentActivity {
         this.isLogLife = isLogLife;
     }
 
-    public void setImmersion(int statusColor, int navigationColor) {
+    public void setImmersion(int statusColor) {
         isImmersion = true;
         this.statusColor = statusColor;
-        this.navigationColor = navigationColor;
+        //        this.navigationColor = navigationColor;
         ImmersionUtil.setStatusBarColor(this, statusColor);
-        ImmersionUtil.setNavigationBarColor(this, navigationColor);
+        //        ImmersionUtil.setNavigationBarColor(this, navigationColor);
     }
 }

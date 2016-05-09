@@ -21,7 +21,7 @@ public class BaseActivity extends EasyActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-        setImmersion(0, 0);
+        setImmersion(0);
     }
 
     @Override
