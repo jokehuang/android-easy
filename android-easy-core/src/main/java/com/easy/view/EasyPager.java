@@ -122,9 +122,12 @@ abstract class EasyPager<T> extends ViewPager {
             this.rg.setOnCheckedChangeListener(null);
         }
         this.rg = rg;
-        int id = rg.getChildAt(getCurrentItem()).getId();
-        rg.check(id);
-        rg.setOnCheckedChangeListener(occl);
+        if (rg != null) {
+            if (getCurrentItem() < rg.getChildCount()) {
+                rg.check(rg.getChildAt(getCurrentItem()).getId());
+            }
+            rg.setOnCheckedChangeListener(occl);
+        }
     }
 
     /**
