@@ -211,6 +211,14 @@ abstract class EasyPager<T> extends ViewPager {
         } else {
             getAdapter().notifyDataSetChanged();
         }
+
+        if (rg != null) {
+            rg.setOnCheckedChangeListener(null);
+            if (getCurrentItem() < rg.getChildCount()) {
+                rg.check(rg.getChildAt(getCurrentItem()).getId());
+            }
+            rg.setOnCheckedChangeListener(occl);
+        }
     }
 
     /**
