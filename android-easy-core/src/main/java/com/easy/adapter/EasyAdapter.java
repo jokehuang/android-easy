@@ -56,6 +56,16 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
     }
 
     /**
+     * 设置item
+     *
+     * @return
+     */
+    public void setItems(List<T> items) {
+        this.items = items;
+        if (isAutoNotify) notifyDataSetChanged();
+    }
+
+    /**
      * 根据下标获取item，返回指定的泛型
      *
      * @param position
@@ -81,7 +91,7 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
      * @param item
      */
     public void add(T item) {
-        if (items == null) return;
+        if (items == null) items = new ArrayList<>();
         items.add(item);
         if (isAutoNotify) notifyDataSetChanged();
     }
@@ -93,7 +103,7 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
      * @param item
      */
     public void add(int position, T item) {
-        if (items == null) return;
+        if (items == null) items = new ArrayList<>();
         items.add(position, item);
         if (isAutoNotify) notifyDataSetChanged();
     }
@@ -104,7 +114,7 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
      * @param items
      */
     public void add(List<? extends T> items) {
-        if (this.items == null) return;
+        if (this.items == null) items = new ArrayList<>();
         this.items.addAll(items);
         if (isAutoNotify) notifyDataSetChanged();
     }
@@ -116,7 +126,7 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
      * @param items
      */
     public void add(int position, List<? extends T> items) {
-        if (this.items == null) return;
+        if (this.items == null) items = new ArrayList<>();
         this.items.addAll(position, items);
         if (isAutoNotify) notifyDataSetChanged();
     }
