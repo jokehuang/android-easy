@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.easy.manager.EasyActivityManager;
 import com.easy.util.ImmersionUtil;
+import com.easy.util.KeyboardUtil;
 import com.easy.util.LogUtil;
 import com.easy.util.ToastUtil;
 
@@ -114,6 +117,27 @@ public class EasyActivity extends FragmentActivity {
             onExit();
         }
         super.onBackPressed();
+    }
+
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v != null && (v instanceof EditText)) {
+                int[] l = {0, 0};
+                v.getLocationInWindow(l);
+                int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left + v.getWidth();
+                if (ev.getX() > left && ev.getX() < right && ev.getY() > top && ev.getY() < bottom) {
+                    // 点击EditText的事件，忽略它。
+                } else {
+                    KeyboardUtil.hide(this, v);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
