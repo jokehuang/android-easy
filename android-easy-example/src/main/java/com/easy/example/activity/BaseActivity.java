@@ -34,6 +34,6 @@ public class BaseActivity extends EasyActivity {
     }
 
     public void back(View v) {
-        finish();
+       onBackPressed();
     }
 }

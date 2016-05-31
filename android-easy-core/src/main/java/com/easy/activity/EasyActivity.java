@@ -26,8 +26,6 @@ import com.easy.util.ToastUtil;
 public class EasyActivity extends FragmentActivity {
     // 双击退出应用的有效间隔时间
     private static final int BACK_PRESSED_TIME = 2000;
-    // 退出程序提示
-    private static int exitTipsId;
     //是否沉浸式
     private boolean isImmersion;
     //沉浸颜色
@@ -39,10 +37,10 @@ public class EasyActivity extends FragmentActivity {
     protected final EasyActivity self = this;
     // 最后一次按下后退键的时间
     private long lastBackPressedTime;
-    // 当前activity是否为整个应用的出口，也就是允许双击退出应用
-    private boolean exitable;
     // 是否打印生命周期相关的log
     private boolean isLogLife;
+    // 是否点击外部时自动取消输入框焦点
+    private boolean isAutoClearFocus = true;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -100,23 +98,20 @@ public class EasyActivity extends FragmentActivity {
         EasyActivityManager.getInstance().remove(this);
     }
 
-    protected void onExit() {
-        if (isLogLife) log("onExit");
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (exitable) {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastBackPressedTime > BACK_PRESSED_TIME) {
-                lastBackPressedTime = currentTime;
-                ToastUtil.show(this, exitTipsId);
-                return;
-            }
+    /**
+     * 短时间内连续调用两次将推出app
+     *
+     * @param exitTipsId
+     */
+    protected void exit(int exitTipsId) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastBackPressedTime > BACK_PRESSED_TIME) {
+            lastBackPressedTime = currentTime;
+            ToastUtil.show(this, exitTipsId);
+        } else {
+            if (isLogLife) log("onExit");
             EasyActivityManager.getInstance().finishAll();
-            onExit();
         }
-        super.onBackPressed();
     }
 
     /**
@@ -124,7 +119,7 @@ public class EasyActivity extends FragmentActivity {
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        if (isAutoClearFocus && ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (v != null && (v instanceof EditText)) {
                 int[] l = {0, 0};
@@ -134,6 +129,7 @@ public class EasyActivity extends FragmentActivity {
                     // 点击EditText的事件，忽略它。
                 } else {
                     KeyboardUtil.hide(this, v);
+                    v.clearFocus();
                 }
             }
         }
@@ -199,29 +195,20 @@ public class EasyActivity extends FragmentActivity {
         LogUtil.v(tag, obj);
     }
 
-    public static void setExitTips(int exitTipsId) {
-        EasyActivity.exitTipsId = exitTipsId;
-    }
-
-    public boolean isExitable() {
-        return exitable;
-    }
-
-    public void setExitable(boolean exitable) {
-        this.exitable = exitable;
-    }
-
-    public void setExitable(boolean exitable, int exitTipsId) {
-        setExitable(exitable);
-        setExitTips(exitTipsId);
-    }
-
     public boolean isLogLife() {
         return isLogLife;
     }
 
-    public void setLogLife(boolean isLogLife) {
+    public void setIsLogLife(boolean isLogLife) {
         this.isLogLife = isLogLife;
+    }
+
+    public boolean isAutoClearFocus() {
+        return isAutoClearFocus;
+    }
+
+    public void setIsAutoClearFocus(boolean isAutoClearFocus) {
+        this.isAutoClearFocus = isAutoClearFocus;
     }
 
     public void setImmersion(int statusColor) {

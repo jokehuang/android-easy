@@ -62,4 +62,9 @@ public class MainActivity extends BaseActivity {
 	private void onClickView(View v) {
 		startActivity(ViewActivity.class);
 	}
+
+	@Override
+	public void onBackPressed() {
+		exit(R.string.exit_tips);
+	}
 }
