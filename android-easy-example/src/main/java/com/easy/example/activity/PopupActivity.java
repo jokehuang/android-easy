@@ -16,7 +16,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 @ContentView(R.layout.activity_pupop)
-public class PupopActivity extends BaseActivity {
+public class PopupActivity extends BaseActivity {
 	@ViewInject(R.id.btn_show)
 	private Button btn_show;
 	private EasyPopup popup;

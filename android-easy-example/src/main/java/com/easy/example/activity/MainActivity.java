@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
 
 	@Event(value = R.id.btn_popup, type = View.OnClickListener.class)
 	private void onClickPopup(View v) {
-		startActivity(PupopActivity.class);
+		startActivity(PopupActivity.class);
 	}
 
 	@Event(value = R.id.btn_util, type = View.OnClickListener.class)

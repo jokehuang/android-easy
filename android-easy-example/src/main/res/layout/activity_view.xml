@@ -17,8 +17,13 @@
             android:text="FragmentPager"/>
 
         <Button
-            android:id="@+id/btn_editcleartext"
+            android:id="@+id/btn_edit_text"
             style="@style/btn_main"
-            android:text="EditClearText"/>
+            android:text="EditText"/>
+
+        <Button
+            android:id="@+id/btn_list_view"
+            style="@style/btn_main"
+            android:text="ListView"/>
     </LinearLayout>
 </ScrollView>

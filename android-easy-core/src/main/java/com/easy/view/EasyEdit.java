@@ -12,7 +12,7 @@ import android.widget.EditText;
 /**
  * Created by Joke on 2015/8/22.
  */
-public class EditClearText extends EditText implements View.OnTouchListener, View
+public class EasyEdit extends EditText implements View.OnTouchListener, View
 		.OnFocusChangeListener, TextWatcher {
 	private boolean isClearable = true;
 	private Drawable clearDrawable;
@@ -77,17 +77,17 @@ public class EditClearText extends EditText implements View.OnTouchListener, Vie
 		updateClearDrawable();
 	}
 
-	public EditClearText(Context context) {
+	public EasyEdit(Context context) {
 		super(context);
 		init();
 	}
 
-	public EditClearText(Context context, AttributeSet attrs) {
+	public EasyEdit(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
-	public EditClearText(Context context, AttributeSet attrs, int defStyleAttr) {
+	public EasyEdit(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init();
 	}

@@ -17,7 +17,7 @@
 
         <RelativeLayout
             android:id="@+id/rl_fragment"
-            style="@style/fill_parent"
+            style="@style/match_parent"
             android:layout_height="@dimen/h300"
             android:background="@color/bg_green"
             android:gravity="center_horizontal">

@@ -31,7 +31,7 @@
 
         <RadioGroup
             android:id="@+id/rg_mode"
-            style="@style/fill_width"
+            style="@style/match_width"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -67,10 +67,10 @@
             android:text="Selections: "
             android:textStyle="bold"/>
 
-        <ScrollView style="@style/fill_width">
+        <ScrollView style="@style/match_width">
 
             <LinearLayout
-                style="@style/fill_width"
+                style="@style/match_width"
                 android:orientation="vertical">
 
                 <TextView

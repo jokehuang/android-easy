@@ -5,17 +5,17 @@ import android.widget.CompoundButton;
 
 import com.easy.example.R;
 import com.easy.util.KeyboardUtil;
-import com.easy.view.EditClearText;
+import com.easy.view.EasyEdit;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-@ContentView(R.layout.activity_editcleartext)
-public class EditClearTextActivity extends BaseActivity {
+@ContentView(R.layout.activity_edit_text)
+public class EditTextActivity extends BaseActivity {
 
 	@ViewInject(R.id.et_clear)
-	private EditClearText et_clear;
+	private EasyEdit et_clear;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

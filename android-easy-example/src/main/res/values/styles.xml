@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="btn_main" parent="@style/fill_width">
+    <style name="btn_main" parent="@style/match_width">
         <item name="android:layout_marginTop">@dimen/h10</item>
     </style>
 
-    <style name="ll" parent="@style/fill_width">
+    <style name="ll" parent="@style/match_width">
         <item name="android:orientation">vertical</item>
         <item name="android:paddingLeft">@dimen/w20</item>
         <item name="android:paddingRight">@dimen/w20</item>

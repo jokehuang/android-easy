@@ -20,7 +20,7 @@ import com.easy.util.ScreenUtil;
 public abstract class EasyListView extends ListView implements AbsListView.OnScrollListener, AdapterView
         .OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener, View
         .OnClickListener {
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
 
     public static final int STATUS_NORMAL = 0;
     public static final int STATUS_PULLING_NOT_ENOUGH = 2;
@@ -39,13 +39,15 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
     }
 
     private int pullEnoughDistance;
-    private int page = 0;
+    private int currentPage = -1;
     private int status = STATUS_NORMAL;
     private boolean isNoMore;
     private View header;
     private View footer;
     private int originalHeaderHeight;
     private int originalHeaderPaddingTop;
+    private int originalFooterHeight;
+    private int originalFooterPaddingTop;
 
     private OnScrollListener customScrollListener;
     private OnItemClickListener customItemClickListener;
@@ -106,8 +108,11 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         footer = inflateLoadFooter();
         if (footer != null) {
             footer.setOnClickListener(this);
+            footer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            originalFooterHeight = footer.getMeasuredHeight();
+            originalFooterPaddingTop = footer.getPaddingTop();
             addFooterView(footer);
-            onNoMore();
+            onLoadCancel();
         }
     }
 
@@ -119,11 +124,11 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
 
     protected abstract View inflateLoadFooter();
 
-    protected abstract void showPulling(float pullDistance);
+    protected abstract void showPulling(float newHeight);
 
     protected abstract void showPullingEnough();
 
-    protected abstract void showPullingNotEnough();
+    protected abstract void showPullingNotEnough(boolean formNormal);
 
     protected abstract void showRefreshing();
 
@@ -140,19 +145,17 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
     }
 
     protected void hideLoadFooter() {
-        if (footer != null) {
-            footer.setVisibility(View.GONE);
-        }
+        modifyFooterHeight(0);
     }
 
     /**
      * 内部状态改变的相关方法
      */
 
-    protected void onPulling(float pullDistance) {
-        log(pullDistance);
-        modifyHeaderHeight((int) pullDistance);
-        showPulling(pullDistance);
+    protected void onPulling(float newHeight) {
+        log(newHeight);
+        modifyHeaderHeight((int) newHeight);
+        showPulling(newHeight);
     }
 
     protected void onPullingEnough() {
@@ -161,10 +164,10 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         showPullingEnough();
     }
 
-    protected void onPullingNotEnough() {
+    protected void onPullingNotEnough(boolean changeStatusFormEnough) {
         log("onPullingNotEnough");
         status = STATUS_PULLING_NOT_ENOUGH;
-        showPullingNotEnough();
+        showPullingNotEnough(changeStatusFormEnough);
     }
 
     protected void onRefreshCancel() {
@@ -188,7 +191,7 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         status = STATUS_NORMAL;
         isNoMore = false;
         hideRefreshHeader();
-        page = 0;
+        currentPage = 0;
     }
 
     protected void onRefreshFail() {
@@ -207,12 +210,10 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
     protected void onLoadingPage() {
         log("onLoadingPage");
         status = STATUS_LOADING;
-        if (footer != null) {
-            footer.setVisibility(View.VISIBLE);
-        }
+        modifyFooterHeight(originalFooterHeight);
         showLoadingPage();
         if (onLoadPageListener != null) {
-            onLoadPageListener.onLoadingPage(page);
+            onLoadPageListener.onLoadingPage(currentPage + 1);
         }
     }
 
@@ -220,24 +221,20 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         log("onLoadPageSuccess");
         status = STATUS_NORMAL;
         hideLoadFooter();
-        page++;
+        currentPage++;
     }
 
     protected void onLoadPageFail() {
         log("onLoadPageFail");
         status = STATUS_LOAD_FAIL;
-        if (footer != null) {
-            footer.setVisibility(View.VISIBLE);
-        }
+        modifyFooterHeight(originalFooterHeight);
         showLoadPageFail();
     }
 
     protected void onNoMore() {
         log("onNoMore");
         isNoMore = true;
-        if (footer != null) {
-            footer.setVisibility(View.VISIBLE);
-        }
+        modifyFooterHeight(originalFooterHeight);
         showNoMore();
     }
 
@@ -290,6 +287,7 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
      */
     private float startY = -1;
     private int startHeaderHeight = 0;
+    private boolean cancelClick;
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -300,39 +298,53 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_MOVE:
                     if (startY < 0) {
+                        //用户刚滑到顶部时取startY的值
                         startY = ev.getY();
                         if (header != null) {
+                            //记录开始滑动时头部的高度
                             startHeaderHeight = header.getHeight();
                         }
+                        //开始滑动头部后需要取消点击事件
+                        cancelClick = true;
                     } else {
-                        float pullDistance = ev.getY() - startY + startHeaderHeight;
-                        if (pullDistance > 0) {
-                            onPulling(pullDistance);
-                            if (pullDistance < pullEnoughDistance) {
+                        //从开始滑动时头部的高度开始累加用户滑动的距离，从而调整新的头部高度
+                        float newHeight = startHeaderHeight + (ev.getY() - startY);
+                        if (newHeight > 0) {
+                            onPulling(newHeight);
+                            if (newHeight < pullEnoughDistance) {
                                 if (status != STATUS_PULLING_NOT_ENOUGH) {
-                                    onPullingNotEnough();
+                                    onPullingNotEnough(status == STATUS_PULLING_ENOUGH);
                                 }
                             } else {
                                 if (status != STATUS_PULLING_ENOUGH) {
                                     onPullingEnough();
                                 }
                             }
-                            if (pullDistance > 10) {
+                            if (newHeight > 10 && cancelClick) {
+                                //先看下一句解释，由于没有给父类处理move事件，为了避免系统误判为点击事件，滑动超过一定距离，需要手动ACTION_CANCEL
                                 ev.setAction(MotionEvent.ACTION_CANCEL);
                                 super.onTouchEvent(ev);
+                                cancelClick = false;
                             }
-                            return true;
+                            //由于改变了头的高度，不能给父类处理move事件，不然会混乱，直接返回
+                            return false;
                         } else {
-                            onRefreshCancel();
+                            if (status != STATUS_NORMAL) {
+                                onRefreshCancel();
+                                //如果手动ACTION_CANCEL过，当头部重新被隐藏时，用户想继续往上滑必须重新激活ACTION_DOWN，列表才能正常滑动
+                                ev.setAction(MotionEvent.ACTION_DOWN);
+                                super.onTouchEvent(ev);
+                            }
                         }
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    float pullDistance = ev.getY() - startY + startHeaderHeight;
-                    if (pullDistance < pullEnoughDistance) {
-                        onRefreshCancel();
-                    } else {
+                    if (status == STATUS_PULLING_ENOUGH) {
                         onRefreshing();
+                    } else {
+                        if (status != STATUS_NORMAL) {
+                            onRefreshCancel();
+                        }
                     }
                     break;
                 default:
@@ -359,15 +371,20 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        //第一个footer的下标
         int firstFooterItem = footer == null ? -1 : totalItemCount - getFooterViewsCount();
+        //屏幕中显示的最后一个item的下标
         int lastVisibleItem = firstVisibleItem + visibleItemCount - 1;
 
         if (footer != null) {
             if (lastVisibleItem >= firstFooterItem) {
-                if (status == STATUS_NORMAL && !isNoMore) {
+                //屏幕滑动到了第一个footer，开始loadingPage
+                if (status == STATUS_NORMAL && getCount() > getHeaderViewsCount() + getFooterViewsCount() &&
+                        !isNoMore) {
                     onLoadingPage();
                 }
             } else {
+                //屏幕离开第一个footer，重置footer的状态
                 if (status == STATUS_LOAD_FAIL) {
                     onLoadCancel();
                 }
@@ -375,11 +392,14 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         }
 
         if (customScrollListener != null) {
+            //在屏幕中显示的header个数
             int visibleHeaderCount = getHeaderViewsCount() - firstVisibleItem;
             if (visibleHeaderCount < 0) visibleHeaderCount = 0;
+            //在屏幕中显示的footer个数
             int visibleFooterCount = lastVisibleItem - firstFooterItem + 1;
             if (visibleFooterCount < 0) visibleFooterCount = 0;
 
+            //还原各个参数，和没有添加header和footer时保持一致
             firstVisibleItem -= getHeaderViewsCount();
             if (firstVisibleItem < 0) firstVisibleItem = 0;
             visibleItemCount = visibleItemCount - visibleHeaderCount - visibleFooterCount;
@@ -393,6 +413,7 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (customItemClickListener != null && getAdapter() != null) {
+            //根据header个数还原下标
             position -= getHeaderViewsCount();
             if (position >= 0 && position < getCount() - getHeaderViewsCount() - getFooterViewsCount())
                 customItemClickListener.onItemClick(parent, view, position, getItemIdAtPosition(position));
@@ -402,6 +423,7 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         if (customItemLongClickListener != null && getAdapter() != null) {
+            //根据header个数还原下标
             position -= getHeaderViewsCount();
             if (position >= 0 && position < getCount() - getHeaderViewsCount() - getFooterViewsCount())
                 return customItemLongClickListener.onItemLongClick(parent, view, position, getItemIdAtPosition
@@ -413,6 +435,7 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (customItemSelectedListener != null && getAdapter() != null) {
+            //根据header个数还原下标
             position -= getHeaderViewsCount();
             if (position >= 0 && position < getCount() - getHeaderViewsCount() - getFooterViewsCount())
                 customItemSelectedListener.onItemSelected(parent, view, position, getItemIdAtPosition(position));
@@ -455,6 +478,12 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         header.setPadding(header.getPaddingLeft(), paddingTop, header.getPaddingRight(), header.getPaddingBottom());
     }
 
+    private void modifyFooterHeight(int newHeight) {
+        if (footer == null) return;
+        int paddingTop = newHeight - originalFooterHeight + originalFooterPaddingTop;
+        footer.setPadding(footer.getPaddingLeft(), paddingTop, footer.getPaddingRight(), footer.getPaddingBottom());
+    }
+
     public int getPullEnoughDistance() {
         return pullEnoughDistance;
     }
@@ -463,12 +492,12 @@ public abstract class EasyListView extends ListView implements AbsListView.OnScr
         this.pullEnoughDistance = pullEnoughDistance;
     }
 
-    public int getPage() {
-        return page;
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
     public int getStatus() {

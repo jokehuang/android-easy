@@ -6,7 +6,7 @@
     <LinearLayout
         style="@style/ll">
 
-        <com.easy.view.EditClearText
+        <com.easy.view.EasyEdit
             style="@style/btn_main"
             android:drawableRight="@drawable/clear"
             android:text="点击右侧按钮清除文字"

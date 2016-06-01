@@ -5,9 +5,10 @@
     android:versionCode="16033101"
     android:versionName="1.1.0">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".MyApplication"
@@ -28,12 +29,13 @@
         <activity android:name=".activity.FragmentActivity"/>
         <activity android:name=".activity.AnimateActivity"/>
         <activity android:name=".activity.ManagerActivity"/>
-        <activity android:name=".activity.PupopActivity"/>
+        <activity android:name=".activity.PopupActivity"/>
         <activity android:name=".activity.UtilActivity"/>
         <activity android:name=".activity.ViewActivity"/>
         <activity android:name=".activity.ViewPagerActivity"/>
         <activity android:name=".activity.FragmentPagerActivity"/>
-        <activity android:name=".activity.EditClearTextActivity"/>
+        <activity android:name=".activity.EditTextActivity"/>
+        <activity android:name=".activity.ListViewActivity"/>
 
         <activity android:name=".activity.util.AppInfoActivity"/>
         <activity android:name=".activity.util.AppUtilActivity"/>

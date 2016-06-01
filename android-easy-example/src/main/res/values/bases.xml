@@ -4,34 +4,58 @@
     <string name="app_name">android-easy-example</string>
 
     <!-- color -->
-    <color name="white">#ffffff</color>
+    <color name="alpha">#00000000</color>
+    <color name="black_10">#1a000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="black_30">#4d000000</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_60">#9a000000</color>
+    <color name="black_70">#b3000000</color>
+    <color name="black_80">#cd000000</color>
+    <color name="black_90">#e6000000</color>
     <color name="black">#000000</color>
-    <color name="trans">#00000000</color>
+    <color name="white_10">#1affffff</color>
+    <color name="white_20">#33ffffff</color>
+    <color name="white_30">#4dffffff</color>
+    <color name="white_40">#66ffffff</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="white_60">#9affffff</color>
+    <color name="white_70">#b3ffffff</color>
+    <color name="white_80">#cdffffff</color>
+    <color name="white_90">#e6ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
+    <color name="yellow">#ffff00</color>
+    <color name="green">#00ff00</color>
+    <color name="cyan">#00ffff</color>
+    <color name="blue">#0000ff</color>
+    <color name="purple">#ff00ff</color>
 
     <!-- style -->
     <style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
         <item name="android:windowSoftInputMode">adjustPan</item>
     </style>
 
-    <style name="no_frame_dialog" parent="android:Theme.Dialog">
+    <style name="dialog_no_frame" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="fill_width">
-        <item name="android:layout_width">fill_parent</item>
+    <style name="match_width">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="fill_height">
+    <style name="match_height">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="fill_parent">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
+    <style name="match_parent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="wrap_content">

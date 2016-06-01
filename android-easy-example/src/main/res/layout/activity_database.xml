@@ -6,12 +6,12 @@
     <LinearLayout style="@style/ll">
 
         <ScrollView
-            style="@style/fill_width"
+            style="@style/match_width"
             android:layout_height="@dimen/h200"
             android:background="@color/bg_green">
 
             <LinearLayout
-                style="@style/fill_width"
+                style="@style/match_width"
                 android:orientation="vertical">
 
                 <TextView
@@ -34,7 +34,7 @@
             android:text="Delete All"/>
 
         <RelativeLayout
-            style="@style/fill_width"
+            style="@style/match_width"
             android:orientation="horizontal">
 
             <Button
@@ -76,7 +76,7 @@
 
             <EditText
                 android:id="@+id/et_id"
-                style="@style/fill_width"
+                style="@style/match_width"
                 android:layout_toRightOf="@+id/tv_id"
                 android:inputType="number"
                 android:text="1"/>
@@ -93,7 +93,7 @@
 
             <EditText
                 android:id="@+id/et_name"
-                style="@style/fill_width"
+                style="@style/match_width"
                 android:layout_below="@+id/et_id"
                 android:layout_toRightOf="@+id/tv_name"
                 android:text="Joke"/>
