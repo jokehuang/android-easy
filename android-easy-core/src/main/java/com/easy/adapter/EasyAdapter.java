@@ -61,6 +61,7 @@ public abstract class EasyAdapter<T> extends BaseAdapter {
      * @return
      */
     public void setItems(List<T> items) {
+        if (this.items != items) selectedItems.clear();
         this.items = items;
         if (isAutoNotify) notifyDataSetChanged();
     }

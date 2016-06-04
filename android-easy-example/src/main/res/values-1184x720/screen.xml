@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<dimen name="d1">0.18px</dimen>
+<dimen name="d2">0.37px</dimen>
+<dimen name="d3">0.55px</dimen>
+<dimen name="d4">0.74px</dimen>
+<dimen name="d5">0.93px</dimen>
+<dimen name="d6">1.11px</dimen>
+<dimen name="d7">1.29px</dimen>
+<dimen name="d8">1.48px</dimen>
+<dimen name="d9">1.66px</dimen>
+<dimen name="d10">1.85px</dimen>
+<dimen name="d11">2.04px</dimen>
+<dimen name="d12">2.22px</dimen>
+<dimen name="d13">2.41px</dimen>
+<dimen name="d14">2.59px</dimen>
+<dimen name="d15">2.77px</dimen>
+<dimen name="d16">2.96px</dimen>
+<dimen name="d17">3.15px</dimen>
+<dimen name="d18">3.33px</dimen>
+<dimen name="d19">3.51px</dimen>
+<dimen name="d20">3.70px</dimen>
+<dimen name="d21">3.89px</dimen>
+<dimen name="d22">4.07px</dimen>
+<dimen name="d23">4.25px</dimen>
+<dimen name="d24">4.44px</dimen>
+<dimen name="d25">4.62px</dimen>
+<dimen name="d26">4.81px</dimen>
+<dimen name="d27">5.00px</dimen>
+<dimen name="d28">5.18px</dimen>
+<dimen name="d29">5.37px</dimen>
 <dimen name="h1">1.85px</dimen>
 <dimen name="h2">3.70px</dimen>
 <dimen name="h3">5.55px</dimen>
@@ -1000,5 +1029,4 @@
 <dimen name="w358">716.00px</dimen>
 <dimen name="w359">718.00px</dimen>
 <dimen name="w360">720.00px</dimen>
-<string name="test_res_dir_name">res/values-1184x720</string>
 </resources>

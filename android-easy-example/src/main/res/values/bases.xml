@@ -1,4 +1,7 @@
 <resources>
+    <!--从布局文件复制过来的属性，快速替换写成style，请使用下面的正则-->
+    <!--android:(.*)="(.*)"$-->
+    <!--<item name="android:$1">$2</item>-->
 
     <!-- string -->
     <string name="app_name">android-easy-example</string>
