@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <RelativeLayout
+        style="@style/ll">
+
+        <TextView
+            android:id="@+id/tv_version_name_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/w10"
+            android:text="Version Name: "
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_version_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/w10"
+            android:layout_toRightOf="@+id/tv_version_name_tag"
+            android:text="xxx"/>
+
+        <TextView
+            android:id="@+id/tv_version_code_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_version_name_tag"
+            android:layout_marginTop="@dimen/w10"
+            android:text="Version Code: "
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_version_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_version_code_tag"
+            android:layout_marginTop="@dimen/w10"
+            android:layout_toRightOf="@+id/tv_version_code_tag"
+            android:text="xxx"/>
+
+        <ToggleButton
+            android:id="@+id/tb_toast"
+            style="@style/btn_main"
+            android:layout_below="@id/tv_version_code"
+            android:textOff="Toast isForeground"
+            android:textOn="Toast isForeground"/>
+    </RelativeLayout>
+</ScrollView>

@@ -27,8 +27,35 @@ import android.view.inputmethod.InputMethodManager;
  * @version 1.0.0
  */
 
-public class SystemServiceUtil {
-	private SystemServiceUtil() {
+public class SystemUtil {
+	private SystemUtil() {
+	}
+
+	/**
+	 * 获取手机型号
+	 *
+	 * @return
+	 */
+	public static String getModel() {
+		return android.os.Build.MODEL;
+	}
+
+	/**
+	 * 获取系统版本
+	 *
+	 * @return
+	 */
+	public static String getOS() {
+		return android.os.Build.VERSION.RELEASE;
+	}
+
+	/**
+	 * 获取SDK版本
+	 *
+	 * @return
+	 */
+	public static int getSDK() {
+		return android.os.Build.VERSION.SDK_INT;
 	}
 
 	// WINDOW_SERVICE WindowManager 管理打开的窗口程序

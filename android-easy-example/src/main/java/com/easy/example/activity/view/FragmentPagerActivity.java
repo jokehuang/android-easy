@@ -1,4 +1,4 @@
-package com.easy.example.activity;
+package com.easy.example.activity.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.easy.activity.EasyActivity;
 import com.easy.example.R;
+import com.easy.example.activity.BaseActivity;
 import com.easy.fragment.EasyFragment;
 import com.easy.view.EasyFragmentPager;
 

@@ -7,114 +7,94 @@
         style="@style/ll">
 
         <Button
-            android:id="@+id/btn_appinfo"
-            style="@style/btn_main"
-            android:text="AppInfo"/>
-
-        <Button
-            android:id="@+id/btn_apputil"
+            android:id="@+id/btn_app_util"
             style="@style/btn_main"
             android:text="AppUtil"/>
 
         <Button
-            android:id="@+id/btn_badgeutil"
+            android:id="@+id/btn_badge_util"
             style="@style/btn_main"
             android:text="BadgeUtil"/>
 
         <Button
-            android:id="@+id/btn_bitmaputil"
+            android:id="@+id/btn_bitmap_util"
             style="@style/btn_main"
             android:text="BitmapUtil"/>
 
         <Button
-            android:id="@+id/btn_datautil"
+            android:id="@+id/btn_data_util"
             style="@style/btn_main"
             android:text="DataUtil"/>
 
         <Button
-            android:id="@+id/btn_dialogutil"
+            android:id="@+id/btn_dialog_util"
             style="@style/btn_main"
             android:text="DialogUtil"
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_emptyutil"
+            android:id="@+id/btn_empty_util"
             style="@style/btn_main"
             android:text="EmptyUtil"
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_fileutil"
+            android:id="@+id/btn_file_util"
             style="@style/btn_main"
             android:text="FileUtil"/>
 
         <Button
-            android:id="@+id/btn_intentutil"
+            android:id="@+id/btn_intent_util"
             style="@style/btn_main"
             android:text="IntentUtil"/>
 
         <Button
-            android:id="@+id/btn_keyboardutil"
+            android:id="@+id/btn_keyboard_util"
             style="@style/btn_main"
-            android:text="KeyboardUtil"/>
+            android:text="KeyboardUtil"
+            android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_logutil"
+            android:id="@+id/btn_log_util"
             style="@style/btn_main"
             android:text="LogUtil"/>
 
         <Button
-            android:id="@+id/btn_networkutil"
+            android:id="@+id/btn_network_util"
             style="@style/btn_main"
             android:text="NetWorkUtil"/>
 
         <Button
-            android:id="@+id/btn_reflectutil"
+            android:id="@+id/btn_reflect_util"
             style="@style/btn_main"
-            android:text="ReflectUtil"/>
+            android:text="ReflectUtil"
+            android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_runduration"
-            style="@style/btn_main"
-            android:text="RunDuration"/>
-
-        <Button
-            android:id="@+id/btn_screenutil"
+            android:id="@+id/btn_screen_util"
             style="@style/btn_main"
             android:text="ScreenUtil"/>
 
         <Button
-            android:id="@+id/btn_scrollcontroller"
+            android:id="@+id/btn_system_util"
             style="@style/btn_main"
-            android:text="ScrollController"/>
+            android:text="SystemUtil"
+            android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_spfile"
+            android:id="@+id/btn_time_util"
             style="@style/btn_main"
-            android:text="SPFile"/>
+            android:text="TimeUtil"
+            android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_systeminfo"
+            android:id="@+id/btn_toast_util"
             style="@style/btn_main"
-            android:text="SystemInfo"/>
+            android:text="ToastUtil"
+            android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btn_systemserviceutil"
-            style="@style/btn_main"
-            android:text="SystemServiceUtil"/>
-
-        <Button
-            android:id="@+id/btn_timeutil"
-            style="@style/btn_main"
-            android:text="TimeUtil"/>
-
-        <Button
-            android:id="@+id/btn_toastutil"
-            style="@style/btn_main"
-            android:text="ToastUtil"/>
-
-        <Button
-            android:id="@+id/btn_versionutil"
+            android:id="@+id/btn_version_util"
             style="@style/btn_main"
             android:text="VersionUtil"/>
     </LinearLayout>

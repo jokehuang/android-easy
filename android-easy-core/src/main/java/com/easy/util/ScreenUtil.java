@@ -6,89 +6,153 @@ import android.view.Display;
 import android.view.WindowManager;
 
 /**
- * 
  * @author Joke Huang
- * @createDate 2014年6月18日
  * @version 1.0.0
+ * @createDate 2014年6月18日
  */
 
 public class ScreenUtil {
-	public static final int TYPE_PHONE = 1;
-	public static final int TYPE_PAD = 2;
 
-	public static class ScreenInfo {
-		public int type;
-		public int rotation;
-		public int height;
-		public int width;
-		public int longSide;
-		public int shortSide;
-	}
+    public static class ScreenInfo {
+        public static final int TYPE_PHONE = 1;
+        public static final int TYPE_PAD = 2;
+        public static final int ORIENTATION_PORTRAIT = 1;
+        public static final int ORIENTATION_LANDSCAPE = 2;
 
-	public static ScreenInfo getInfo(Context context) {
-		ScreenInfo info = new ScreenInfo();
+        private int type;
+        private int height;
+        private int width;
+        private int longSide;
+        private int shortSide;
+        private int rotation;
+        private int orientation;
 
-		WindowManager wm = SystemServiceUtil.getWindowManager(context);
-		Display d = wm.getDefaultDisplay();
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		d.getMetrics(outMetrics);
+        public int getType() {
+            return type;
+        }
 
-		info.height = outMetrics.heightPixels;
-		info.width = outMetrics.widthPixels;
-		info.rotation = d.getRotation();
-		info.longSide = info.height > info.width ? info.height : info.width;
-		info.shortSide = info.height < info.width ? info.height : info.width;
+        public void setType(int type) {
+            this.type = type;
+        }
 
-		boolean isDefaultRotation = info.rotation % 2 == 0;
-		boolean isHeightLonger = info.height > info.width;
+        public int getRotation() {
+            return rotation;
+        }
 
-		if (isDefaultRotation ^ isHeightLonger) {
-			info.type = TYPE_PAD;
-		} else {
-			info.type = TYPE_PHONE;
-		}
+        public void setRotation(int rotation) {
+            this.rotation = rotation;
+        }
 
-		return info;
+        public int getHeight() {
+            return height;
+        }
 
-		// Log.v("MeasureUtil", "Rotation: " + d.getRotation());
-		// Log.v("MeasureUtil", "screenHeight: " + screenHeight);
-		// Log.v("MeasureUtil", "screenWidth: " + screenWidth);
-		// Log.v("MeasureUtil", "screenRelativeHeight: " +
-		// screenRelativeHeight);
-		// Log.v("MeasureUtil", "screenRelativeWidth: " + screenRelativeWidth);
-		// Log.v("MeasureUtil", "scale: " + scale);
-		// Log.v("MeasureUtil", "type: " + (type == TYPE_PHONE ? "PHONE" :
-		// "PAD"));
+        public void setHeight(int height) {
+            this.height = height;
+        }
 
-	}
+        public int getWidth() {
+            return width;
+        }
 
-	public static int dip2px(Context context, float dipValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (dipValue * scale + 0.5f);
-	}
+        public void setWidth(int width) {
+            this.width = width;
+        }
 
-	public static int px2dip(Context context, float pxValue) {
-		final float scale = context.getResources().getDisplayMetrics().density;
-		return (int) (pxValue / scale + 0.5f);
-	}
+        public int getLongSide() {
+            return longSide;
+        }
 
-	public static int getType(Context context) {
-		return getInfo(context).type;
-	}
+        public void setLongSide(int longSide) {
+            this.longSide = longSide;
+        }
 
-	public static int getHeight(Context context) {
-		return getInfo(context).height;
-	}
+        public int getShortSide() {
+            return shortSide;
+        }
 
-	public static int getWidth(Context context) {
-		return getInfo(context).width;
-	}
+        public void setShortSide(int shortSide) {
+            this.shortSide = shortSide;
+        }
 
-	public static int getLongSide(Context context) {
-		return getInfo(context).longSide;
-	}
+        public int getOrientation() {
+            return orientation;
+        }
 
-	public static int getShortSide(Context context) {
-		return getInfo(context).shortSide;
-	}
+        public void setOrientation(int orientation) {
+            this.orientation = orientation;
+        }
+    }
+
+    public static ScreenInfo getInfo(Context context) {
+        ScreenInfo info = new ScreenInfo();
+
+        WindowManager wm = SystemUtil.getWindowManager(context);
+        Display d = wm.getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        d.getMetrics(outMetrics);
+
+        info.height = outMetrics.heightPixels;
+        info.width = outMetrics.widthPixels;
+        info.longSide = info.height > info.width ? info.height : info.width;
+        info.shortSide = info.height < info.width ? info.height : info.width;
+        info.rotation = d.getRotation();
+
+        boolean isDefaultRotation = info.rotation % 2 == 0;
+        boolean isPortrait = info.height > info.width;
+        info.orientation = isPortrait ? ScreenInfo.ORIENTATION_PORTRAIT : ScreenInfo.ORIENTATION_LANDSCAPE;
+
+        if (isDefaultRotation ^ isPortrait) {
+            info.type = ScreenInfo.TYPE_PAD;
+        } else {
+            info.type = ScreenInfo.TYPE_PHONE;
+        }
+
+        return info;
+
+        // Log.v("ScreenUtil", "Rotation: " + d.getRotation());
+        // Log.v("ScreenUtil", "screenHeight: " + screenHeight);
+        // Log.v("ScreenUtil", "screenWidth: " + screenWidth);
+        // Log.v("ScreenUtil", "screenRelativeHeight: " +
+        // screenRelativeHeight);
+        // Log.v("ScreenUtil", "screenRelativeWidth: " + screenRelativeWidth);
+        // Log.v("ScreenUtil", "scale: " + scale);
+        // Log.v("ScreenUtil", "type: " + (type == TYPE_PHONE ? "PHONE" :
+        // "PAD"));
+
+    }
+
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static int getType(Context context) {
+        return getInfo(context).type;
+    }
+
+    public static int getHeight(Context context) {
+        return getInfo(context).height;
+    }
+
+    public static int getWidth(Context context) {
+        return getInfo(context).width;
+    }
+
+    public static int getLongSide(Context context) {
+        return getInfo(context).longSide;
+    }
+
+    public static int getShortSide(Context context) {
+        return getInfo(context).shortSide;
+    }
+
+    public static int getRotation(Context context) {
+        return getInfo(context).rotation;
+    }
 }

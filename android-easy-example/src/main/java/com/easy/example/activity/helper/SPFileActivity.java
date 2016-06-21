@@ -1,9 +1,16 @@
-package com.easy.example.activity;
+package com.easy.example.activity.helper;
 
 import android.view.View;
 
 import com.easy.example.R;
-import com.easy.example.activity.helper.HelperActivity;
+import com.easy.example.activity.ActivityActivity;
+import com.easy.example.activity.AdapterActivity;
+import com.easy.example.activity.AnimateActivity;
+import com.easy.example.activity.BaseActivity;
+import com.easy.example.activity.DatabaseActivity;
+import com.easy.example.activity.FragmentActivity;
+import com.easy.example.activity.ManagerActivity;
+import com.easy.example.activity.PopupActivity;
 import com.easy.example.activity.util.UtilActivity;
 import com.easy.example.activity.view.ViewActivity;
 
@@ -18,8 +25,8 @@ import org.xutils.view.annotation.Event;
  * @create 2015年6月8日
  */
 
-@ContentView(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
+@ContentView(R.layout.activity_helper)
+public class SPFileActivity extends BaseActivity {
 
 	@Event(value = R.id.btn_activity, type = View.OnClickListener.class)
 	private void onClickActivity(View v) {
@@ -44,11 +51,6 @@ public class MainActivity extends BaseActivity {
 	@Event(value = R.id.btn_fragment, type = View.OnClickListener.class)
 	private void onClickFragment(View v) {
 		startActivity(FragmentActivity.class);
-	}
-
-	@Event(value = R.id.btn_helper, type = View.OnClickListener.class)
-	private void onClickHelper(View v) {
-		startActivity(HelperActivity.class);
 	}
 
 	@Event(value = R.id.btn_manager, type = View.OnClickListener.class)

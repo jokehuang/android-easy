@@ -31,6 +31,11 @@
             android:text="Fragment"/>
 
         <Button
+            android:id="@+id/btn_helper"
+            style="@style/btn_main"
+            android:text="Helper"/>
+
+        <Button
             android:id="@+id/btn_manager"
             style="@style/btn_main"
             android:text="Manager"/>

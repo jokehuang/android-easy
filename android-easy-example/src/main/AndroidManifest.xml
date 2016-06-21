@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
 
     <application
         android:name=".MyApplication"
@@ -30,22 +33,27 @@
         <activity android:name=".activity.AnimateActivity"/>
         <activity android:name=".activity.ManagerActivity"/>
         <activity android:name=".activity.PopupActivity"/>
-        <activity android:name=".activity.UtilActivity"/>
-        <activity android:name=".activity.ViewActivity"/>
-        <activity android:name=".activity.ViewPagerActivity"/>
-        <activity android:name=".activity.FragmentPagerActivity"/>
-        <activity android:name=".activity.EditTextActivity"/>
-        <activity android:name=".activity.ListViewActivity"/>
-
-        <activity android:name=".activity.util.AppInfoActivity"/>
+        <activity android:name=".activity.util.UtilActivity"/>
+        <activity android:name=".activity.view.ViewActivity"/>
+        <activity android:name=".activity.view.ViewPagerActivity"/>
+        <activity android:name=".activity.view.FragmentPagerActivity"/>
+        <activity android:name=".activity.view.EditTextActivity"/>
+        <activity android:name=".activity.view.ListViewActivity"/>
         <activity android:name=".activity.util.AppUtilActivity"/>
         <activity android:name=".activity.util.BadgeUtilActivity"/>
         <activity android:name=".activity.util.BitmapUtilActivity"/>
         <activity android:name=".activity.util.DataUtilActivity"/>
         <activity android:name=".activity.util.FileUtilActivity"/>
         <activity android:name=".activity.util.IntentUtilActivity"/>
-        <activity android:name=".activity.util.KeyboardUtilActivity"/>
         <activity android:name=".activity.util.LogUtilActivity"/>
+        <activity android:name=".activity.util.NetworkUtilActivity"/>
+        <activity
+            android:name=".activity.util.ScreenUtilActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".activity.util.VersionUtilActivity"/>
+        <activity android:name=".activity.helper.HelperActivity"/>
+        <activity android:name=".activity.helper.ScrollControllerActivity"/>
+        <activity android:name=".activity.helper.SPFileActivity"/>
     </application>
 
 </manifest>

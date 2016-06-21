@@ -24,7 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-@ContentView(R.layout.activity_fileutil)
+@ContentView(R.layout.activity_file_util)
 public class FileUtilActivity extends BaseActivity {
 
 	private static final String FILE_DIR_PATH = MyApplication.APP_DIR_PATH + File.separator +

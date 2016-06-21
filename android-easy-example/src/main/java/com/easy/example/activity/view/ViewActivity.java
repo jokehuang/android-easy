@@ -1,8 +1,9 @@
-package com.easy.example.activity;
+package com.easy.example.activity.view;
 
 import android.view.View;
 
 import com.easy.example.R;
+import com.easy.example.activity.BaseActivity;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;

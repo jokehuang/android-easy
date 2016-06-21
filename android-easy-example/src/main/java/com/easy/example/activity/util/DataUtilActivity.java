@@ -17,7 +17,7 @@ import org.xutils.view.annotation.ViewInject;
 import java.text.ParseException;
 import java.util.Random;
 
-@ContentView(R.layout.activity_datautil)
+@ContentView(R.layout.activity_data_util)
 public class DataUtilActivity extends BaseActivity {
 
 	@ViewInject(R.id.et_md5)

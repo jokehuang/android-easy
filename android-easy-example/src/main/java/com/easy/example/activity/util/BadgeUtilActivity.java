@@ -1,10 +1,8 @@
 package com.easy.example.activity.util;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.easy.activity.EasyActivity;
 import com.easy.example.R;
 import com.easy.example.activity.BaseActivity;
 import com.easy.util.BadgeUtil;
@@ -13,9 +11,8 @@ import com.easy.util.EmptyUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
-@ContentView(R.layout.activity_badgeutil)
+@ContentView(R.layout.activity_badge_util)
 public class BadgeUtilActivity extends BaseActivity {
 
 	@ViewInject(R.id.et)

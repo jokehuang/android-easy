@@ -7,22 +7,12 @@
         style="@style/ll">
 
         <EditText
-            android:id="@+id/et_log2file"
+            android:id="@+id/et"
             style="@style/btn_main"/>
 
         <Button
             android:id="@+id/btn_log2file"
             style="@style/btn_main"
             android:text="Log To File"/>
-
-        <Button
-            android:id="@+id/btn_show"
-            style="@style/btn_main"
-            android:text="Show"/>
-
-        <Button
-            android:id="@+id/btn_hide"
-            style="@style/btn_main"
-            android:text="Hide"/>
     </LinearLayout>
 </ScrollView>

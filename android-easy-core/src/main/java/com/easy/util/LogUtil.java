@@ -81,8 +81,9 @@ public class LogUtil {
 	public static boolean log2File(int degree, String dirPath, final String message) {
 		if (degree < LogUtil.degree) return false;
 
-		final String dateStr = TimeUtil.format(new Date(), "yyyyMMdd");
-		final String timeStr = TimeUtil.format(new Date(), "HH:mm:ss");
+		Date now = new Date();
+		final String dateStr = formatTime(now, "yyyyMMdd");
+		final String timeStr = formatTime(now, "HH:mm:ss");
 		String fileName = dateStr + ".log";
 
 		File dir = new File(dirPath);
@@ -99,6 +100,12 @@ public class LogUtil {
 				fos.write("\n\n".getBytes());
 			}
 		}, true);
+	}
+
+	private static String formatTime(Date date, String pattern) {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		sdf.format(date);
+		return null;
 	}
 
 	/**

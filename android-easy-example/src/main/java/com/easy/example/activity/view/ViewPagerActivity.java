@@ -1,4 +1,4 @@
-package com.easy.example.activity;
+package com.easy.example.activity.view;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.easy.activity.EasyActivity;
 import com.easy.example.R;
+import com.easy.example.activity.BaseActivity;
 import com.easy.util.ToastUtil;
 import com.easy.view.EasyViewPager;
 

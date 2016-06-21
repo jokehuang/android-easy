@@ -1,11 +1,12 @@
-package com.easy.example.activity;
+package com.easy.example.activity.view;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ArrayAdapter;
 
 import com.easy.example.R;
-import com.easy.util.NetWorkUtil;
+import com.easy.example.activity.BaseActivity;
+import com.easy.util.NetworkUtil;
 import com.easy.view.EasyListView;
 
 import org.xutils.view.annotation.ContentView;
@@ -42,7 +43,7 @@ public class ListViewActivity extends BaseActivity implements EasyListView.OnRef
             @Override
             public void run() {
                 if (page == 0) {
-                    if (NetWorkUtil.isNetworkConnected(self)) {
+                    if (NetworkUtil.isNetworkConnected(self)) {
                         //刷新成功
                         lv.refreshSuccess();
                         adapter.clear();
@@ -54,7 +55,7 @@ public class ListViewActivity extends BaseActivity implements EasyListView.OnRef
                         lv.refreshFail();
                     }
                 } else {
-                    if (NetWorkUtil.isNetworkConnected(self)) {
+                    if (NetworkUtil.isNetworkConnected(self)) {
                         //加载成功
                         lv.loadPageSuccess();
                         for (int i = 0; i < 10; i++) {

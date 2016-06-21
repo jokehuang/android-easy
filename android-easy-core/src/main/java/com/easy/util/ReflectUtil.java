@@ -8,37 +8,51 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ReflectUtil {
 
-	/**
-	 * 填充对象中值为null的成员变量，基础型的封装类统一为0，字符串为""。
-	 * @param obj
-	 */
-	public static void fillNullField(Object obj) {
-		for (Field field : obj.getClass().getDeclaredFields()) {
-			Class<?> fieldType = field.getType();
-			if (fieldType == String.class) {
-				field.setAccessible(true);
-				try {
-					field.set(obj, "");
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			} else if (fieldType == Integer.class || fieldType == Long.class || fieldType == Float
-					.class || fieldType == Double.class) {
-				field.setAccessible(true);
-				try {
-					Object value = fieldType.getConstructor(String.class).newInstance("0");
-					field.set(obj, value);
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+    /**
+     * 填充对象中值为null的成员变量，基础型的封装类统一为0，字符串为""。
+     *
+     * @param obj
+     */
+    public static void fillNullField(Object obj) {
+        for (Field field : obj.getClass().getDeclaredFields()) {
+            Class<?> fieldType = field.getType();
+            if (fieldType == String.class) {
+                try {
+                    if (field.get(obj) == null) {
+                        field.setAccessible(true);
+                        field.set(obj, "");
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            } else if (fieldType == Integer.class || fieldType == Long.class || fieldType == Float.class || fieldType
+                    == Double.class) {
+                try {
+                    if (field.get(obj) == null) {
+                        field.setAccessible(true);
+                        Object value = fieldType.getConstructor(String.class).newInstance("0");
+                        field.set(obj, value);
+                    }
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            } else if (fieldType == Boolean.class) {
+                try {
+                    if (field.get(obj) == null) {
+                        field.setAccessible(true);
+                        field.set(obj, new Boolean(false));
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
 

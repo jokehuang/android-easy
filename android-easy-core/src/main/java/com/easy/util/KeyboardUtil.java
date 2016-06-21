@@ -17,17 +17,17 @@ public class KeyboardUtil {
 	}
 
 	public static void toggle(Context context) {
-		InputMethodManager imm = SystemServiceUtil.getInputMethodManager(context);
+		InputMethodManager imm = SystemUtil.getInputMethodManager(context);
 		imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 
 	public static void show(Context context, View view) {
-		InputMethodManager imm = SystemServiceUtil.getInputMethodManager(context);
+		InputMethodManager imm = SystemUtil.getInputMethodManager(context);
 		imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
 	}
 
 	public static void hide(Context context, View view) {
-		InputMethodManager imm = SystemServiceUtil.getInputMethodManager(context);
+		InputMethodManager imm = SystemUtil.getInputMethodManager(context);
 		imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 

@@ -1,9 +1,10 @@
-package com.easy.example.activity;
+package com.easy.example.activity.view;
 
 import android.os.Bundle;
 import android.widget.CompoundButton;
 
 import com.easy.example.R;
+import com.easy.example.activity.BaseActivity;
 import com.easy.util.KeyboardUtil;
 import com.easy.view.EasyEdit;
 

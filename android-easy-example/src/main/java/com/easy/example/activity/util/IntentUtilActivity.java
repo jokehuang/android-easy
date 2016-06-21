@@ -15,7 +15,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-@ContentView(R.layout.activity_intentutil)
+@ContentView(R.layout.activity_intent_util)
 public class IntentUtilActivity extends BaseActivity {
 
 	private static final int REQ_FILE = 1;

@@ -1,4 +1,4 @@
-package com.easy.util;
+package com.easy.helper;
 
 import android.annotation.SuppressLint;
 import android.view.MotionEvent;
