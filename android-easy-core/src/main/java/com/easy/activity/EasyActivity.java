@@ -109,9 +109,13 @@ public class EasyActivity extends FragmentActivity {
             lastBackPressedTime = currentTime;
             ToastUtil.show(this, exitTipsId);
         } else {
-            if (isLogLife) log("onExit");
-            EasyActivityManager.getInstance().finishAll();
+            onExit();
         }
+    }
+
+    protected void onExit(){
+        if (isLogLife) log("onExit");
+        EasyActivityManager.getInstance().finishAll();
     }
 
     /**
